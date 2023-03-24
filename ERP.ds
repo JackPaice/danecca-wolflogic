@@ -1,0 +1,7137 @@
+/*
+ * Author       : danson.joseph
+ * Generated on : 24-Mar-2023 16:07:12
+ * Version      : 1.0
+ */
+ application "ERP"
+ {
+ 	date format = "dd-MMM-yyyy"
+ 	time zone = "Europe/London"
+ 	time format = "24-hr"
+ 	section New_Section
+	{
+		displayname= "New Section"
+				 page Business_Processes 
+	 	 { 
+ 	 	 displayname = "Business Processes"
+
+ 	 	 icon = "design-window-paragraph" 
+
+ 	 	 hide =  true
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"50%\"\n   \t>\n\t<widgets elementName='Widget' importedTemplate='true'\/>\n<\/column><column\n   \t\t width=\"50%\"\n   \t>\n\t<embed \n\telementName=\"Embed\"\n\n\thAlign = 'center'\n\turl = 'https:\/\/www.draw.io\/?chrome=0&amp;gapi=0&amp;db=0&amp;url=https:\/\/files-accl.zohopublic.eu\/public\/workdrive-public\/download\/7okxwfdc0cc4e01914e72936e0f37fa98a89b?x-cli-msg=%7B%22isFileOwner%22%3Afalse%2C%22version%22%3A%221.0%22%7D'\n\twidth = '300'\n\theight = '150'\n\/>\n\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+	}
+	section People_Power
+	{
+		displayname= "People Power"
+		icon = "tech-desktop"
+		form Add_Work_Task
+		{
+			displayname = "Add Work Task"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Task_ID
+			(
+    			type = autonumber
+				displayname = "Task ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Task_Title
+			(
+    			type = text
+				displayname = "Task Title"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = richtext
+				height = 200px
+				toolbar = enable
+				[
+					style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+					font-size : {1, 2, 3, 4, 5, 6, 7},
+					font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+				]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Why
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What Business Objective does this satisfy?  How does this work fit into the big picture?"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			In_Roles
+			(
+				type = list	
+				displayname = "In Roles"
+				values  = Add_Job_Roles.ID
+    			bidirectional = Tasks
+    			displayformat = [Role_ID + " - " + Title]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+				 page Org_Charts(project) 
+	 	 { 
+ 	 	 displayname = "Org Charts"
+
+ 	 	 icon = "design-window-paragraph" 
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<dsp id='html_snippet' elementName=\"HTML Snippet\"\n bgColor=\"#FFFFFF\" \n>\n\t<![CDATA[htmlpage html_snippet(project)\ncontent\n&lt;%{\n\t%&gt;\n&lt;style&gt;\n.centered {\n    text-align: center;\n}\n\n.nodecontent {\n    display: inline-block;\n    background-color: DarkTurquoise;\n    padding: 10px;\n    border-radius: 10px;\n    color: white;\n}\n\n.nodecontent:hover {\n    background-color: MediumSeaGreen;\n}\n\n.nodecontent .collapse {\n    position: absolute;\n    bottom: -15px;\n    left: calc(50% - 6px);\n    color: #EEEEEE;\n    background-color: #CCCCCC;\n    border-radius: 6px;\n    height: 12px;\n    width: 12px;\n    font-size: 12px;\n    text-align: center;\n}\n\n\n\/*chart nodes*\/\n.orgchart {\n    display: inline-block;\n    font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;\n}\n\n.orgchart, .orgchart ul {\n    padding: 0;\n    margin: 0;\n}\n\n\/*align children horizontally using CSS flex*\/\n.orgchart ul {\n    display: flex;\n}\n\n\/*align nodecontent and children list vertically*\/\n.orgchart li {\n    display: flex;\n    flex-direction: column;\n    position: relative;\n}\n\n\/*arrange the nodecontent centered above the children list*\/\n.orgchart .nodecontent {\n    align-self: center;\n    position: relative;\n    margin: 20px 5px;\n}\n\n.orgchart .collapsed &gt; ul {\n    display: none;\n}\n\n\/*connections*\/\n.orgchart li::before,\n.orgchart .nodecontent::after,\n.orgchart .nodecontent::before {\n    box-sizing: border-box;\n    content: &apos;&apos;;\n    position: absolute;\n    z-index: 0;\n    border: 0px solid #CCCCCC;\n}\n\n.orgchart li:not(:only-child)::before {\n    border-top-width: 2px;\n    width: 100%;\n    height: 20px;\n    top: 0px;\n}\n\n.orgchart li:first-child::before {\n    width: calc(50% + 1px);\n    right: 0;\n    border-left-width: 2px;\n    border-top-left-radius: 7px;\n}\n\n.orgchart li:last-child::before {\n    width: calc(50% + 1px);\n    border-right-width: 2px;\n    border-top-right-radius: 7px;\n}\n\n.orgchart .nodecontent::after,\n.orgchart .nodecontent::before {\n    border-left-width: 2px;\n    width: 2px;\n    height: 20px;\n    left: calc(50% - 1px);\n}\n\n.orgchart .nodecontent::before {\n    top: -20px;\n}\n.orgchart .nodecontent::after {\n    bottom: -20px;\n}\n\n.orgchart li:first-child:not(:only-child) &gt; .nodecontent::before,\n.orgchart li:last-child:not(:only-child) &gt; .nodecontent::before {\n    border-left-width: 0px;\n}\n\n.orgchart .leaf &gt; .nodecontent::after,\n.orgchart .root &gt; .nodecontent::before,\n.orgchart .collapsed &gt; .nodecontent::after {\n    display: none;\n}\n\n\n\/*vertical nodes*\/\n.orgchart li.vertical &gt; ul {\n    flex-direction: column;\n    align-items: flex-start;\n    margin: 0 5px;\n    position: relative;\n}\n\n.orgchart li.vertical &gt; ul &gt; li &gt; .nodecontent {\n    margin: 10px 0 0 10px;\n}\n\n\/*vertical connectors*\/\n.orgchart li.vertical &gt; ul::before {\n    box-sizing: border-box;\n    content: &apos;&apos;;\n    position: absolute;\n    top: -2px;\n    left: 10px;\n    height: 10px;\n    width: calc(50% - 19px);\n    border-top: 2px solid #CCCCCC;\n}\n\n.orgchart li.vertical &gt; .nodecontent::after {\n    border-width: 0 2px 2px 0;\n    border-bottom-right-radius: 7px;\n    width: 10px;\n    left: auto;\n    right: calc(50% - 1px);\n}\n\n.orgchart li.vertical &gt; ul &gt; li::before {\n    border-width: 0 0 0 2px;\n    left: 0px;\n    height: 100%;\n    width: 10px;\n    border-radius: 0;\n}\n.orgchart li.vertical &gt; ul &gt; li:first-child::before {\n    top: -2px;\n    height: calc(100% + 2px);\n    border-top-width: 2px;\n    border-top-left-radius: 7px;\n}\n\n.orgchart li.vertical &gt; ul &gt; li:last-child::before {\n    height: calc(50% + 6px);\n    border-bottom-width: 2px;\n    border-bottom-left-radius: 7px;\n}\n\n.orgchart li.vertical &gt; ul &gt; li &gt; .nodecontent::before {\n    height: 2px;\n    width: 8px;\n    top: calc(50% - 1px);\n    left: -8px;\n    border-width: 2px 0 0 0;\n}\n\n.orgchart li.vertical &gt; ul &gt; li:last-child &gt; .nodecontent::before {\n    display: none;\n}\n\n&lt;\/style&gt;\n&lt;ul class=&quot;orgchart&quot;&gt;\n&lt;%\n\tocHead = thisapp.loadOrgCharts(52);\n\theadName = ocHead.get(&quot;desc&quot;);\n\t%&gt;\n&lt;li class=&quot;root&quot;&gt;\n\t\t&lt;div class=&quot;nodecontent&quot;&gt;&lt;%=headName%&gt;&lt;\/div&gt;\n&lt;%\n\tchildren = ocHead.get(&quot;children&quot;);\n\tchildHTML = &quot;&lt;ul&gt;&quot;;\n\tfor each  dr in children\n\t{\n\t\tid = dr.get(&quot;id&quot;);\n\t\tif(dr.get(&quot;hasChild&quot;))\n\t\t{\n\t\t\tliclass = &quot;vertical&quot;;\n\t\t\tulstart = &quot;&lt;ul&gt;&quot;;\n\t\t\tulend = &quot;&lt;\/ul&gt;&quot;;\n\t\t}\n\t\telse\n\t\t{\n\t\t\tliclass = &quot;leaf&quot;;\n\t\t\tulstart = &quot;&quot;;\n\t\t\tulend = &quot;&quot;;\n\t\t}\n\t\tchildHTML = childHTML + &quot;&lt;li class=\\&quot;&quot; + liclass + &quot;\\&quot;&gt;&lt;div class=\\&quot;nodecontent\\&quot;&gt;&quot; + id + &quot;-&quot; + dr.get(&quot;desc&quot;) + &quot;&lt;\/div&gt;&quot;;\n\t\treports = thisapp.getOrgChartDirectReports(dr.get(&quot;id&quot;));\n\t\t\/\/staff = reports.\n\t\tchildHTML = childHTML + ulstart;\n\t\tfor each  staff in reports.get(&quot;result&quot;)\n\t\t{\n\t\t\tchildHTML = childHTML + &quot;&lt;li class=\\&quot;leaf\\&quot;&gt;&lt;div class=\\&quot;nodecontent\\&quot;&gt;&quot; + staff.get(&quot;desc&quot;) + &quot;&lt;\/div&gt;&lt;\/li&gt;&quot;;\n\t\t}\n\t\tchildHTML = childHTML + ulend;\n\t\tchildHTML = childHTML + &quot;&lt;\/li&gt;&quot;;\n\t}\n\tchildHTML = childHTML + &quot;&lt;\/ul&gt;&quot;;\n\t%&gt;\n&lt;%=childHTML%&gt;\n\t&lt;\/li&gt;\n&lt;\/ul&gt;\n&lt;%\n\n}%&gt;]]>\n<\/dsp>\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+		default list Add_Role_Assignment_Report
+		{
+			displayName = "Add Role Assignment Report"
+			show all rows from Add_Role_Assignment    
+			(
+				Person
+				Primary_Job_Roles as "Primary Job Roles"
+				(
+					view = Job_Roles_Database
+					delimiter = newline
+				)
+				Secondary_Role as "Secondary Role"
+				Job_Roles as "Project Roles"
+				(
+					isLinkEnabled = true
+					field = Job_Roles.Job_Role + "," + Job_Roles.Project
+				)
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Person
+							Primary_Job_Roles as "Primary Job Roles"
+							Secondary_Role as "Secondary Role"
+							Job_Roles.Job_Role as "Project Roles"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Person
+							Primary_Job_Roles as "Primary Job Roles"
+							Secondary_Role as "Secondary Role"
+							Job_Roles.Job_Role as "Project Roles"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Add_Job_Roles
+		{
+			displayname = "Add Job Roles"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Role_ID
+			(
+    			type = autonumber
+				displayname = "Role ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = richtext
+				height = 200px
+				toolbar = enable
+				[
+					style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+					font-size : {1, 2, 3, 4, 5, 6, 7},
+					font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+				]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Time
+			(
+				type = picklist
+				values = {"Full Time","Part Time"}
+				initial value = "Choice 1"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Tasks
+			(
+				type = list	
+				values  = Add_Work_Task.ID
+    			bidirectional = In_Roles
+    			displayformat = [Task_ID + " - " + Task_Title]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = large
+			)
+			Reports_To
+			(
+				type = picklist	
+				displayname = "Reports To"
+				values  = Add_Job_Roles.ID
+    			displayformat = [Role_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Role"
+				]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Assigned_as_Primary_Roles_To
+			(
+				type = list	
+				displayname = "Assigned as Primary Roles To"
+				values  = Add_Role_Assignment.ID
+    			bidirectional = Primary_Job_Roles
+    			displayformat = [" - " + Person]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Assigned_as_Secondary_Role_To
+			(
+				type = list	
+				displayname = "Assigned as Secondary Role To"
+				values  = Add_Role_Assignment.ID
+    			bidirectional = Secondary_Role
+    			displayformat = [Person]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Job_Roles_Database
+		{
+			displayName = "Job Roles Database"
+			show all rows from Add_Job_Roles    
+			(
+				Role_ID as "Role ID"
+				Title
+				Description
+				Time
+				Tasks
+				Assigned_as_Primary_Roles_To as "Assigned as Primary Roles To"
+				(
+					view = Add_Role_Assignment_Report
+					delimiter = newline
+				)
+				Assigned_as_Secondary_Role_To as "Assigned as Secondary Role To"
+				Reports_To as "Reports To"
+			)
+			sort by
+			(
+				Role_ID ascending
+				Title ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Role_ID as "Role ID"
+							Title
+							Description
+							Time
+							Tasks
+							Assigned_as_Primary_Roles_To as "Assigned as Primary Roles To"
+							Assigned_as_Secondary_Role_To as "Assigned as Secondary Role To"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Role_ID as "Role ID"
+							Title
+							Description
+							Time
+							Tasks
+							Assigned_as_Primary_Roles_To as "Assigned as Primary Roles To"
+							Assigned_as_Secondary_Role_To as "Assigned as Secondary Role To"
+							Reports_To as "Reports To"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Work_Task_Database
+		{
+			displayName = "Work Task Database"
+			show all rows from Add_Work_Task    
+			(
+				Task_ID as "Task ID"
+				Task_Title as "Task Title"
+				Description
+				In_Roles as "In Roles"
+				(
+					view = Job_Roles_Database
+					delimiter = newline
+				)
+				In_Roles.Assigned_as_Primary_Roles_To as "Assigned as Primary Roles To"
+				In_Roles.Assigned_as_Secondary_Role_To as "Assigned as Secondary Role To"
+				Why
+			)
+			sort by
+			(
+				Task_ID ascending
+				Task_Title ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Task_ID as "Task ID"
+							Task_Title as "Task Title"
+							Description
+							In_Roles as "In Roles"
+							In_Roles.Assigned_as_Primary_Roles_To as "Assigned as Primary Roles To"
+							In_Roles.Assigned_as_Secondary_Role_To as "Assigned as Secondary Role To"
+							Why
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Task_ID as "Task ID"
+							Task_Title as "Task Title"
+							Description
+							In_Roles as "In Roles"
+							In_Roles.Assigned_as_Primary_Roles_To as "Assigned as Primary Roles To"
+							In_Roles.Assigned_as_Secondary_Role_To as "Assigned as Secondary Role To"
+							Why
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Add_eMail_Signature_Report
+		{
+			displayName = "eMail Signatures"
+			show all rows from Add_eMail_Signature    
+			(
+				Name 
+	 			(
+	      			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+	 			)
+				Title
+				Mobile
+				(
+					displayformat = plainnumber 
+					linktodial = enable
+				)
+				Multi_Line as "Multi Line"
+				email as "eMail"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			customlayouts
+	     			(
+		 				template
+		 				(
+		 	  				displayname="Custom Layout 1"
+		 	  				content="<panel  \n >\n	<pr \n			width='fill'\n		height='fill'\n>\n	<pc \n		padding = '17px'\n	bgColor = '#FFFFFF'\n\n		width = '100%'\n		hAlign = 'center'\n		vAlign = 'middle'\n>\n	<pr \n			width='auto'\n		height='auto'\n>\n	<pc \n	\n>\n	\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>"
+		    			)
+	     			)
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Name
+							Title
+							Mobile
+							Multi_Line as "Multi Line"
+							email as "eMail"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Name
+							Title
+							Mobile
+							Multi_Line as "Multi Line"
+							email as "eMail"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+				 page Projects_Programmes 
+	 	 { 
+ 	 	 displayname = "Projects & Programmes"
+
+ 	 	 icon = "design-window-paragraph" 
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t\n<\/layout>\n<\/zml>" 
+ 	 	}
+	}
+	section Add_Role_Assignment
+	{
+		displayname= "Add Role Assignment"
+		icon = "tech-desktop"
+		form Add_Role_Assignment
+		{
+			displayname = "Add Role Assignment"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			record owner = Person
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Person
+			(
+    			type = picklist
+				module = users
+				displayformat = [username]
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Primary_Job_Roles
+			(
+				type = list	
+				displayname = "Primary Job Roles"
+				values  = Add_Job_Roles.ID
+    			bidirectional = Assigned_as_Primary_Roles_To
+    			displayformat = [Role_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Role"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Secondary_Role
+			(
+				type = list	
+				displayname = "Secondary Role"
+				values  = Add_Job_Roles.ID
+    			bidirectional = Assigned_as_Secondary_Role_To
+    			displayformat = [Role_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Role"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Job_Roles
+			(
+				type = grid
+				displayname = "Project Roles"
+				Project
+				(
+					type = list	
+					values  = Add_Programme.ID
+    				displayformat = [Programme_Name]
+					sortorder = ascending
+					height = 60px
+					width = medium
+				)
+				Job_Role
+				(
+					type = list	
+					displayname = "Job Role"
+					values  = Add_Job_Roles.ID
+    				displayformat = [Role_ID + " - " + Title]
+					allow new entries = true
+					[
+						displayname = "Add New Job Role"
+					]
+					sortorder = ascending
+					height = 60px
+    				description
+    				[
+    					type = tooltip
+    				 	message = "Select Job Role(s)"
+    				]
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	section Health_Safety
+	{
+		displayname= "Health & Safety"
+		icon = "tech-desktop"
+		form Add_Procedure
+		{
+			displayname = "Add Procedure"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Procedure_ID
+			(
+    			type = autonumber
+				displayname = "Procedure ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Procedure_Group
+			(
+				type = picklist
+				displayname = "Procedure Group"
+				values = {"Operational","Safety"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = richtext
+				height = 200px
+				toolbar = enable
+				[
+					style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+					font-size : {1, 2, 3, 4, 5, 6, 7},
+					font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+				]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			In_Method_Statements
+			(
+				type = list	
+				displayname = "In Method Statements"
+				values  = Add_Method_Statement.ID
+    			bidirectional = Safety_Procedures
+    			displayformat = [Method_Statement_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Method Statement"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Attachment
+			(
+    			type = upload file
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		form Add_Method_Statement
+		{
+			displayname = "Add Method Statement"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Method_Statement_ID
+			(
+    			type = autonumber
+				displayname = "Method Statement ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Project
+			(
+				type = list	
+				values  = qms.New_Project.ID
+    			displayformat = [Project_Name]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = textarea
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Supervisor
+			(
+				type = picklist	
+				values  = Add_Role_Assignment.ID
+    			displayformat = [Person]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Risk_Assessments
+			(
+				type = list	
+				displayname = "Risk Assessments"
+				values  = Add_Risk_Assessment.ID
+    			bidirectional = In_Method_Statements
+    			displayformat = [RA_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Risk Assessment"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Procedure
+			(
+				type = grid
+				Step
+				(
+					type = number
+					width = small
+				)
+				Procedure
+				(
+					type = picklist	
+					values  = Add_Procedure[Procedure_Group == "Operational"].ID
+    				displayformat = [Procedure_ID + " - " + Title]
+					allow new entries = true
+					[
+						displayname = "Add New Procedure"
+					]
+					sortorder = ascending
+					width = medium
+				)
+				People_Involved
+				(
+					type = list	
+					displayname = "People Involved"
+					values  = Add_Role_Assignment.ID
+    				displayformat = [Person]
+					sortorder = ascending
+					height = 60px
+					width = medium
+				)
+				Notes
+				(
+    				type = textarea
+					height = 100px
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+			Health_Safety
+			(
+				type = section
+				displayname = "Health & Safety"
+				visibility = true
+	 			row = 3
+	 			column = 0   
+				width = medium
+			)
+			Health_Safety_Representative
+			(
+				type = list	
+				displayname = "Health & Safety Representative"
+				values  = Add_Role_Assignment.ID
+    			displayformat = [Person]
+				sortorder = ascending
+				height = 60px
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			First_Aid_Representative
+			(
+				type = list	
+				displayname = "First Aid Representative"
+				values  = Add_Role_Assignment.ID
+    			displayformat = [Person]
+				sortorder = ascending
+				height = 60px
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			COSHH_Representative
+			(
+				type = picklist	
+				displayname = "COSHH Representative"
+				values  = Add_Role_Assignment.ID
+    			displayformat = [Person]
+				sortorder = ascending
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Safety_Procedures
+			(
+				type = list	
+				displayname = "Safety Procedures"
+				values  = Add_Procedure[Procedure_Group == "Safety"].ID
+    			bidirectional = In_Method_Statements
+    			displayformat = [Procedure_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Procedure"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Approved_PPE
+			(
+				type = list	
+				displayname = "Approved PPE"
+				values  = Add_Approved_PPE.ID
+    			bidirectional = In_Method_Statements
+    			displayformat = [PPE_ID + " - " + Title + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New PPE"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Attachments
+			(
+				type = grid
+				must have Title
+				(
+    				type = text
+					width = medium
+				)
+				must have Attachment
+				(
+    				type = upload file
+				browse = local_drive, zoho_docs
+					width = medium
+				)
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		form Add_Approved_PPE
+		{
+			displayname = "Add Approved PPE"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			PPE_ID
+			(
+    			type = autonumber
+				displayname = "PPE ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Image
+			(
+    			type = image
+				source  = file,camera
+				aspect ratio = original
+				camera = primary
+				show gallery = true
+				switch camera = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = textarea
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			ISO7010_Symbol
+			(
+    			type = image
+				displayname = "ISO7010 Symbol"
+				source  = file
+				aspect ratio = original
+				camera = primary
+				show gallery = true
+				switch camera = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Source
+			(
+    			type = url
+				enable  linkname
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			In_Method_Statements
+			(
+				type = list	
+				displayname = "In Method Statements"
+				values  = Add_Method_Statement.ID
+    			bidirectional = Approved_PPE
+    			displayformat = [Method_Statement_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Method Statement"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Method_Statements
+		{
+			displayName = "Method Statements"
+			show all rows from Add_Method_Statement    
+			(
+				Method_Statement_ID as "Method Statement ID"
+				Title
+				Project
+				(
+					view = Project_Database
+					delimiter = newline
+				)
+				Description
+				Safety_Procedures as "Safety Procedures"
+				(
+					view = Procedures
+					delimiter = newline
+				)
+				Health_Safety_Representative as "Health & Safety Representative"
+				(
+					view = Add_Role_Assignment_Report
+					delimiter = newline
+				)
+				First_Aid_Representative as "First Aid Representative"
+				(
+					view = Add_Role_Assignment_Report
+					delimiter = newline
+				)
+				Supervisor
+				(
+					view = Add_Role_Assignment_Report
+				)
+				Approved_PPE as "Approved PPE"
+				(
+					view = Approved_PPE
+					delimiter = newline
+				)
+				COSHH_Representative as "COSHH Representative"
+				(
+					view = Add_Role_Assignment_Report
+				)
+				Attachments
+				(
+					isLinkEnabled = true
+					field = Attachments.Title + "," + Attachments.Attachment
+				)
+				Procedure
+				(
+					isLinkEnabled = true
+					field = Procedure.Step + "," + Procedure.Procedure
+				)
+				Risk_Assessments as "Risk Assessments"
+				(
+					view = Risk_Assessments
+					delimiter = newline
+				)
+			)
+			sort by
+			(
+				Method_Statement_ID ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Method_Statement_ID as "Method Statement ID"
+							Title
+							Project
+							Description
+							Procedure.Step as "Procedure"
+							Safety_Procedures as "Safety Procedures"
+							Supervisor
+							Health_Safety_Representative as "Health & Safety Representative"
+							First_Aid_Representative as "First Aid Representative"
+							COSHH_Representative as "COSHH Representative"
+							Approved_PPE as "Approved PPE"
+							Attachments.Title as "Attachments"
+							Risk_Assessments as "Risk Assessments"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Method_Statement_ID as "Method Statement ID"
+							Title
+							Project
+							Description
+							Procedure.Step as "Procedure"
+							Safety_Procedures as "Safety Procedures"
+							Health_Safety_Representative as "Health & Safety Representative"
+							First_Aid_Representative as "First Aid Representative"
+							Supervisor
+							Approved_PPE as "Approved PPE"
+							COSHH_Representative as "COSHH Representative"
+							Attachments.Title as "Attachments"
+							Risk_Assessments as "Risk Assessments"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Procedures
+		{
+			displayName = "Procedures"
+			show all rows from Add_Procedure    
+			(
+				Procedure_ID as "Procedure ID"
+				Title
+				Procedure_Group as "Procedure Group"
+				Description
+				Attachment
+				In_Method_Statements as "In Method Statements"
+				(
+					view = Method_Statements
+					delimiter = newline
+				)
+			)
+			group by
+			(
+				Procedure_Group ascending
+			)
+			sort by
+			(
+				Procedure_ID ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Procedure_ID as "Procedure ID"
+							Title
+							Procedure_Group as "Procedure Group"
+							Description
+							Attachment
+							In_Method_Statements as "In Method Statements"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Procedure_ID as "Procedure ID"
+							Title
+							Procedure_Group as "Procedure Group"
+							Description
+							Attachment
+							In_Method_Statements as "In Method Statements"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Risk_Assessments
+		{
+			displayName = "Risk Assessments"
+			show all rows from Add_Risk_Assessment    
+			(
+				RA_ID as "RA ID"
+				Title
+				In_Method_Statements as "In Method Statements"
+				(
+					view = Method_Statements
+					delimiter = newline
+				)
+				Attachments
+				(
+					isLinkEnabled = true
+					field = Attachments.Title + "," + Attachments.Attachment
+				)
+			)
+			sort by
+			(
+				RA_ID ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							RA_ID as "RA ID"
+							Title
+							In_Method_Statements as "In Method Statements"
+							Attachments.Title as "Attachments"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							RA_ID as "RA ID"
+							Title
+							In_Method_Statements as "In Method Statements"
+							Attachments.Title as "Attachments"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Arc_Flash_Calculations1
+		{
+			displayName = "Arc Flash Calculations"
+			show all rows from Arc_Flash_Calculations    
+			(
+				Project
+				Level
+				Maximum_Cell_Voltage as "Maximum Cell Voltage"
+				Cell_Impedance as "Cell Impedance"
+				Arcing_Time as "Arcing Time"
+				Working_Distance as "Working Distance"
+				Incident_Energy as "Incident Energy [cal/cm2]"
+				P as "Number of Cells in Parallel"
+				Number_of_Cells_in_Series as "Number of Cells in Series"
+				Maximum_Voltage as "Maximum Voltage"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			conditional formatting
+			(
+				"Second Degree Burns"
+				{
+				condition = (Incident_Energy >= 1.2)
+				fields = [Incident_Energy]
+				format = "color:#ffffff;background-color:#efb116;"
+				}
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Project
+							Level
+							Maximum_Cell_Voltage as "Maximum Cell Voltage"
+							P as "Number of Cells in Parallel"
+							Number_of_Cells_in_Series as "Number of Cells in Series"
+							Cell_Impedance as "Cell Impedance"
+							Arcing_Time as "Arcing Time"
+							Working_Distance as "Working Distance"
+							Incident_Energy as "Incident Energy [cal/cm2]"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Project
+							Level
+							Maximum_Cell_Voltage as "Maximum Cell Voltage"
+							Cell_Impedance as "Cell Impedance"
+							Arcing_Time as "Arcing Time"
+							Working_Distance as "Working Distance"
+							Incident_Energy as "Incident Energy [cal/cm2]"
+							P as "Number of Cells in Parallel"
+							Number_of_Cells_in_Series as "Number of Cells in Series"
+							Maximum_Voltage as "Maximum Voltage"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Approved_PPE
+		{
+			displayName = "Approved PPE"
+			show all rows from Add_Approved_PPE    
+			(
+				PPE_ID as "PPE ID"
+				Title
+				Description
+				Source
+				Image
+				ISO7010_Symbol as "ISO7010 Symbol"
+				In_Method_Statements as "In Method Statements"
+				(
+					view = Method_Statements
+					delimiter = newline
+				)
+			)
+			sort by
+			(
+				PPE_ID ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							PPE_ID as "PPE ID"
+							Image
+							Title
+							Description
+							Source
+							ISO7010_Symbol as "ISO7010 Symbol"
+							In_Method_Statements as "In Method Statements"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							PPE_ID as "PPE ID"
+							Title
+							Description
+							Source
+							Image
+							ISO7010_Symbol as "ISO7010 Symbol"
+							In_Method_Statements as "In Method Statements"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Risk_Assessments
+	{
+		displayname= "Risk Assessments"
+		icon = "tech-desktop"
+		form Add_Risk_Assessment
+		{
+			displayname = "Add Risk Assessment"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			RA_ID
+			(
+    			type = autonumber
+				displayname = "RA ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			In_Method_Statements
+			(
+				type = list	
+				displayname = "In Method Statements"
+				values  = Add_Method_Statement.ID
+    			bidirectional = Risk_Assessments
+    			displayformat = [Method_Statement_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Method Statement"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Attachments
+			(
+				type = grid
+				Title
+				(
+    				type = text
+					width = medium
+				)
+				Attachment
+				(
+    				type = upload file
+				browse = local_drive
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	section Programmes_Projects
+	{
+		displayname= "Programmes & Projects"
+		icon = "tech-desktop"
+		form Add_Programme
+		{
+			displayname = "Add Programme"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Programme_ID
+			(
+    			type = text
+				displayname = "Programme ID"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Programme_Name
+			(
+    			type = text
+				displayname = "Programme Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		print template
+			{
+				Project_Charter
+				{
+						displayname = "Project Charter"
+						content = {"layout":"1","pageNumberOption":null,"orientation":"landscape","images":[{"fileName":"1562073705083_Battery_Show_EU_Logo_-_2019.small.jpg","imageId":"img_84437","imageType":"upload","fileId":"764554000000004007"}],"isFooterEnabled":false,"containerStyle":"","mainLayout":[{"elements":[{"type":"columns","element":{"split":"50,50","id":"u_elem_76993","elemStyle":"","collayouts":[{"colElements":[{"type":"columns","element":{"split":"4,96","id":"u_elem_76995","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_76995","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]},{"colElements":[{"type":"image","element":{"imageId":"img_84437","size":"M","src":"https://creator.zoho.eu/appbuilder/danson.joseph/erp/downLoadImage?imgFileId=764554000000004007&imgFileName=1562073705083_Battery_Show_EU_Logo_-_2019.small.jpg","captionMargin":"0px auto","alt":"","caption":"","id":"u_elem_76995","align":"left","elemStyle":"border: 0px solid rgb(169, 169, 169); margin-top: 5px; padding-left: 6px; width: 300px","formCompId":""}}]}]}}]},{"colElements":[{"type":"columns","element":{"split":"94,6","id":"u_elem_76996","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"Fields":[{"Label_Name":"Programme_Name"}],"id":"u_elem_76996","content":"<div style=\"\"><p style=\"text-align: right\"><b><font\n    size=\"7\"><span>${Programme_Name}<\/span><\/font><\/b><\/p><p\n      style=\"text-align: right\"><font size=\"3\"><b>PROJECT CHARTER<\/b><\/font><\/p><\/div>"}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_76996","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_76999","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_76998","fields":[],"content":"<div style=\"\"><br /><\/div>"}}]}]}},{"type":"columns","element":{"split":"82,18","id":"u_elem_76999","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_77001","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_77001","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_77001","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_77003","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}},{"type":"columns","element":{"split":"50,50","id":"u_elem_77003","elemStyle":"background-color: rgba(0, 0, 0, 0)","collayouts":[{"colElements":[{"type":"text","element":{}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_77004","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_77004","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_77004","fields":[],"content":"<div style=\"\"><br /><br /><\/div>"}}]}]}}],"id":1}],"resize":"a3","themeFont":"lato","templateStyle":"text-align: left; width: 1587.4px; margin: 0px auto; padding: 25px","isHeaderEnabled":false,"version":"2"}
+				}
+			}
+		}
+		form Add_Project_Charter
+		{
+			displayname = "Add Project Charter"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Programme
+			(
+				type = picklist	
+				values  = Add_Programme.ID
+    			displayformat = [Programme_ID + " - " + Programme_Name]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Project_Name
+			(
+    			type = text
+				displayname = "Project Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Project_Manager
+			(
+    			type = name
+				displayname = "Project Manager"
+     			prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			first_name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+     			) 
+     			suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Project_Sponsor
+			(
+    			type = name
+				displayname = "Project Sponsor"
+     			prefix1
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			first_name1
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name1
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+     			) 
+     			suffix1
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Expected_Start_Date
+			(
+    			type = date
+				displayname = "Expected Start Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Expected_Completion_Date
+			(
+    			type = date
+				displayname = "Expected Completion Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Attachment
+			(
+    			type = upload file
+				browse = local_drive
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Hour_Glass_Method
+			(
+				type = section
+				displayname = "Hour-Glass Method"
+				visibility = true
+	 			row = 2
+	 			column = 0   
+				width = medium
+			)
+			Business_Opportunity
+			(
+    			type = textarea
+				displayname = "Business Opportunity"
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What is the opportunity or problem to be solved?"
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Scope_field
+			(
+    			type = textarea
+				displayname = "Objective"
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "'A point in time when ... [problem is resolved]'"
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Critical_Success_Factors
+			(
+    			type = textarea
+				displayname = "Critical Success Factors"
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "List the items which, if not realised, would result in a failed project."
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Deliverables
+			(
+    			type = textarea
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Hard deliverables, software, know-how, documentation"
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Deliverable_Risks
+			(
+    			type = textarea
+				displayname = "Deliverable Risks"
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What risks are there to the delivery of the deliverables"
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Impact_Delivered
+			(
+    			type = textarea
+				displayname = "Impact Delivered "
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Impact is what is created by the project.  It is within our control and is what allows the customer to realise a Benefit."
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Benefits
+			(
+    			type = textarea
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Benefits are out of the control of the project but are potentially realised through the Impact being present.  For example, sale of vehicles is a benefit to a customer, but our project cannot direct that benefit."
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Benefit_Risks
+			(
+    			type = textarea
+				displayname = "Benefit Risks"
+				height = 50px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What risks (external normally) that risk us or our customer being able to release the benefit of this project?"
+    			]
+	 			row = 2
+	 			column = 1   
+				width = large
+			)
+			Financials
+			(
+				type = section
+				visibility = true
+	 			row = 3
+	 			column = 0   
+				width = medium
+			)
+			Income
+			(
+				type = GBP
+				format = commadotwestern
+				decimalplace = 0
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Direct_Material_Costs
+			(
+				displayname = "Direct Material Costs"
+				type = GBP
+				format = commadotwestern
+				decimalplace = 0
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Direct_Time_Costs
+			(
+				displayname = "Direct Time Costs"
+				type = GBP
+				format = commadotwestern
+				decimalplace = 0
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Direct_Time_Hours
+			(
+				type = number
+				displayname = "Direct Time Hours"
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			SGA
+			(
+				displayname = "Selling, General & Administration (SG&A)"
+				type = GBP
+				format = commadotwestern
+				decimalplace = 0
+    			description
+    			[
+    				type = help_text
+    			 	message = "Overheads"
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Depreciation_and_Amortisation
+			(
+				displayname = "Depreciation and Amortisation"
+				type = GBP
+				format = commadotwestern
+				decimalplace = 0
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			EBIT
+			(
+    			type = formula
+				value =  input.Income - input.Direct_Material_Costs - input.Direct_Time_Costs - input.SGA - input.Depreciation_and_Amortisation
+				visibility = true
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			EBIT_per_Person_Hour
+			(
+    			type = formula
+				displayname = "EBIT per Person-Hour"
+				value =  (input.Income - input.Direct_Material_Costs - input.Direct_Time_Costs - input.SGA - input.Depreciation_and_Amortisation) / input.Direct_Time_Hours
+				visibility = true
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			TBRAIN_Evaluation
+			(
+				type = section
+				displayname = "TBRAIN Evaluation"
+				visibility = true
+	 			row = 4
+	 			column = 0   
+				width = medium
+			)
+			Time
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What would the implication be if we just waited?"
+    			]
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+			Benefit
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What is the benefit of acting on this now?"
+    			]
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+			Risk
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What is the risk of not acting on this now?"
+    			]
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+			Alternatives
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Provide three alternative options to what you have proposed, the benefits and risks of each."
+    			]
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+			Instincts
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What is the instinctive feeling towards the project?"
+    			]
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+			Nothing
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What is the effect if we do nothing?"
+    			]
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+			blueprint components
+			{
+				stages = {"Stage1","Stage2","Stage3","New","Ready for Approval","Approved","Rejected"}
+			}
+		print template
+			{
+				Project_Charter
+				{
+						displayname = "Project Charter"
+						content = {"layout":"1","pageNumberOption":null,"orientation":"landscape","images":[{"fileName":"1562073705083_Battery_Show_EU_Logo_-_2019.small.jpg","imageId":"img_84437","imageType":"upload","fileId":"764554000000004007"}],"isFooterEnabled":false,"containerStyle":"","mainLayout":[{"elements":[{"type":"columns","element":{"split":"50,50","id":"u_elem_76993","elemStyle":"","collayouts":[{"colElements":[{"type":"columns","element":{"split":"4,96","id":"u_elem_76995","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_76995","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]},{"colElements":[{"type":"image","element":{"imageId":"img_84437","size":"M","src":"https://creator.zoho.eu/appbuilder/danson.joseph/erp/downLoadImage?imgFileId=764554000000004007&imgFileName=1562073705083_Battery_Show_EU_Logo_-_2019.small.jpg","captionMargin":"0px auto","alt":"","caption":"","id":"u_elem_76995","align":"left","elemStyle":"border: 0px solid rgb(169, 169, 169); margin-top: 5px; padding-left: 6px; width: 300px","formCompId":""}}]}]}}]},{"colElements":[{"type":"columns","element":{"split":"94,6","id":"u_elem_76996","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"Fields":[{"Label_Name":"Project_Name"}],"content":"<div style=\"\"><p style=\"text-align: right\"><b><font\n    size=\"7\"><span>${Project_Name}<\/span><\/font><\/b><\/p><p\n      style=\"text-align: right\"><font size=\"3\"><b>PROJECT CHARTER<\/b><\/font><\/p><\/div>"}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_76996","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_76999","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_76998","fields":[],"content":"<div style=\"\"><br /><\/div>"}}]}]}},{"type":"columns","element":{"split":"82,18","id":"u_elem_76999","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_77001","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_77001","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_77001","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_77003","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}},{"type":"columns","element":{"split":"50,50","id":"u_elem_77003","elemStyle":"background-color: rgba(0, 0, 0, 0)","collayouts":[{"colElements":[{"type":"text","element":{"Fields":[{"Label_Name":"Expected_Completion_Date"},{"Label_Name":"Expected_Start_Date"},{"Label_Name":"Project_Manager"},{"Label_Name":"Project_Sponsor"}],"content":"<div\n    style=\"background-color: rgb(124, 124, 124)\"><b>Overview<\/b><br /><table\n    cellspacing=\"0\"\n          style=\"margin: 0px auto; width: 100%; border: 1px solid rgb(51, 51, 51)\"><tbody><tr><td\n          width=\"50%\"\n          style=\"border-right-width: 1px; border-right-style: solid; border-right-color: rgb(51, 51, 51); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(51, 51, 51)\">Project Manager:<\/td><td\n          width=\"50%\"\n            style=\"border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(51, 51, 51)\"><span>${Project_Manager}<\/span><span\n          style=\"color: rgb(68, 68, 68); font-family: Lato, Arimo, sans-serif; font-size: 14px; font-weight: normal; font-style: normal; text-decoration: none\">&nbsp;<\/span><br /><\/td><\/tr><tr><td\n          style=\"border-right-width: 1px; border-right-style: solid; border-right-color: rgb(51, 51, 51); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(51, 51, 51)\">Project Sponsor:<\/td><td\n            style=\"border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(51, 51, 51)\"><span>${Project_Sponsor}<\/span><span\n          style=\"color: rgb(68, 68, 68); font-family: Lato, Arimo, sans-serif; font-size: 14px; font-weight: normal; font-style: normal; text-decoration: none\">&nbsp;<\/span><br /><\/td><\/tr><tr><td\n          style=\"border-right-width: 1px; border-right-style: solid; border-right-color: rgb(51, 51, 51); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(51, 51, 51)\">Expected Start Date:<\/td><td\n          style=\"border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(51, 51, 51)\"><span><span>${Expected_Start_Date}<\/span><span>&nbsp;<\/span><\/span><br /><\/td><\/tr><tr><td\n            style=\"border-right-width: 1px; border-right-style: solid; border-right-color: rgb(51, 51, 51)\">Expected Completion Date:<\/td><td><span>${Expected_Completion_Date}<\/span><span style=\"color: rgb(68, 68, 68); font-family: Lato, Arimo, sans-serif; font-size: 14px; font-weight: normal; font-style: normal; text-decoration: none\">&nbsp;<\/span><br /><\/td><\/tr><\/tbody><\/table><br /><\/div>"}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_77004","fields":[],"content":"<div style=\"\"><p><br /><\/p><\/div>"}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_77004","elemStyle":"","collayouts":[{"colElements":[{"type":"text","element":{"id":"u_elem_77004","fields":[],"content":"<div style=\"\"><br /><br /><\/div>"}}]}]}}],"id":1}],"resize":"a3","themeFont":"lato","templateStyle":"text-align: left; width: 1587.4px; margin: 0px auto; padding: 25px","isHeaderEnabled":false,"version":"2"}
+				}
+			}
+		}
+		default list Programme_Database
+		{
+			displayName = "Programme Database"
+			template = Project_Charter
+			show all rows from Add_Programme    
+			(
+				Programme_Name as "Programme Name"
+				Programme_ID as "Programme ID"
+			)
+			sort by
+			(
+				Programme_ID ascending
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Programme_Name as "Programme Name"
+							Programme_ID as "Programme ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Programme_Name as "Programme Name"
+							Programme_ID as "Programme ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Project_Charters
+		{
+			displayName = "Project Charters"
+			show all rows from Add_Project_Charter    
+			(
+				Project_Name as "Project Name"
+				Project_Manager  as "Project Manager"
+	 			(
+	      			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+	 			)
+				Project_Sponsor  as "Project Sponsor"
+	 			(
+	      			displayformat = [first_name1+""+prefix1+""+last_name1+""+suffix1]
+	 			)
+				Expected_Start_Date as "Expected Start Date"
+				Expected_Completion_Date as "Expected Completion Date"
+				Scope_field as "Objective"
+				Critical_Success_Factors as "Critical Success Factors"
+				Deliverables
+				Deliverable_Risks as "Deliverable Risks"
+				Impact_Delivered as "Impact Delivered "
+				Benefits
+				Benefit_Risks as "Benefit Risks"
+				Income
+				Direct_Material_Costs as "Direct Material Costs"
+				Direct_Time_Costs as "Direct Time Costs"
+				Direct_Time_Hours as "Direct Time Hours"
+				SGA as "Selling, General & Administration (SG&A)"
+				Depreciation_and_Amortisation as "Depreciation and Amortisation"
+				EBIT
+				EBIT_per_Person_Hour as "EBIT per Person-Hour"
+				Programme
+				Time
+				Benefit
+				Risk
+				Alternatives
+				Instincts
+				Nothing
+				Business_Opportunity as "Business Opportunity"
+				Attachment
+			)
+			quickview
+			(
+				layout
+				(
+		 			customlayouts
+	     			(
+		 				template
+		 				(
+		 	  				displayname="Custom Layout 1"
+		 	  				content="<panel  \n >\n	<pr \n			width='fill'\n		height='fill'\n>\n	<pc \n		padding = '17px'\n	bgColor = '#FFFFFF'\n\n		width = '100%'\n		hAlign = 'center'\n		vAlign = 'middle'\n>\n	<pr \n			width='auto'\n		height='auto'\n>\n	<pc \n	\n>\n	\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>"
+		    			)
+	     			)
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Programme
+							Project_Name as "Project Name"
+							Project_Manager as "Project Manager"
+							Project_Sponsor as "Project Sponsor"
+							Expected_Start_Date as "Expected Start Date"
+							Expected_Completion_Date as "Expected Completion Date"
+							Attachment
+							Business_Opportunity as "Business Opportunity"
+							Scope_field as "Objective"
+							Critical_Success_Factors as "Critical Success Factors"
+							Deliverables
+							Deliverable_Risks as "Deliverable Risks"
+							Impact_Delivered as "Impact Delivered "
+							Benefits
+							Benefit_Risks as "Benefit Risks"
+							Income
+							Direct_Material_Costs as "Direct Material Costs"
+							Direct_Time_Costs as "Direct Time Costs"
+							Direct_Time_Hours as "Direct Time Hours"
+							SGA as "Selling, General & Administration (SG&A)"
+							Depreciation_and_Amortisation as "Depreciation and Amortisation"
+							EBIT
+							EBIT_per_Person_Hour as "EBIT per Person-Hour"
+							Time
+							Benefit
+							Nothing
+							Risk
+							Alternatives
+							Instincts
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    		 			Add 
+    		 			Print 
+    		 			Import 
+    		 			Export 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Print   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								Print   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Project_Name as "Project Name"
+							Project_Manager as "Project Manager"
+							Project_Sponsor as "Project Sponsor"
+							Expected_Start_Date as "Expected Start Date"
+							Expected_Completion_Date as "Expected Completion Date"
+							Scope_field as "Objective"
+							Critical_Success_Factors as "Critical Success Factors"
+							Deliverables
+							Deliverable_Risks as "Deliverable Risks"
+							Impact_Delivered as "Impact Delivered "
+							Benefits
+							Benefit_Risks as "Benefit Risks"
+							Income
+							Direct_Material_Costs as "Direct Material Costs"
+							Direct_Time_Costs as "Direct Time Costs"
+							Direct_Time_Hours as "Direct Time Hours"
+							SGA as "Selling, General & Administration (SG&A)"
+							Depreciation_and_Amortisation as "Depreciation and Amortisation"
+							EBIT
+							EBIT_per_Person_Hour as "EBIT per Person-Hour"
+							Programme
+							Time
+							Benefit
+							Risk
+							Alternatives
+							Instincts
+							Nothing
+							Business_Opportunity as "Business Opportunity"
+							Attachment
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Print 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Manufacturing_Test
+	{
+		displayname= "Manufacturing & Test"
+		icon = "tech-desktop"
+		form Add_Work_Order
+		{
+			displayname = "Add Work Order"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			record owner = Requester
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Work_Order_ID
+			(
+    			type = autonumber
+				displayname = "Work Order ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Sales_Orders
+			(
+				type = list	
+				displayname = "Sales Orders"
+				values = {"Choice 1","Choice 2","Choice 3","SO-10043 - ATT","SO-10044 - Ricardo UK","SO-10034 - Scania CV AB","SO-10041 - Scania CV AB (GBP)","SO-10049 - Millbrook"}
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Description
+			(
+    			type = textarea
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Requester
+			(
+    			type = picklist
+				displayname = "Internal Customer"
+				module = users
+				displayformat = [username]
+    			description
+    			[
+    				type = help_text
+    			 	message = "Who is the internal customer of this work request?"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			must have Technical_Lead
+			(
+    			type = picklist
+				displayname = "Technical Lead"
+				module = users
+				displayformat = [username]
+    			description
+    			[
+    				type = help_text
+    			 	message = "Who is the person who can inform on any technical queries?"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			must have Method_Statement
+			(
+				type = list	
+				displayname = "Method Statement"
+				values  = Add_Method_Statement.ID
+    			displayformat = [Method_Statement_ID + " - " + Title]
+				allow new entries = true
+				[
+					displayname = "Add New Method Statement"
+				]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Status
+			(
+				type = picklist
+				values = {"New","Planned","In-Progress","On-Hold","Complete"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Schedule
+			(
+				type = grid
+				values  = Work_Order_Kanban.ID
+    			bidirectional = Job_Card
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default kanban Work_Order_Report
+		{
+			displayName = "Work Orders"
+			show all rows from Add_Work_Order  [!Status.contains("Complete")]  
+			(
+				Work_Order_ID as "Work Order ID"
+				(
+					width = 71px
+				)
+				Title
+				(
+					width = 235px
+				)
+				Description
+				(
+					width = 333px
+				)
+				Requester as "Internal Customer"
+				(
+					width = 179px
+				)
+				Technical_Lead as "Technical Lead"
+				(
+					width = 179px
+				)
+				Method_Statement as "Method Statement"
+				(
+					width = 259px
+					view = Method_Statements
+					delimiter = newline
+				)
+				Status
+				(
+					width = 95px
+				)
+				Schedule
+				(
+					view = Production_Demand_Report
+					field = Schedule.Title + "," + Schedule.Date_field + "," + Schedule.Quantity
+				)
+				Sales_Orders as "Sales Orders"
+			)
+			options
+			(
+	 			display field = Status
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = 2
+					datablock1
+					(
+			 			layout type = 4
+						fields
+						(
+							Work_Order_ID as "Work Order ID"
+							Description
+							Title
+							Requester as "Internal Customer"
+							Technical_Lead as "Technical Lead"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Work_Order_ID as "Work Order ID"
+							Title
+							Description
+							Requester as "Internal Customer"
+							Technical_Lead as "Technical Lead"
+							Method_Statement as "Method Statement"
+							Status
+							Schedule.Title as "Schedule"
+							Sales_Orders as "Sales Orders"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		calendar Production_Schedule
+		{
+			displayName = "Production Schedule"
+			show all rows from Work_Order_Kanban    
+			(
+				Title
+				Date_field as "Date"
+				Quantity
+				Job_Card as "Job Card"
+				(
+					view = Work_Order_Report
+				)
+				Calendar_Title as "Calendar Title"
+			)
+			options
+			(
+				display type = month
+				week start day = sunday
+				display field = Calendar_Title
+				start date = Date_field
+				default date 
+				(
+	    			day   = Today
+	    			month = Currentmonth
+	    			year  = Currentyear
+				)
+				icon = "ui-1-calendar-grid-58"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+						fields
+						(
+							Quantity
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Title
+							Date_field as "Date"
+							Quantity
+							Job_Card as "Job Card"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Production_Demand_Report
+		{
+			displayName = "Production Demand Report"
+			show all rows from Work_Order_Kanban    
+			(
+				Title
+				Date_field as "Date"
+				Quantity
+				Job_Card as "Job Card"
+				(
+					view = Work_Order_Report
+				)
+				Calendar_Title as "Calendar Title"
+				Part_Number as "Part Number"
+				Part_Number_Search as "Part Number Search"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Title
+							Date_field as "Date"
+							Quantity
+							Job_Card as "Job Card"
+							Calendar_Title as "Calendar Title"
+							Part_Number as "Part Number"
+							Part_Number_Search as "Part Number Search"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Title
+							Date_field as "Date"
+							Quantity
+							Job_Card as "Job Card"
+							Calendar_Title as "Calendar Title"
+							Part_Number as "Part Number"
+							Part_Number_Search as "Part Number Search"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Work_Order_Kanban
+		{
+			displayname = "Work Order Kanban"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Number_Search
+			(
+    			type = text
+				displayname = "Part Number Search"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Number
+			(
+				type = picklist
+				displayname = "Part Number"
+				values = {"Choice 1","Choice 2","Choice 3"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Date_field
+			(
+    			type = date
+				displayname = "Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Quantity
+			(
+				type = number
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Job_Card
+			(
+				type = picklist	
+				displayname = "Job Card"
+				values  = Add_Work_Order.ID
+    			bidirectional = Schedule
+    			displayformat = [Work_Order_ID + " - " + Title]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Calendar_Title
+			(
+    			type = text
+				displayname = "Calendar Title"
+				private = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Work_Centre_Report
+		{
+			displayName = "Work Centres"
+			show all rows from Add_Workcentre    
+			(
+				Work_Centre_ID as "Work Centre ID"
+				Work_Centre_Name as "Work Centre Name"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Work_Centre_ID as "Work Centre ID"
+							Work_Centre_Name as "Work Centre Name"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Work_Centre_ID as "Work Centre ID"
+							Work_Centre_Name as "Work Centre Name"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Add_eMail_Signature
+	{
+		displayname= "Add eMail Signature"
+		icon = "tech-desktop"
+		form Add_eMail_Signature
+		{
+			displayname = "Add eMail Signature"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Name
+			(
+    			type = name
+     			prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms.","Dr."}
+     			) 
+     			first_name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+     			) 
+     			suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			email
+			(
+    			type = text
+				displayname = "eMail"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Title
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Mobile
+			(
+    			type = phonenumber
+    			allowedcountries={gb,us}
+    			defaultcountry="gb"
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Multi_Line
+			(
+    			type = richtext
+				displayname = "Multi Line"
+				height = 200px
+				toolbar = enable
+				[
+					style, strike-through, indent, font-color, background-color, remove-formatting, alignment, link, table, ruler, bullets-and-numbering, script-text, code, html, quote, 
+					font-size : {1, 2, 3, 4, 5, 6, 7},
+					font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+				]
+	 			row = 1
+	 			column = 1   
+				width = large
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	section Add_Workcentre
+	{
+		displayname= "Add Workcentre"
+		form Add_Workcentre
+		{
+			displayname = "Add Workcentre"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Work_Centre_ID
+			(
+    			type = autonumber
+				displayname = "Work Centre ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Work_Centre_Name
+			(
+    			type = text
+				displayname = "Work Centre Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	section Workshop_Kanban
+	{
+		displayname= "Workshop Kanban"
+		form Workshop_Kanban
+		{
+			displayname = "Workshop Kanban"
+			success message = "Data Added Successfully!"
+			field alignment = left
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Workshop_Kanban_Report
+		{
+			displayName = "Workshop Kanban Report"
+			show all rows from Workshop_Kanban    
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section ISO
+	{
+		icon = "tech-desktop"
+		form Add_ISO_Audit
+		{
+			displayname = "Add ISO Audit"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Audit_Date
+			(
+    			type = date
+				displayname = "Audit Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Status
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Open","Open with Actions","Closed"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Auditor
+			(
+    			type = name
+     			prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			first_name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+     			) 
+     			suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Scope_field
+			(
+    			type = text
+				displayname = "Scope"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Business_Area_Procedure_to_be_Audited
+			(
+				type = picklist
+				displayname = "Business Area/Procedure to be Audited"
+				maxchar = 100
+				values = {"Manufacturing","Engineering","Test","HR","Finance","Facilities"}
+				sortorder = ascending
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			System_or_Document_Reference
+			(
+				type = picklist
+				displayname = "System or Document Reference"
+				maxchar = 100
+				values = {"MES","ERP"}
+				sortorder = ascending
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Attendees
+			(
+				type = grid
+				Name
+				(
+    				type = name
+     				prefix
+     				(
+	     				 type = prefix
+	     				 displayname ="Prefix"
+	     				 visibility = false
+	     				 value = {"Mr.","Mrs.","Ms."}
+     				) 
+     				first_name
+     				(
+	     				 type = first_name
+	     				 displayname ="First Name"
+     				) 
+     				last_name
+     				(
+	     				 type = last_name
+	     				 displayname ="Last Name"
+     				) 
+     				suffix
+     				(
+	     				 type = suffix
+	     				 displayname ="Suffix"
+	     				 visibility = false
+     				) 
+					width = medium
+					personal data = true
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+			Audit_Notes
+			(
+				type = grid
+				displayname = "Audit Notes"
+				Specific_Area
+				(
+    				type = text
+					displayname = "Specific Area"
+					width = medium
+				)
+				Non_Conformance
+				(
+    				type = richtext
+					displayname = "Non Conformance"
+					height = 200px
+					toolbar = enable
+					[
+						style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+						font-size : {1, 2, 3, 4, 5, 6, 7},
+						font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+					]
+					width = medium
+				)
+				Root_Cause
+				(
+    				type = richtext
+					displayname = "Root Cause"
+					height = 200px
+					toolbar = enable
+					[
+						style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+						font-size : {1, 2, 3, 4, 5, 6, 7},
+						font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+					]
+					width = medium
+				)
+				Corrective_Action
+				(
+    				type = richtext
+					displayname = "Corrective Action"
+					height = 200px
+					toolbar = enable
+					[
+						style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+						font-size : {1, 2, 3, 4, 5, 6, 7},
+						font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+					]
+					width = medium
+				)
+				Completion_Date
+				(
+    				type = date
+					displayname = "Completion Date"
+					alloweddays = 0,1,2,3,4,5,6
+					width = medium
+				)
+				Corrective_Action_Verified_as_Effective
+				(
+    				type = checkbox
+					displayname = "Corrective Action Verified as Effective"
+					initial value = false
+					width = medium
+				)
+				Verification_Date
+				(
+    				type = date
+					displayname = "Verification Date"
+					alloweddays = 0,1,2,3,4,5,6
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+			Observations
+			(
+				type = section
+				visibility = true
+	 			row = 3
+	 			column = 0   
+				width = medium
+			)
+			Observations_Opportunities_for_Improvement
+			(
+    			type = richtext
+				displayname = "Observations / Opportunities for Improvement"
+				height = 200px
+				toolbar = enable
+				[
+					style, font-color, background-color, alignment, link, table, bullets-and-numbering, 
+					font-size : {1, 2, 3, 4, 5, 6, 7},
+					font-family : {"Serif", "Arimo", "Ptmono", "Heuristica", "OpenSans", "Tinos", "Lato", "DejaVuSans", "ComicNeue", "EBGaramond", "RobotoCondensed", "ArchivoBlack", "Carlito"}
+				]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Observations_Date_to_be_Completed
+			(
+    			type = date
+				displayname = "Date to be Completed"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Signatures
+			(
+				type = section
+				visibility = true
+	 			row = 4
+	 			column = 0   
+				width = medium
+			)
+			Internal_Auditor_Signature
+			(
+    			type = signature
+				displayname = "Internal Auditor Signature"
+	 			row = 4
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Authorisation_Signature
+			(
+    			type = signature
+				displayname = "Authorisation Signature"
+	 			row = 4
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		print template
+			{
+				ISO_Audit_Report
+				{
+						displayname = "ISO Audit Report"
+						content = {"layout":"1","pageNumberOption":null,"orientation":"null","isFooterEnabled":false,"containerStyle":"","mainLayout":[{"elements":[{"type":"columns","element":{"split":"100","id":"u_elem_70766","elemStyle":"","collayouts":[{"colElements":[{"id":"u_elem_70763","type":"fields","element":{"valueStyle":"width: 50%","valueTextStyle":"","fieldLayoutType":"2","labelText":"Audit Date","wrapperStyle":"","labelStyle":"width: 50%","Label_Name":"Audit_Date","labelTextStyle":""}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_75645","elemStyle":"","collayouts":[{"colElements":[{"id":"u_elem_75645","type":"fields","element":{"valueStyle":"width: 50%","valueTextStyle":"","fieldLayoutType":"2","labelText":"Auditor","wrapperStyle":"","labelStyle":"width: 50%","Label_Name":"Auditor","labelTextStyle":"","compFields":["prefix","first_name","last_name","suffix"]}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_87981","elemStyle":"","collayouts":[{"colElements":[{"id":"u_elem_87981","type":"fields","element":{"valueStyle":"width: 50%","valueTextStyle":"width: 300px","fieldLayoutType":"2","labelText":"Internal Auditor Signature","wrapperStyle":"","labelStyle":"width: 50%","Label_Name":"Internal_Auditor_Signature","labelTextStyle":""}}]}]}},{"type":"columns","element":{"split":"100","id":"u_elem_89168","elemStyle":"","collayouts":[{"colElements":[{"id":"u_elem_89167","type":"fields","element":{"valueStyle":"width: 50%","valueTextStyle":"width: 300px","fieldLayoutType":"2","labelText":"Authorisation Signature","wrapperStyle":"","labelStyle":"width: 50%","Label_Name":"Authorisation_Signature","labelTextStyle":""}}]}]}},{"type":"columns","element":{"split":"50,50","id":"u_elem_94640","elemStyle":"","collayouts":[{"colElements":[{"id":"u_elem_73223","type":"lookupfields","element":{"valueStyle":"width: 50%","valueTextStyle":"","fieldLayoutType":"2","related_Form":"ZC_SUBFORM_374","labelText":"Audit Notes","wrapperStyle":"","labelStyle":"width: 50%","Label_Name":"Audit_Notes","refFields":[{"fieldLayoutType":"2","labelText":"ID","Label_Name":"ID"}],"labelTextStyle":""}}]},{"colElements":[{"type":"text","element":{"id":"u_elem_94639","fields":[],"content":"<div><table\n    style=\"margin: 0px auto; width: 100%; border: 1px solid rgb(51, 51, 51)\"\n          cellspacing=\"0\"><tbody><tr><td\n          style=\"border-right: 1px solid rgb(51, 51, 51); border-bottom: 1px solid rgb(51, 51, 51)\"\n          width=\"50%\"><br /><\/td><td\n          style=\"border-bottom: 1px solid rgb(51, 51, 51)\"\n          width=\"50%\"><br /><\/td><\/tr><tr><td\n          style=\"border-right: 1px solid rgb(51, 51, 51); border-bottom: 1px solid rgb(51, 51, 51)\"><br /><\/td><td\n          style=\"border-bottom: 1px solid rgb(51, 51, 51)\"><br /><\/td><\/tr><tr><td\n          style=\"border-right: 1px solid rgb(51, 51, 51); border-bottom: 1px solid rgb(51, 51, 51)\"><br /><\/td><td\n          style=\"border-bottom: 1px solid rgb(51, 51, 51)\"><br /><\/td><\/tr><tr><td style=\"border-right: 1px solid rgb(51, 51, 51)\"><br /><\/td><td><br /><\/td><\/tr><\/tbody><\/table><\/div>"}}]}]}}],"id":1}],"resize":"a4","themeFont":"lato","templateStyle":"text-align: left; width: 793.7px","isHeaderEnabled":false,"version":"2"}
+				}
+			}
+		}
+		default list ISO_Audit_Report
+		{
+			displayName = "ISO Audit Report"
+			show all rows from Add_ISO_Audit    
+			(
+				Audit_Date as "Audit Date"
+				Status
+				Business_Area_Procedure_to_be_Audited as "Business Area/Procedure to be Audited"
+				Auditor 
+	 			(
+	      			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+	 			)
+				System_or_Document_Reference as "System or Document Reference"
+				Observations_Opportunities_for_Improvement as "Observations / Opportunities for Improvement"
+				Observations_Date_to_be_Completed as "Date to be Completed"
+				Internal_Auditor_Signature as "Internal Auditor Signature"
+				Authorisation_Signature as "Authorisation Signature"
+				Audit_Notes.Specific_Area as "Audit Notes"
+				(
+					isLinkEnabled = true
+				)
+				Attendees.Name as "Attendees"
+				Scope_field as "Scope"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Audit_Date as "Audit Date"
+							Status
+							Business_Area_Procedure_to_be_Audited as "Business Area/Procedure to be Audited"
+							Auditor
+							System_or_Document_Reference as "System or Document Reference"
+							Observations_Opportunities_for_Improvement as "Observations / Opportunities for Improvement"
+							Observations_Date_to_be_Completed as "Date to be Completed"
+							Audit_Notes.Specific_Area as "Audit Notes"
+							Internal_Auditor_Signature as "Internal Auditor Signature"
+							Authorisation_Signature as "Authorisation Signature"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Audit_Date as "Audit Date"
+							Status
+							Business_Area_Procedure_to_be_Audited as "Business Area/Procedure to be Audited"
+							Auditor
+							System_or_Document_Reference as "System or Document Reference"
+							Observations_Opportunities_for_Improvement as "Observations / Opportunities for Improvement"
+							Observations_Date_to_be_Completed as "Date to be Completed"
+							Internal_Auditor_Signature as "Internal Auditor Signature"
+							Authorisation_Signature as "Authorisation Signature"
+							Audit_Notes.Specific_Area as "Audit Notes"
+							Attendees.Name as "Attendees"
+							Scope_field as "Scope"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section SIPOC_DMJ_Editing
+	{
+		displayname= "SIPOC - DMJ Editing"
+		icon = "tech-desktop"
+		form Add_Input
+		{
+			displayname = "Add Input"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			I_Get
+			(
+    			type = text
+				displayname = "I Get"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Role
+			(
+				type = picklist	
+				displayname = "From"
+				values  = Add_Job_Roles.ID
+    			displayformat = [Role_ID + " - " + Title]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Responsibilities_Report
+		{
+			displayName = "Responsibilities Report"
+   			hide = true
+			show all rows from Add_Input    
+			(
+				Role as "From"
+				I_Get as "I Get"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							I_Get as "I Get"
+							Role as "From"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Role as "From"
+							I_Get as "I Get"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Add_Output
+		{
+			displayname = "Add Output"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			To_Make
+			(
+    			type = text
+				displayname = "To Make"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			For_field
+			(
+				type = picklist	
+				displayname = "For"
+				values  = Add_Job_Roles.ID
+    			displayformat = [Role_ID + " - " + Title]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		form Add_SIPOC
+		{
+			displayname = "Add SIPOC"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Input_field
+			(
+				type = grid
+				displayname = "Input"
+				values  = Add_Input.ID
+    			description
+    			[
+    				type = help_text
+    			 	message = "I Get _____ From _____"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Section
+			(
+				type = section
+	 			row = 2
+	 			column = 0   
+				width = medium
+			)
+			To_Do
+			(
+    			type = text
+				displayname = "To Do"
+    			description
+    			[
+    				type = help_text
+    			 	message = "Short description of what process is done."
+    			]
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+			How
+			(
+				type = list	
+				values  = Add_Method_Statement.ID
+    			displayformat = [Method_Statement_ID + " - " + Title]
+				sortorder = ascending
+				height = 60px
+    			description
+    			[
+    				type = help_text
+    			 	message = "This is a flow method statement for how to perform this task."
+    			]
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+			Output
+			(
+				type = grid
+				values  = Add_Output.ID
+    			description
+    			[
+    				type = help_text
+    			 	message = "And make _____ For _____"
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_SIPOC_Report
+		{
+			displayName = "Add SIPOC Report"
+			show all rows from Add_SIPOC    
+			(
+				How
+				To_Do as "To Do"
+				Input_field.I_Get as "Input"
+				Output.To_Make as "Output"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Input_field.I_Get as "Input"
+							To_Do as "To Do"
+							How
+							Output.To_Make as "Output"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							How
+							To_Do as "To Do"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Add_Output
+	{
+		displayname= "Add Output"
+		icon = "tech-desktop"
+		default list Add_Output_Report
+		{
+			displayName = "Add Output Report"
+   			hide = true
+			show all rows from Add_Output    
+			(
+				To_Make as "To Make"
+				For_field as "For"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							To_Make as "To Make"
+							For_field as "For"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							To_Make as "To Make"
+							For_field as "For"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Arc_Flash_Calculations
+	{
+		displayname= "Arc Flash Calculations"
+		icon = "tech-desktop"
+		form Arc_Flash_Calculations
+		{
+			displayname = "Arc Flash Calculations"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Project
+			(
+				type = list	
+				values  = Add_Programme.ID
+    			displayformat = [Programme_ID + " - " + Programme_Name]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Level
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Cell","Module","Pack"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Maximum_Cell_Voltage
+			(
+				type = decimal
+				displayname = "Maximum Cell Voltage"
+    			description
+    			[
+    				type = help_text
+    			 	message = "in Volts [V]"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Cell_Impedance
+			(
+				type = decimal
+				displayname = "Cell Impedance"
+    			description
+    			[
+    				type = help_text
+    			 	message = "in milliOhms [mΩ]"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have P
+			(
+				type = number
+				displayname = "Number of Cells in Parallel"
+    			description
+    			[
+    				type = help_text
+    			 	message = "Taken from the S and P configuration of the module / pack"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Number_of_Cells_in_Series
+			(
+				type = number
+				displayname = "Number of Cells in Series"
+    			description
+    			[
+    				type = help_text
+    			 	message = "Taken from the S and P configuration of the module / pack"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Maximum_Voltage
+			(
+    			type = formula
+				displayname = "Maximum Voltage"
+				value =  input.Number_of_Cells_in_Series * input.Maximum_Cell_Voltage
+				visibility = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Arcing_Time
+			(
+				type = number
+				displayname = "Arcing Time"
+				initial value = 100
+    			description
+    			[
+    				type = help_text
+    			 	message = "in milliseconds [ms]"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Working_Distance
+			(
+				type = number
+				displayname = "Working Distance"
+				initial value = 500
+    			description
+    			[
+    				type = help_text
+    			 	message = "in millimetres [mm]"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Incident_Energy
+			(
+    			type = formula
+				displayname = "Incident Energy [cal/cm2]"
+				value =  0.01 * input.Maximum_Cell_Voltage * input.Number_of_Cells_in_Series * 0.5 * input.Maximum_Cell_Voltage * 1000 / (input.Cell_Impedance / input.P) * (input.Arcing_Time / 1000) / (input.Working_Distance / 10 * input.Working_Distance / 10)
+				visibility = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	section COS_Numbers
+	{
+		displayname= "COS Numbers"
+		icon = "tech-desktop"
+		form Register_COS_Number
+		{
+			displayname = "Register COS Number"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Type
+			(
+				type = radiobuttons
+				values = {"Off-the-Shelf or Catalogue Item","Project Designed Item","Fastener, Bolt","Fastener, Nut","Fastener, Washer","Fastener, Misc","Service (Provided or Bought)","Asset (Equipment, Tooling, etc)","Recipe (Bosch, Hesse, Trumph programs)","Non-Project Consumable (Coffee, stationary, janitorial supplies)","Project Consumable (Wire-bond wire, Kapton Tape)","Document or Report","Input or Calibration Data","Output, Test or Simulation Data","Product Program Code","Business Process"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Description
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Project
+			(
+				type = picklist	
+				values  = Add_Programme[Programme_ID is not null].ID
+    			displayformat = [Programme_ID + " - " + Programme_Name]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Number
+			(
+    			type = text
+				maxchar = 7
+    			description
+    			[
+    				type = tooltip
+    			 	message = "The Danecca COS Number"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			External_Number
+			(
+    			type = text
+				displayname = "External Number"
+    			description
+    			[
+    				type = tooltip
+    			 	message = "Supplier or Customer Number"
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list COS_Number_Report
+		{
+			displayName = "COS Number Report"
+			show all rows from Register_COS_Number    
+			(
+				Project
+				Description
+				Number
+				External_Number as "External Number"
+				Type
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Project
+							Number
+							External_Number as "External Number"
+							Description
+							Type
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Project
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Business_Processes
+	{
+		displayname= "Business Processes"
+		icon = "tech-desktop"
+				 page Process_Dashboard 
+	 	 { 
+ 	 	 displayname = "Process Dashboard"
+
+ 	 	 icon = "design-window-paragraph" 
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<report \n\telementName=\"Report\"\n\n\t\tappLinkName = 'thisapp'\n\t\tlinkName = 'Audits_in_the_Next_Month'\n\t\n\t\tiszreport = 'true'\n\theightType = 'auto'\n\theightValue = '700'\n\n\/>\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+		form Register_Process
+		{
+			displayname = "Register Process"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Project
+			(
+				type = picklist	
+				values  = Add_Programme.ID
+    			displayformat = [Programme_Name]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Process_Name
+			(
+    			type = text
+				displayname = "Process Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Type_field
+			(
+				type = radiobuttons
+				displayname = "Type"
+				maxchar = 100
+				values = {"Business Process","Policy"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Process_Number
+			(
+    			type = text
+				displayname = "Process Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Revision
+			(
+				type = picklist
+				maxchar = 100
+				values = {"A","B","C","D"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Release_Date
+			(
+    			type = date
+				displayname = "Release Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Audit_Date
+			(
+    			type = date
+				displayname = "Audit Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Process_Owner
+			(
+    			type = name
+				displayname = "Process Owner"
+     			prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			first_name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+     			) 
+     			suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			skore_PDF
+			(
+    			type = upload file
+				displayname = "skore PDF"
+				browse = local_drive
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Team
+			(
+				type = grid
+				values  = Team_Members.ID
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+			Hour_Glass_Method
+			(
+				type = section
+				displayname = "Hour-Glass Method"
+				visibility = true
+	 			row = 3
+	 			column = 0   
+				width = medium
+			)
+			Problem_Statement
+			(
+    			type = textarea
+				displayname = "Problem Statement"
+				height = 100px
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Objective
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What is the objective of this process?"
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Critical_Success_Factor
+			(
+    			type = textarea
+				displayname = "Critical Success Factor"
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "List the items that would prevent a failed project from the process not being in place."
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Deliverables
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Hard Deliverables, software, know-how, documentation."
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Deliverable_Risks
+			(
+    			type = textarea
+				displayname = "Deliverable Risks"
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What risks are there to the delivery of the deliverables?"
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Impact_Delivered
+			(
+    			type = textarea
+				displayname = "Impact Delivered"
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Impact is what is created by the process. is it within our control and allows us to see a benefit?"
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Benefits
+			(
+    			type = textarea
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "Benefits are out of the control of the process but are potentially realised through the Impact being present. For example, sale of vehicles is a benefit to a customer, but our process cannot direct that benefit."
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			Benefit_Risks
+			(
+    			type = textarea
+				displayname = "Benefit Risks"
+				height = 100px
+    			description
+    			[
+    				type = help_text
+    			 	message = "What risks (external normally) that risk us or our customer being able to release the benefit of this process?"
+    			]
+	 			row = 3
+	 			column = 1   
+				width = medium
+			)
+			KPI_s
+			(
+				type = section
+				displayname = "KPI's"
+				visibility = true
+	 			row = 4
+	 			column = 0   
+				width = medium
+			)
+			Define_the_KPI_s
+			(
+    			type = textarea
+				displayname = "Define the KPI's"
+				height = 100px
+	 			row = 4
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+			blueprint components
+			{
+				stages = {"Requested","Planning","Documentation","Implementation","Released","Obsoleted"}
+			}
+		}
+		default list Business_Processes1_Report
+		{
+			displayName = "Business Processes Report"
+			show all rows from Register_Process    
+			(
+				Project
+				Type_field as "Type"
+				Process_Number as "Process Number"
+				Process_Owner  as "Process Owner"
+	 			(
+	      			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+	 			)
+				Objective
+				Critical_Success_Factor as "Critical Success Factor"
+				Deliverable_Risks as "Deliverable Risks"
+				Deliverables
+				Impact_Delivered as "Impact Delivered"
+				Benefits
+				Benefit_Risks as "Benefit Risks"
+				Blueprint_Stage as "Blueprint Stage"
+				Process_Name as "Process Name"
+				Revision
+				Release_Date as "Release Date"
+				Problem_Statement as "Problem Statement"
+				Audit_Date as "Audit Date"
+				Define_the_KPI_s as "Define the KPI's"
+				skore_PDF as "skore PDF"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Project
+							Type_field as "Type"
+							Process_Number as "Process Number"
+							Process_Name as "Process Name"
+							Blueprint_Stage as "Blueprint Stage"
+							Process_Owner as "Process Owner"
+							Objective
+							Critical_Success_Factor as "Critical Success Factor"
+							Deliverable_Risks as "Deliverable Risks"
+							Revision
+							Release_Date as "Release Date"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Project
+							Type_field as "Type"
+							Process_Number as "Process Number"
+							Process_Owner as "Process Owner"
+							Objective
+							Critical_Success_Factor as "Critical Success Factor"
+							Deliverable_Risks as "Deliverable Risks"
+							Deliverables
+							Impact_Delivered as "Impact Delivered"
+							Benefits
+							Benefit_Risks as "Benefit Risks"
+							Process_Name as "Process Name"
+							Revision
+							Release_Date as "Release Date"
+							Problem_Statement as "Problem Statement"
+							Audit_Date as "Audit Date"
+							Define_the_KPI_s as "Define the KPI's"
+							skore_PDF as "skore PDF"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		timeline Audit_Calendar
+		{
+			displayName = "Audit Calendar"
+			show all rows from Register_Process    
+			(
+				Project
+				Process_Name as "Process Name"
+				Type_field as "Type"
+				Process_Number as "Process Number"
+				Revision
+				Release_Date as "Release Date"
+				Audit_Date as "Audit Date"
+				Process_Owner  as "Process Owner"
+	 			(
+	      			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+	 			)
+				Problem_Statement as "Problem Statement"
+				Objective
+				Critical_Success_Factor as "Critical Success Factor"
+				Deliverables
+				Deliverable_Risks as "Deliverable Risks"
+				Impact_Delivered as "Impact Delivered"
+				Benefits
+				Benefit_Risks as "Benefit Risks"
+			)
+			options
+			(
+				display type = week
+				week start day = sunday
+				display field = Audit_Date
+				start date = Audit_Date
+				default date 
+				(
+	    			day   = Today
+	    			month = Currentmonth
+	    			year  = Currentyear
+				)
+				icon = "arrows-4-restore"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+						fields
+						(
+							Project
+							Process_Name as "Process Name"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Project
+							Process_Name as "Process Name"
+							Type_field as "Type"
+							Process_Number as "Process Number"
+							Revision
+							Release_Date as "Release Date"
+							Audit_Date as "Audit Date"
+							Process_Owner as "Process Owner"
+							Problem_Statement as "Problem Statement"
+							Objective
+							Critical_Success_Factor as "Critical Success Factor"
+							Deliverables
+							Deliverable_Risks as "Deliverable Risks"
+							Impact_Delivered as "Impact Delivered"
+							Benefits
+							Benefit_Risks as "Benefit Risks"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		pivotchart Audits_in_the_Next_Month
+		{ 
+			displayname = "Audits in the Next Month"
+			legend = RIGHT
+			report properties
+			(
+				records displayed = all_records
+				allow export = false
+				allow drilldown and view underlying data = false
+		
+			)
+
+			based on Autoview_1669733848247_Register_Process
+							icon = "business-chart-bar-32"				show all rows from Register_Process
+				(
+			Project 
+			Process_Name  as "Process Name"
+			Type_field  as "Type"
+			Process_Number  as "Process Number"
+			Revision 
+			Release_Date  as "Release Date"
+			Audit_Date  as "Audit Date"
+			Process_Owner  as "Process Owner"
+ 			(
+ 				first_name as "Process Owner"
+ 				prefix as "Process Owner.Prefix"
+ 				last_name as "Process Owner.Last Name"
+ 				suffix as "Process Owner.Suffix"
+     			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+ 			)
+			skore_PDF  as "skore PDF"
+				)
+		}
+	}
+	section Team_Members
+	{
+		displayname= "Team Members"
+		icon = "tech-desktop"
+		form Team_Members
+		{
+			displayname = "Team Members"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Username
+			(
+    			type = picklist
+				module = users
+				displayformat = [username]
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Team_Members_Report
+		{
+			displayName = "Team Members Report"
+   			hide = true
+			show all rows from Team_Members    
+			(
+				Username
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Username
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Username
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section KPI_s
+	{
+		displayname= "KPI's"
+		icon = "tech-desktop"
+		form Key_Performance_Indicators
+		{
+			displayname = "Key Performance Indicators"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Associated_Hive
+			(
+				type = picklist
+				displayname = "Associated Hive"
+				maxchar = 100
+				values = {"Hive: Finance","Hive: Brand & Team Development","Hive: Manufacturing","Hive: Corporate","Hive: Commercial","Hive: Engineering","Hive: Operations","Hive: Process Engineering","Hive: Test","Hive: Quality","Hive: Sustainability"}
+    			description
+    			[
+    				type = help_text
+    			 	message = "Select the Hive that the KPI is relevant to."
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			KPI_Number
+			(
+    			type = text
+				displayname = "KPI Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Date_field
+			(
+    			type = date
+				displayname = "Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			KPI_Data_Analysis
+			(
+				type = grid
+				displayname = "KPI Data Analysis"
+				KPI_Objective
+				(
+    				type = textarea
+					displayname = "KPI Objective"
+					height = 100px
+					width = medium
+				)
+				Measure_Intent
+				(
+    				type = textarea
+					displayname = "Measure Intent"
+					height = 100px
+					width = medium
+				)
+				Data_to_be_Measured
+				(
+    				type = textarea
+					displayname = "Data to be Measured"
+					height = 100px
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list KPI_s_Report
+		{
+			displayName = "KPI's Report"
+   			hide = true
+			show all rows from Key_Performance_Indicators    
+			(
+				KPI_Number as "KPI Number"
+				Associated_Hive as "Associated Hive"
+				Date_field as "Date"
+				KPI_Data_Analysis.KPI_Objective as "KPI Data Analysis"
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							KPI_Number as "KPI Number"
+							Associated_Hive as "Associated Hive"
+							Date_field as "Date"
+							KPI_Data_Analysis.KPI_Objective as "KPI Data Analysis"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							KPI_Number as "KPI Number"
+							Associated_Hive as "Associated Hive"
+							Date_field as "Date"
+							KPI_Data_Analysis.KPI_Objective as "KPI Data Analysis"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+				 page Key_Performance_Indicators1 
+	 	 { 
+ 	 	 displayname = "Key Performance Indicators"
+
+ 	 	 icon = "design-window-paragraph" 
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"50%\"\n   \t>\n\t<form \n\telementName=\"Form\"\n\n\tappLinkName = 'thisapp'\n\tlinkName = 'Key_Performance_Indicators'\n\theightType = 'auto'\n\turlType = 'none'\n\tzc_Header = 'false'\n\/> \n<\/column><column\n   \t\t width=\"50%\"\n   \t>\n\t<chart \n\telementName=\"Chart\"\n\n\ttype = 'Column'\n\tbgColor = '#FFFFFF'\n\ttheme = 'theme2'\n\tlegendPos = 'center.top'\n\timportedTemplate = 'true'\n\/>\n\n<\/column><column\n   \t\t width=\"0%\"\n   \t>\n\t<chart \n\telementName=\"Chart 1\"\n\n\ttype = 'Line'\n\tbgColor = 'rgb(255, 255, 255)'\n\ttheme = 'theme1'\n\tlegendPos = 'center.top'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'Key_Performance_Indicators'\n\txfield = 'KPI_Number'\n\tyfields = 'value:Date_field'\n\/>\n\n<\/column>\n<\/row><row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<report \n\telementName=\"Report\"\n\n\t\tappLinkName = 'thisapp'\n\t\tlinkName = 'KPI_s_Report'\n\t\n\t\tiszreport = 'false'\n\theightType = 'auto'\n\theightValue = '700'\n\n\/>\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+	}
+		 functions
+		 {
+			 Deluge
+			 {
+				 map getOrgChartDirectReports(int roleID)
+         {
+         	result = Map();
+         	childList = List();
+         	for each  directReport in Add_Job_Roles[Reports_To.Role_ID = roleID]
+         	{
+         		child = Map();
+         		child.put("id",directReport.Role_ID);
+         		child.put("desc",directReport.Title);
+         		subReports = Add_Job_Roles[Reports_To.Role_ID = directReport.Role_ID];
+         		info subReports;
+         		if(subReports.count(Role_ID) > 0)
+         		{
+         			child.put("hasChild",true);
+         		}
+         		else
+         		{
+         			child.put("hasChild",false);
+         		}
+         		childList.add(child);
+         	}
+         	result.put("result",childList);
+         	return result;
+         }
+				 void getPartNumberFromID()
+         {
+         }
+				 map loadInventoryItemByID(string id)
+         {
+         	curl = "https://inventory.zoho.eu/api/v1/items/" + id;
+         	org_id = zoho.inventory.getOrganizations().get("organizations").get(0).toMap().get("organization_id");
+         	HTMLheaders = Map();
+         	HTMLheaders.put("organization_id",org_id);
+         	json_response = invokeurl
+         [
+         	url :curl
+         	type :GET
+         	parameters:HTMLheaders
+         	connection:"inventoryconnection"
+         ];
+         	result = json_response.toMap();
+         	//info(result);
+         	docs = result.get("item").get("documents");
+         	if(docs.isEmpty())
+         	{
+         		image = "";
+         	}
+         	else
+         	{
+         		img_id = docs.get(0).get("document_id");
+         		//	info img_id;
+         		curl = "https://inventory.zoho.eu/DocTemplates_ItemImage_Small_" + img_id + ".zbfs";
+         		image = invokeurl
+         [
+         	url :curl
+         	type :GET
+         	headers:HTMLheaders
+         	connection:"inventoryconnection"
+         ];
+         	}
+         	//	info (image);
+         	result.put("image",zoho.encryption.base64Encode(image));
+         	return result;
+         }
+				 map loadOrgCharts(int roleID)
+         {
+         	reports = Map();
+         	reports.put("id",roleID);
+         	headRole = Add_Job_Roles[Role_ID = roleID];
+         	reports.put("desc",headRole.Title);
+         	children = thisapp.getOrgChartDirectReports(roleID);
+         	reports.put("children",children.get("result"));
+         	info reports;
+         	return reports;
+         }
+				 map loadZohoBooksSalesOrders()
+         {
+         	ret = Map();
+         	curl = "https://books.zoho.eu/api/v3/salesorders";
+         	org_id = zoho.inventory.getOrganizations().get("organizations").get(0).toMap().get("organization_id");
+         	HTMLheaders = Map();
+         	HTMLheaders.put("organization_id",org_id);
+         	json_response = invokeurl
+         [
+         	url :curl
+         	type :GET
+         	headers:HTMLheaders
+         	connection:"booksconnection"
+         ];
+         	jsonMap = json_response.toMap();
+         	ret.put("code",jsonMap.get("code"));
+         	sales_orders = List();
+         	if(jsonMap.get("code") == 0)
+         	{
+         		for each  so in jsonMap.get("salesorders")
+         		{
+         			so_id = so.get("salesorder_id");
+         			so_number = so.get("salesorder_number");
+         			so_customer = so.get("customer_name");
+         			sales_orders.add({"id":so_id,"customer":so_customer,"number":so_number});
+         		}
+         		ret.put("salesorders",sales_orders);
+         	}
+         	info ret;
+         	return ret;
+         }
+				 map loadZohoInventoryItems(string search)
+         {
+         	ret = Map();
+         	curl = "https://inventory.zoho.eu/api/v1/items";
+         	org_id = zoho.inventory.getOrganizations().get("organizations").get(0).toMap().get("organization_id");
+         	HTMLheaders = Map();
+         	HTMLheaders.put("search_text",search);
+         	HTMLheaders.put("organization_id",org_id);
+         	HTMLheaders.put("filter_by","Status.Active");
+         	//HTMLheaders.put("page",1);
+         	//info HTMLheaders;
+         	json_response = invokeurl
+         	[
+         		url :curl
+         		type :GET
+         		parameters:HTMLheaders
+         		connection:"inventoryconnection"
+         	];
+         	jsonMap = json_response.toMap();
+         	//info jsonMap;
+         	ret.put("code",jsonMap.get("code"));
+         	items = List();
+         	if(jsonMap.get("code") == 0)
+         	{
+         		for each  item in jsonMap.get("items")
+         		{
+         			item_ID = item.get("item_id");
+         			item_sku = item.get("sku");
+         			item_name = item.get("name");
+         			item_cpn = item.get("part_number");
+         			items.add({"sku":item_sku,"name":item_name,"id":item_ID,"cpn":item_cpn});
+         		}
+         		ret.put("items",items);
+         	}
+         	//info ret;
+         	return ret;
+         }
+			 }
+		 }
+
+
+
+
+		workflow
+		{
+		form
+		{
+			Create_Calendar_Name as "Create Calendar Name"
+			{
+				type =  form
+				form = Work_Order_Kanban
+				record event = on add or edit
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Calendar_Title = input.Quantity + " x " + input.Title;
+						)
+					}
+				}
+
+			}
+			Load_Signature as "Load Signature"
+			{
+				type =  form
+				form = Add_eMail_Signature
+				record event = on add or edit
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Multi_Line = ("<table style=\"font:90% Arial;font-size:initial;color:#000000\"> <tbody> <tr> <td style=\"vertical-align:top;padding:0 8px 0 0\"> <a href=\"https://www.danecca.com\"><img src=\"https://www.danecca.com/signature_images/email.logo.named.png\" style=\"display:block\" alt=\"photo-logo\" width=\"135\"></a> <div style=\"text-align: center;\"> <span><a style=\"vertical-align:top\" href=\"https://www.linkedin.com/company/danecca\" target=\"_blank\"><img style=\"background-color: rgb(106, 120, 209); max-width: 135px; display: inline;\" src=\"https://www.danecca.com/signature_images/linkedin.png\" color=\"#6A78D1\" alt=\"linkedin\" width=\"24\"></a> <a style=\"vertical-align:top\" href=\"https://twitter.com/DaneccaLtd\" target=\"_blank\"><img style=\"background-color: rgb(106, 120, 209); max-width: 135px; display: inline;\" src=\"https://www.danecca.com/signature_images/twitter.png\" color=\"#6A78D1\" alt=\"twitter\" width=\"24\"></a></span> </div> </td> <td style=\"vertical-align:top;color:#041404;border-left:20px solid #FFFFFF;padding:0 0 0 8px\"> <div style=\"color:#041404;font-size:18px;font-weight:bold\">" + input.Name) + "</div> <div style=\"color:#041404;font-size:14px\">" + input.Title + "</div> <div style=\"color:#041404;font-size:14px\">Danecca Limited</div> <div style=\"font-size:10px;border-bottom:1px solid #000000;line-height:20px\">&nbsp;</div> <div style=\"font-size:10px;line-height:20px\">&nbsp;</div> <div style=\"white-space:nowrap !important\"> <img style=\"background-color: rgb(11, 51, 6); max-width: 13px; display: inline;\" src=\"https://www.danecca.com/signature_images/phone.png\" color=\"#0B3306\" alt=\"phone\" width=\"24\"> <a href=\"tel:" + input.Mobile.remove(" ") + "\" style=\"border-left:10px solid #FFFFFF;color:#000000;font-size:12px;text-decoration:none\">" + input.Mobile + "</a> | <a href=\"tel:+441327222840\" style=\"color:#000000;font-size:12px;text-decoration:none\">+441327222840</a> </div> <div style=\"font-size:10px;line-height:5px\">&nbsp;</div> <div style=\"white-space:nowrap !important\"> <img style=\"background-color: rgb(11, 51, 6); max-width: 13px; display: inline;\" src=\"https://www.danecca.com/signature_images/email.png\" color=\"#0B3306\" alt=\"phone\" width=\"24\"> <a href=\"mailto:" + input.email + "\" style=\"border-left:10px solid #FFFFFF;color:#000000;font-size:12px;text-decoration:none\">" + input.email + "</a> </div> <div style=\"font-size:10px;line-height:5px\">&nbsp;</div> <div style=\"white-space:nowrap !important\"> <img style=\"background-color: rgb(11, 51, 6); max-width: 13px; display: inline;\" src=\"https://www.danecca.com/signature_images/web.png\" color=\"#0B3306\" alt=\"phone\" width=\"24\"> <a href=\"https://www.danecca.com\" style=\"border-left:10px solid #FFFFFF;color:#000000;font-size:12px;text-decoration:none\">www.danecca.com</a> </div> <div style=\"font-size:10px;line-height:5px\">&nbsp;</div> <div style=\"white-space:nowrap !important\"> <img style=\"background-color: rgb(11, 51, 6); max-width: 13px; display: inline;\" src=\"https://www.danecca.com/signature_images/address.png\" color=\"#0B3306\" alt=\"phone\" width=\"24\"> <a href=\"https://goo.gl/maps/2kJJ8p9W2fTfzjCz9\" style=\"border-left:10px solid #FFFFFF;color:#000000;font-size:12px;text-decoration:none\">Unit 1142 Silverstone Park, Silverstone, NN12 8FU, United Kingdom</a> </div> <div style=\"font-size:10px;line-height:5px\">&nbsp;</div> <div style=\"white-space:nowrap !important\"> <img style=\"background-color: rgb(11, 51, 6); max-width: 13px; display: inline;\" src=\"https://www.danecca.com/signature_images/handshake.png\" color=\"#0B3306\" alt=\"terms\" width=\"24\"> <a href=\"https://www.danecca.com/TCs/Standard_Sale_Terms_and_Conditions.pdf\" style=\"border-right:5px solid #FFFFFF;border-left:10px solid #FFFFFF;color:#000000;font-size:12px;text-decoration:none\">Terms and Conditions of Sale</a> | <a href=\"https://www.danecca.com/TCs/Standard_Purchase_Terms_and_Conditions.pdf\" style=\"border-left:5px solid #FFFFFF;color:#000000;font-size:12px;text-decoration:none\">Terms and Conditions of Purchase</a> </div> </td> </tr> </tbody></table>";
+						)
+					}
+				}
+
+			}
+			Disable_Multiline as "Disable Multiline"
+			{
+				type =  form
+				form = Add_eMail_Signature
+				record event = on add or edit
+					status = inactive
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											disable Multi_Line;
+						)
+					}
+				}
+
+			}
+			Load_Inventory_Items as "Load Inventory Items"
+			{
+				type =  form
+				form = Work_Order_Kanban
+				record event = on add or edit
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											clear Part_Number;
+						)
+					}
+				}
+
+			}
+			Search_for_Inventory_Item1 as "Search for Inventory Items"
+			{
+				type =  form
+				form = Work_Order_Kanban
+				record event = on add or edit
+
+				on user input of Part_Number_Search
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											items = thisapp.loadZohoInventoryItems(input.Part_Number_Search);
+										options = Collection();
+										for each  item in items.get("items")
+										{
+											option = item.get("sku") + " - " + item.get("name");
+											options.insert(option);
+										}
+										clear Part_Number;
+										input.Part_Number:ui.append(options);
+						)
+					}
+				}
+
+			}
+			Load_Sales_Orders as "Load Sales Orders"
+			{
+				type =  form
+				form = Add_Work_Order
+				record event = on add or edit
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											sales_orders = thisapp.loadZohoBooksSalesOrders();
+										options = Collection();
+										for each  so in sales_orders.get("salesorders")
+										{
+											option = so.get("number") + " - " + so.get("customer");
+											// + " - " + so.get("id");
+											options.insert(option);
+										}
+										currentSalesOrder = input.Sales_Orders;
+										clear Sales_Orders;
+										input.Sales_Orders:ui.append(options);
+										input.Sales_Orders = currentSalesOrder;
+						)
+					}
+				}
+
+			}
+			eMail_Matt as "eMail Matt"
+			{
+				type =  form
+				form = Add_Work_Order
+				record event = on add or edit
+
+				on success
+				{
+					actions 
+					{
+						sendmail
+						(
+							from : "zoho.loginuserid"
+							to : "matt.furlong@danecca.com"
+							subject : "Record Added or Updated"
+							message : "<div>Hi Matt,<br></div><div><br></div><div>Work Order ${Work_Order_ID} has been updated or added.<br></div><div><br></div><div>Regards,<br></div><div>Danson<br></div>"
+							attachments : template : _default1 as inline
+						)
+					}
+				}
+
+			}
+			Disable_Number as "Disable Number"
+			{
+				type =  form
+				form = Register_COS_Number
+				record event = on add or edit
+
+				field rules
+				{
+					actions 
+					{
+						disable Number;
+					}
+				}
+
+			}
+			Generate_Number as "Generate Number"
+			{
+				type =  form
+				form = Register_COS_Number
+				record event = on add
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											prefix = "10";
+										if(input.Type.contains("Catalogue"))
+										{
+											prefix = "10";
+										}
+										else if(input.Type.contains("Bolt"))
+										{
+											prefix = "90";
+										}
+										else if(input.Type.contains("Nut"))
+										{
+											prefix = '92';
+										}
+										else if(input.Type.contains("Washer"))
+										{
+											prefix = "94";
+										}
+										else if(input.Type.contains("Misc"))
+										{
+											prefix = "96";
+										}
+										else if(input.Type.contains("Designed"))
+										{
+											prefix = input.Project.Programme_ID;
+										}
+										else if(input.Type.contains("Document"))
+										{
+											prefix = "D0";
+										}
+										else if(input.Type.contains("Input"))
+										{
+											prefix = "I0";
+										}
+										else if(input.Type.contains("Output"))
+										{
+											prefix = "O0";
+										}
+										else if(input.Type.contains("Code"))
+										{
+											prefix = "C0";
+										}
+										else if(input.Type.contains("Service"))
+										{
+											prefix = "S0";
+										}
+										else if(input.Type.contains("Asset"))
+										{
+											prefix = "A0";
+										}
+										else if(input.Type.contains("Recipe"))
+										{
+											prefix = "R0";
+										}
+										else if(input.Type.contains("Non-Project Consumable"))
+										{
+											prefix = "NC0";
+										}
+										else if(input.Type.contains("Project Consumable"))
+										{
+											prefix = "PC0";
+										}
+										//info prefix;
+										fetchNums = Register_COS_Number[Number.startsWith(prefix)].Number sort by Number desc;
+										//info fetchNums;
+										seq = 0;
+										padding = 6 - prefix.length();
+										if(fetchNums.isEmpty())
+										{
+											seq = 1;
+										}
+										else
+										{
+											seq = fetchNums.right(padding).toNumber() + 1;
+										}
+										seqStr = seq.toString().leftPad(padding).replaceAll(" ","0");
+										input.Number = prefix + seqStr;
+										alert input.Number + " has been created for " + input.Description;
+										//info input.Number + " has been created.";
+						)
+					}
+				}
+
+			}
+			Display_Part_Number_of_Su as "Display Part Number of Submission"
+			{
+				type =  form
+				form = Register_COS_Number
+				record event = on add
+
+				on success
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											success message input.Number + " added to the database for as " + input.Description;
+						)
+					}
+				}
+
+			}
+			Direct_to_Form_Properties as "Direct to - Form Properties"
+			{
+				type =  presuccess
+				form = Register_Process
+				on start
+				{
+					actions 
+					{
+						openURL("#Report:Business_Processes1_Report","new window");
+					}
+				}
+			}
+			Display_Process_Number_on as "Display Process Number on Submission"
+			{
+				type =  form
+				form = Register_Process
+				record event = on add
+
+				on success
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											success message input.Process_Number + " added to the database for as " + input.Process_Name;
+						)
+					}
+				}
+
+			}
+			Hide_Process_Number as "Hide Process Number"
+			{
+				type =  form
+				form = Register_Process
+				record event = on add or edit
+
+				field rules
+				{
+					actions 
+					{
+						hide Process_Number;
+					}
+				}
+
+			}
+			Generate_Process_Number as "Generate Process Number"
+			{
+				type =  form
+				form = Register_Process
+				record event = on add
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											if(input.Type_field.contains("Business Process"))
+										{
+											prefix = "BP";
+										}
+										else if(input.Type_field.contains("Policy"))
+										{
+											prefix = "POL";
+										}
+										//info prefix;
+										fetchNums = Register_Process[Process_Number.startsWith(prefix)].Process_Number sort by Process_Number desc;
+										//info fetchNums;
+										seq = 0;
+										padding = 6 - prefix.length();
+										if(fetchNums.isEmpty())
+										{
+											seq = 1;
+										}
+										else
+										{
+											seq = fetchNums.right(padding).toNumber() + 1;
+										}
+										seqStr = seq.toString().leftPad(padding).replaceAll(" ","0");
+										input.Process_Number = prefix + seqStr;
+										alert input.Process_Number + " has been created for ";
+										//info input.Number + " has been created.";
+						)
+					}
+				}
+
+			}
+		}
+
+
+
+
+		blueprint
+		{
+    			Status as "Status"
+    			{
+        			type = Blueprint
+        			form = Register_Process
+        			start
+        			{
+            			start stage = "Requested"
+            			chart data
+            			{
+                			from port : B
+                			to port   : T3
+                			position  : "0 0"
+                			path      : [27.849999999999994,36.84,27.849999999999994,46.84,27.621511077880854,46.84,27.621511077880854,46,27.393022155761717,46,27.393022155761717,56]
+            			}
+        			}
+        			stages
+        			{
+           			"Requested"
+           			{
+               			chart data
+               			{
+                   			position : "-27.223052470852995 56"
+               			}
+           			}
+           			"Planning"
+           			{
+               			chart data
+               			{
+                   			position : "-35.5 170.35"
+               			}
+           			}
+           			"Documentation"
+           			{
+               			chart data
+               			{
+                   			position : "4.5 258.35"
+               			}
+           			}
+           			"Implementation"
+           			{
+               			chart data
+               			{
+                   			position : "-26.5 355.35"
+               			}
+           			}
+           			"Released"
+           			{
+               			chart data
+               			{
+                   			position : "-49.5 482.35"
+               			}
+           			}
+           			"Obsoleted"
+           			{
+               			chart data
+               			{
+                   			position : "-63.5 633.35"
+               			}
+           			}
+        			}
+        			transitions
+        			{
+    				Accepted as "Accepted"
+    				{
+         				type = normal
+         				from stage = "Requested"
+         				to stage = "Planning"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B3
+             				to port   : T3
+             				path      : [27.393022155761717,107.60783847365789,27.393022155761717,117.60783847365789,27.393022155761717,138.97891923682894,12.956069057156704,138.97891923682894,12.956069057156704,160.35,12.956069057156704,170.35]
+        				}
+  				}
+    				Planned as "Planned"
+    				{
+         				type = normal
+         				from stage = "Planning"
+         				to stage = "Documentation"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B2
+             				to port   : T3
+             				path      : [-0.029287295228865418,221.9578384736579,-0.029287295228865418,231.9578384736579,-0.029287295228865418,240.15391923682895,74.57907206313814,240.15391923682895,74.57907206313814,248.35000000000002,74.57907206313814,258.35]
+        				}
+  				}
+    				Approve as "Approve"
+    				{
+         				type = normal
+         				from stage = "Documentation"
+         				to stage = "Implementation"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B3
+             				to port   : T3
+             				path      : [74.57907206313814,309.95783847365794,74.57907206313814,319.95783847365794,74.57907206313814,332.653919236829,44.02707011001314,332.653919236829,44.02707011001314,345.35,44.02707011001314,355.35]
+        				}
+  				}
+    				Release as "Release"
+    				{
+         				type = normal
+         				from stage = "Implementation"
+         				to stage = "Released"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B2
+             				to port   : T4
+             				path      : [23.68471340667542,406.95783847365794,23.68471340667542,416.95783847365794,23.68471340667542,444.653919236829,13.24342736266727,444.653919236829,13.24342736266727,472.35,13.24342736266727,482.35]
+        				}
+  				}
+    				Obsolete as "Obsolete"
+    				{
+         				type = normal
+         				from stage = "Released"
+         				to stage = "Obsoleted"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B3
+             				to port   : T3
+             				path      : [-0.06742947799954635,533.957838473658,-0.06742947799954635,543.957838473658,-0.06742947799954635,583.653919236829,-9.506928379366734,583.653919236829,-9.506928379366734,623.35,-9.506928379366734,633.35]
+        				}
+  				}
+    				Review_Documentation as "Review Documentation"
+    				{
+         				type = normal
+         				from stage = "Implementation"
+         				to stage = "Documentation"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : L1
+             				to port   : L1
+             				path      : [-26.5,381.153919236829,-36.5,381.153919236829,-36.5,284.153919236829,-21,284.153919236829,-5.5,284.153919236829,4.5,284.153919236829]
+        				}
+  				}
+    				Revise_Plan as "Revise Plan"
+    				{
+         				type = normal
+         				from stage = "Documentation"
+         				to stage = "Planning"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : R1
+             				to port   : R1
+             				path      : [144.65814412627628,284.153919236829,154.65814412627628,284.153919236829,154.65814412627628,196.15391923682893,113.03514112029484,196.15391923682893,71.41213811431341,196.15391923682893,61.41213811431341,196.15391923682893]
+        				}
+  				}
+    				Audit as "Audit"
+    				{
+         				type = normal
+         				from stage = "Released"
+         				to stage = "Planning"
+         				before
+         				{
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : L1
+             				to port   : L1
+             				path      : [-49.5,508.153919236829,-59.5,508.153919236829,-59.5,196.15391923682893,-52.5,196.15391923682893,-45.5,196.15391923682893,-35.5,196.15391923682893]
+        				}
+  				}
+        			}
+    			}
+    			Project_Charter_Approval as "Project Charter Approval"
+    			{
+        			type = Blueprint
+        			form = Add_Project_Charter
+        			start
+        			{
+            			start stage = "New"
+            			chart data
+            			{
+                			from port : B
+                			to port   : T3
+                			position  : "0 0"
+                			path      : [27.849999999999994,36.84,27.849999999999994,46.84,27.849999999999994,48.42,27.85,48.42,27.85,50,27.85,60]
+            			}
+        			}
+        			stages
+        			{
+           			"New"
+           			{
+               			chart data
+               			{
+                   			position : "-8.650069682767054 60"
+               			}
+           			}
+           			"Ready for Approval"
+           			{
+               			chart data
+               			{
+                   			position : "-55 187.65"
+               			}
+           			}
+           			"Approved"
+           			{
+               			chart data
+               			{
+                   			position : "-26 312.65"
+               			}
+           			}
+           			"Rejected"
+           			{
+               			chart data
+               			{
+                   			position : "-34 418.65"
+               			}
+           			}
+        			}
+        			transitions
+        			{
+    				Approve as "Approve"
+    				{
+         				type = normal
+         				from stage = "Ready for Approval"
+         				to stage = "Approved"
+         				before
+         				{
+            				confirmation before execution
+            				(
+                				message = "Are you sure you want to perform this transition?"
+                				confirm button text = "Yes"
+                				cancel button text = "No"
+            				)
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B3
+             				to port   : T3
+             				path      : [25.614064281155734,239.2578384736579,25.614064281155734,249.2578384736579,25.614064281155734,275.95391923682894,26.09606844680514,275.95391923682894,26.09606844680514,302.65,26.09606844680514,312.65]
+        				}
+  				}
+    				Recall_Approval as "Recall Approval"
+    				{
+         				type = normal
+         				from stage = "Approved"
+         				to stage = "Ready for Approval"
+         				before
+         				{
+            				confirmation before execution
+            				(
+                				message = "Are you sure you want to perform this transition?"
+                				confirm button text = "Yes"
+                				cancel button text = "No"
+            				)
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : R1
+             				to port   : R1
+             				path      : [78.19213689361028,338.45391923682894,88.19213689361028,338.45391923682894,116.22812856231147,338.45391923682894,116.22812856231147,275.95391923682894,116.22812856231147,213.45391923682894,106.22812856231147,213.45391923682894]
+        				}
+  				}
+    				Recall_for_Reconsideratio as "Recall for Reconsideration"
+    				{
+         				type = normal
+         				from stage = "Rejected"
+         				to stage = "New"
+         				before
+         				{
+            				confirmation before execution
+            				(
+                				message = "Are you sure you want to perform this transition?"
+                				confirm button text = "Yes"
+                				cancel button text = "No"
+            				)
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : R1
+             				to port   : R1
+             				path      : [63.570142875055595,444.45391923682894,73.5701428750556,444.45391923682894,76,444.45391923682894,76,444.45391923682894,116,444.45391923682894,116,85.80391923682895,74.35006968276706,85.80391923682895,64.35006968276706,85.80391923682895]
+        				}
+  				}
+    				Reject as "Reject"
+    				{
+         				type = normal
+         				from stage = "Ready for Approval"
+         				to stage = "Rejected"
+         				before
+         				{
+            				confirmation before execution
+            				(
+                				message = "Are you sure you want to perform this transition?"
+                				confirm button text = "Yes"
+                				cancel button text = "No"
+            				)
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B1
+             				to port   : L1
+             				path      : [-21.795311906281423,239.2578384736579,-21.795311906281423,249.2578384736579,-21.795311906281423,252,-44,252,-44,444.45391923682894,-44,444.45391923682894,-34,444.45391923682894]
+        				}
+  				}
+    				Revise as "Reject for Revision"
+    				{
+         				type = normal
+         				from stage = "Ready for Approval"
+         				to stage = "New"
+         				before
+         				{
+            				tooltip message="If Revision is required before approval, revise and resubmit for approval."
+            				confirmation before execution
+            				(
+                				message = "Are you sure you want to perform this transition?"
+                				confirm button text = "Yes"
+                				cancel button text = "No"
+            				)
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : L1
+             				to port   : L1
+             				path      : [-55,213.45391923682894,-65,213.45391923682894,-65,85.80391923682895,-41.82503484138353,85.80391923682895,-18.650069682767054,85.80391923682895,-8.650069682767054,85.80391923682895]
+        				}
+  				}
+    				Submit_for_Approval as "Submit for Approval"
+    				{
+         				type = normal
+         				from stage = "New"
+         				to stage = "Ready for Approval"
+         				before
+         				{
+            				confirmation before execution
+            				(
+                				message = "Are you sure you want to perform this transition?"
+                				confirm button text = "Yes"
+                				cancel button text = "No"
+            				)
+         				}
+         				after
+         				{
+         				}
+         				chart data
+         				{
+             				from port : B3
+             				to port   : T3
+             				path      : [27.85,111.60783847365789,27.85,121.60783847365789,27.85,149.62891923682895,25.614064281155734,149.62891923682895,25.614064281155734,177.65,25.614064281155734,187.65]
+        				}
+  				}
+        			}
+    			}
+		}
+
+	}
+	share_settings
+	{
+			"Read"
+			{
+				name = "Read"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have read permission for all components\n"
+			}
+			"Write"
+			{
+				name = "Write"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have write permission for all components\n"
+			}
+			"Developer"
+			{
+				name = "Developer"
+				type = Developer
+				permissions = {Chat:false, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Developer\n"
+			}
+			"Administrator"
+			{
+				name = "Administrator"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have all the permissions.\n"
+			}
+			roles
+			{
+				"CEO"
+				{
+					description = "User belonging to this role can access data of all other users."
+				}
+			}
+			role Hierarchy = {Add_Role_Assignment,Add_Work_Order}
+	}
+
+	customize
+	{
+		
+		layout = "tab"
+		color = "black"
+		base theme = "professional"
+		new theme = 1
+		icons = true
+		icons style = outline
+		font = "lato"
+		color options
+    	{
+        color = "1"
+    	}
+    	icon
+    	{
+        	type = "1"
+        	name = "zc-ab-sales-and-supp28"
+        	background color = "amethyst"
+        	foreground color = "#FFFFFF"
+    	}
+    	logo
+    	{
+        	preference = "none"
+        	placement = "left"
+    	}
+	}
+
+	connections
+	{
+		inventoryconnection
+		(
+			displayname = "inventoryconnection"
+			connector = zoho_oauth
+			permissions = {"ZohoInventory.bills.CREATE","ZohoInventory.bills.DELETE","ZohoInventory.bills.READ","ZohoInventory.bills.UPDATE","ZohoInventory.compositeitems.CREATE","ZohoInventory.compositeitems.DELETE","ZohoInventory.compositeitems.READ","ZohoInventory.compositeitems.UPDATE","ZohoInventory.contacts.CREATE","ZohoInventory.contacts.DELETE","ZohoInventory.contacts.READ","ZohoInventory.contacts.UPDATE","ZohoInventory.creditnotes.CREATE","ZohoInventory.creditnotes.DELETE","ZohoInventory.creditnotes.READ","ZohoInventory.creditnotes.UPDATE","ZohoInventory.customerpayments.CREATE","ZohoInventory.customerpayments.DELETE","ZohoInventory.customerpayments.READ","ZohoInventory.customerpayments.UPDATE","ZohoInventory.inventoryadjustments.CREATE","ZohoInventory.inventoryadjustments.DELETE","ZohoInventory.inventoryadjustments.READ","ZohoInventory.inventoryadjustments.UPDATE","ZohoInventory.invoices.CREATE","ZohoInventory.invoices.DELETE","ZohoInventory.invoices.READ","ZohoInventory.invoices.UPDATE","ZohoInventory.items.CREATE","ZohoInventory.items.DELETE","ZohoInventory.items.READ","ZohoInventory.items.UPDATE","ZohoInventory.packages.CREATE","ZohoInventory.packages.DELETE","ZohoInventory.packages.READ","ZohoInventory.packages.UPDATE","ZohoInventory.purchaseorders.CREATE","ZohoInventory.purchaseorders.DELETE","ZohoInventory.purchaseorders.READ","ZohoInventory.purchaseorders.UPDATE","ZohoInventory.purchasereceives.CREATE","ZohoInventory.purchasereceives.DELETE","ZohoInventory.purchasereceives.READ","ZohoInventory.salesorders.CREATE","ZohoInventory.salesorders.DELETE","ZohoInventory.salesorders.READ","ZohoInventory.salesorders.UPDATE","ZohoInventory.salesreturns.CREATE","ZohoInventory.salesreturns.DELETE","ZohoInventory.salesreturns.READ","ZohoInventory.salesreturns.UPDATE","ZohoInventory.settings.CREATE","ZohoInventory.settings.DELETE","ZohoInventory.settings.READ","ZohoInventory.settings.UPDATE","ZohoInventory.shipmentorders.CREATE","ZohoInventory.shipmentorders.DELETE","ZohoInventory.shipmentorders.READ","ZohoInventory.shipmentorders.UPDATE","ZohoInventory.transferorders.CREATE","ZohoInventory.transferorders.DELETE","ZohoInventory.warehouses.CREATE","ZohoInventory.warehouses.DELETE","ZohoInventory.warehouses.READ","ZohoInventory.warehouses.UPDATE"}
+		)
+		booksconnection
+		(
+			displayname = "booksconnection"
+			connector = zoho_oauth
+			permissions = {"ZohoBooks.accountants.Create","ZohoBooks.accountants.DELETE","ZohoBooks.accountants.READ","ZohoBooks.accountants.UPDATE","ZohoBooks.banking.Create","ZohoBooks.banking.DELETE","ZohoBooks.banking.READ","ZohoBooks.banking.UPDATE","ZohoBooks.bills.Create","ZohoBooks.bills.DELETE","ZohoBooks.bills.READ","ZohoBooks.bills.UPDATE","ZohoBooks.contacts.CREATE","ZohoBooks.contacts.DELETE","ZohoBooks.contacts.READ","ZohoBooks.contacts.UPDATE","ZohoBooks.creditnotes.CREATE","ZohoBooks.creditnotes.DELETE","ZohoBooks.creditnotes.READ","ZohoBooks.creditnotes.UPDATE","ZohoBooks.customerpayments.Create","ZohoBooks.customerpayments.DELETE","ZohoBooks.customerpayments.READ","ZohoBooks.customerpayments.UPDATE","ZohoBooks.debitnotes.Create","ZohoBooks.debitnotes.DELETE","ZohoBooks.debitnotes.READ","ZohoBooks.debitnotes.UPDATE","ZohoBooks.estimates.CREATE","ZohoBooks.estimates.DELETE","ZohoBooks.estimates.READ","ZohoBooks.estimates.UPDATE","ZohoBooks.expenses.Create","ZohoBooks.expenses.DELETE","ZohoBooks.expenses.READ","ZohoBooks.expenses.UPDATE","ZohoBooks.inventoryadjustments.CREATE","ZohoBooks.inventoryadjustments.DELETE","ZohoBooks.inventoryadjustments.READ","ZohoBooks.invoices.CREATE","ZohoBooks.invoices.DELETE","ZohoBooks.invoices.READ","ZohoBooks.invoices.UPDATE","ZohoBooks.projects.Create","ZohoBooks.projects.DELETE","ZohoBooks.projects.READ","ZohoBooks.projects.UPDATE","ZohoBooks.purchaseorders.Create","ZohoBooks.purchaseorders.DELETE","ZohoBooks.purchaseorders.READ","ZohoBooks.purchaseorders.UPDATE","ZohoBooks.salesorders.CREATE","ZohoBooks.salesorders.DELETE","ZohoBooks.salesorders.READ","ZohoBooks.salesorders.UPDATE","ZohoBooks.settings.CREATE","ZohoBooks.settings.DELETE","ZohoBooks.settings.READ","ZohoBooks.settings.UPDATE","ZohoBooks.vendorpayments.Create","ZohoBooks.vendorpayments.DELETE","ZohoBooks.vendorpayments.READ","ZohoBooks.vendorpayments.UPDATE"}
+		)
+	}
+
+	phone
+	{
+		customize
+		{
+        	layout = slidingpane
+		 	icons style = outline
+        	font = "default"
+            style = "3"
+        	color options
+        	{
+             	color = rose
+         	}
+         	logo
+         	{
+             	preference = "none"
+         	}
+		}
+	}
+	tablet
+	{
+		customize
+		{
+        	layout = slidingpane
+		 	icons style = outline
+        	font = "default"
+            style = "3"
+        	color options
+        	{
+             	color = rose
+         	}
+         	logo
+         	{
+             	preference = "none"
+         	}
+		}
+	}
+	
+	reports configuration
+	{
+	
+		Version = 2000026630587
+		Key     = "6CqddKqg9PdJhEa5B9Zvnd73pBFghggx2CQW3EUb2pWAB5hENy9AE3nFOY1pqOZZnzNuPNz8O9kdrx21FypOwABWQUQZGw3bTfq7"
+	}
+}
