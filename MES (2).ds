@@ -1,0 +1,6560 @@
+/*
+ * Author       : danson.joseph
+ * Generated on : 24-Mar-2023 12:20:39
+ * Version      : 1.0
+ */
+ application "MES"
+ {
+ 	date format = "dd-MMM-yyyy"
+ 	time zone = "Europe/London"
+ 	time format = "24-hr"
+ 	section MES
+	{
+				 page MES 
+	 	 { 
+ 	 	 displayname = "MES"
+
+ 	 	 icon = "" 
+
+ 	 	 hide =  true
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<panel elementName=\"Panel\"\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<button \n\t\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n    action = 'ExecuteFunction'\n\n\t\tfunctionName = 'updateStations_bulkfunctiontemplate_donotuse'  \n\tcolor = '#ffffff'\n\tsize = '16px'\n\ttext ='Update details'\n\t\ttype = 'flat'\n\t\tbgColor = '#0072f4'\n\t\tsuccessMsg = 'Done'\n\/>\n<\/pc>\n<\/pr>\n<\/pc>\n<\/pr>\n<\/panel>\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+	}
+	section Part_Tracking_Numbers
+	{
+		displayname= "Part Tracking Numbers"
+		form Add_Tracking_Number
+		{
+			displayname = "Add Tracking Number"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Date_field
+			(
+    			type = date
+				displayname = "Date"
+				initial value = "08-Mar-2021"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Type
+			(
+				type = radiobuttons
+				values = {"Serial Number","Batch Number"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			SKU_Search
+			(
+    			type = text
+				displayname = "SKU Search"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Inventory_Part
+			(
+				type = picklist
+				displayname = "Inventory Part"
+				values = {"Choice 1","Choice 2","Choice 3"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Tracking_Number
+			(
+    			type = text
+				displayname = "Tracking Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Country_of_Origin
+			(
+				type = picklist
+				displayname = "Country of Origin"
+				maxchar = 100
+				values = {"Germany","UK","USA","China","Singapore","Hong Kong","India","Ireland","Northern Ireland"}
+				sortorder = ascending
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Tracking_Number_Report
+		{
+			displayName = "Tracking Number Report"
+			show all rows from Add_Tracking_Number    
+			(
+				Date_field as "Date"
+				Tracking_Number as "Tracking Number"
+				Type
+				Inventory_Part as "Inventory Part"
+				SKU_Search as "SKU Search"
+				custom action "Print Label"
+				(
+	  			workflow = Print_Stores_Tracking_Lab
+				show action in edit record menu = true
+				column header = "Print Label"
+				)
+				Country_of_Origin as "Country of Origin"
+			)
+			sort by
+			(
+				Tracking_Number ascending
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Date_field as "Date"
+							Tracking_Number as "Tracking Number"
+							Type
+							Inventory_Part as "Inventory Part"
+				"Print Label"
+							SKU_Search as "SKU Search"
+							Country_of_Origin as "Country of Origin"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Date_field as "Date"
+							Tracking_Number as "Tracking Number"
+							Type
+							Inventory_Part as "Inventory Part"
+							SKU_Search as "SKU Search"
+							Country_of_Origin as "Country of Origin"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Heijunka
+	{
+		form Add_Kanban_Series
+		{
+			displayname = "Add Kanban Series"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Type
+			(
+				type = picklist
+				values = {"Production","Withdrawal","Supplier","Supplier One-Time","Quarantine PK","Asset"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Kanban_Series_Number
+			(
+    			type = text
+				displayname = "Kanban Series Number"
+				qrcode = true
+				camera = primary
+				preview duration = 0
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Search
+			(
+    			type = text
+				displayname = "Part Search"
+				initial value = "Enter SKU to Search"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Number
+			(
+				type = picklist
+				displayname = "Part Number"
+				values = {"Choice 1","Choice 2","Choice 3"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Name
+			(
+    			type = text
+				displayname = "Part Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Process
+			(
+				type = picklist	
+				values  = Add_Process.ID
+    			displayformat = [Process_ID + " - " + Process_Name]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Container_Capacity
+			(
+				type = number
+				displayname = "Container Capacity"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Container_Type
+			(
+				type = picklist
+				displayname = "Container Type"
+				values = {"800x600 Bin","600x400 Bin","400x300 Bin","Assembly Trolley","XL2","XL3","XL4","XL5","XL7","Pallet","Box"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Point_of_Supply
+			(
+				type = picklist	
+				displayname = "Point of Supply"
+				values  = Add_Location.ID
+    			displayformat = [Location_ID]
+				allow new entries = true
+				[
+					displayname = "Add New Location"
+				]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Point_of_Use
+			(
+				type = picklist	
+				displayname = "Point of Use"
+				values  = Add_Location.ID
+    			displayformat = [Location_ID]
+				allow new entries = true
+				[
+					displayname = "Add New Location"
+				]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Kanban_Printer
+			(
+				type = picklist
+				displayname = "Kanban Printer"
+				maxchar = 100
+				values = {"Olivetti","Kanban1"}
+				initial value = "Kanban1"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Kanban_Card_Label
+			(
+				type = picklist
+				displayname = "Kanban Card Label"
+				maxchar = 100
+				values = {"Default","Production","FinalProduct","Micro"}
+				sortorder = ascending
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Work_Instruction_Slides
+			(
+    			type = url
+				displayname = "Work Instruction Slides"
+				enable  linkname
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Printer
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Zebra1","Zebra2","Zebra3","Zebra4","Zebra5","Zebra6","Zebra7","Zebra8"}
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		form Add_Kanban
+		{
+			displayname = "Add Kanban"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Kanban_Series
+			(
+				type = picklist	
+				displayname = "Kanban Series"
+				values  = Add_Kanban_Series.ID
+    			displayformat = [Kanban_Series_Number + " - " + Part_Search]
+				allow new entries = true
+				[
+					displayname = "Add New Kanban Series"
+				]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Kanban_Number
+			(
+    			type = text
+				displayname = "Kanban Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Capacity_Override
+			(
+				type = number
+				displayname = "Capacity Override"
+    			description
+    			[
+    				type = help_text
+    			 	message = "If the individual Kanban is different from the Kanban Series Capacity, specify the value here.  This is normally for Supplier Kanbans where they supply in a variety of boxes."
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Status
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Active","Obsolete"}
+				initial value = "Active"
+    			description
+    			[
+    				type = help_text
+    			 	message = "Set to Obsolete once part is no longer needed."
+    			]
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Production_Outputs
+			(
+				type = grid
+				displayname = "Production Outputs"
+				values  = Add_Production_Record.ID
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		print template
+			{
+				Kanban
+				{
+						content = {"layout":"1","pageNumberOption":null,"orientation":"null","isFooterEnabled":false,"containerStyle":"","mainLayout":[{"elements":[{"type":"columns","element":{"split":"100","id":"u_elem_127151","elemStyle":"","collayouts":[{"colElements":[{"id":"u_elem_127149","type":"fields","element":{"valueStyle":"width: 50%","valueTextStyle":"","fieldLayoutType":"2","labelText":"Kanban Number","wrapperStyle":"","labelStyle":"width: 50%","Label_Name":"Kanban_Number","labelTextStyle":""}}]}]}}],"id":1}],"resize":"a4","themeFont":"ntent-wrapper builderContent builder_body_outer_wrapper recordSummarybuilder","templateStyle":"text-align: left; width: 793.7px","isHeaderEnabled":false,"version":"2"}
+				}
+			}
+		}
+		form Add_Process
+		{
+			displayname = "Add Process"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Process_ID
+			(
+    			type = autonumber
+				displayname = "Process ID"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Process_Name
+			(
+    			type = text
+				displayname = "Process Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Operations
+			(
+				type = grid
+				values  = Add_Operation.ID
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_Process_Report
+		{
+			displayName = "Add Process Report"
+   			hide = true
+			show all rows from Add_Process    
+			(
+				Process_ID as "Process ID"
+				Process_Name as "Process Name"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Process_ID as "Process ID"
+							Process_Name as "Process Name"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Process_ID as "Process ID"
+							Process_Name as "Process Name"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Add_Production_Record
+		{
+			displayname = "Add Production Record"
+			success message = ""
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Serialise
+			(
+    			type = checkbox
+				displayname = "Serialise?"
+				initial value = false
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Tracking_Number
+			(
+    			type = text
+				displayname = "Tracking Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Date_Time
+			(
+    			type = datetime
+				displayname = "Date-Time"
+				initial value = "${zoho.currenttime}"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Routes
+			(
+				type = grid
+				Route_Station
+				(
+    				type = text
+					displayname = "Route Station"
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_Production_Record_Report
+		{
+			displayName = "Add Production Record Report"
+   			hide = true
+			show all rows from Add_Production_Record    
+			(
+				Date_Time as "Date-Time"
+				Tracking_Number as "Tracking Number"
+				Serialise as "Serialise?"
+				Routes.Route_Station as "Routes"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Date_Time as "Date-Time"
+							Tracking_Number as "Tracking Number"
+							Serialise as "Serialise?"
+							Routes.Route_Station as "Routes"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Date_Time as "Date-Time"
+							Tracking_Number as "Tracking Number"
+							Serialise as "Serialise?"
+							Routes.Route_Station as "Routes"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Add_Data_Collection
+		{
+			displayname = "Add Data Collection"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Data_Collection_Parameters
+			(
+				type = picklist	
+				displayname = "Data Collection Parameters"
+				values  = Data_Collection_Parameters.ID
+    			displayformat = [Parameter + " - " + Unit]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Value
+			(
+    			type = text
+				displayname = "Text Value"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			QR_Code
+			(
+    			type = text
+				displayname = "QR Code"
+				qrcode = true
+				camera = primary
+				preview duration = 0
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Decimal_Value
+			(
+				type = decimal
+				displayname = "Decimal Value"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Image
+			(
+    			type = image
+				source  = file
+				aspect ratio = original
+				camera = primary
+				show gallery = true
+				switch camera = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Decision_Value
+			(
+    			type = checkbox
+				displayname = "Decision Value"
+				initial value = false
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_Data_Collection_Report
+		{
+			displayName = "Add Data Collection Report"
+   			hide = true
+			show all rows from Add_Data_Collection    
+			(
+				Data_Collection_Parameters as "Data Collection Parameters"
+				Value as "Text Value"
+				QR_Code as "QR Code"
+				Decimal_Value as "Decimal Value"
+				Image
+				Decision_Value as "Decision Value"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Data_Collection_Parameters as "Data Collection Parameters"
+							Value as "Text Value"
+							QR_Code as "QR Code"
+							Decimal_Value as "Decimal Value"
+							Image
+							Decision_Value as "Decision Value"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Data_Collection_Parameters as "Data Collection Parameters"
+							Value as "Text Value"
+							QR_Code as "QR Code"
+							Decimal_Value as "Decimal Value"
+							Image
+							Decision_Value as "Decision Value"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Data_Collection_Parameters
+		{
+			displayname = "Data Collection Parameters"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Parameter
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Unit
+			(
+				type = picklist
+				values = {"General","mm","m","g","N","Nm","V","A","mOhm","Image","QR Code","Check Box"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Data_Collection_Parameters_Report
+		{
+			displayName = "Data Collection Parameters Report"
+   			hide = true
+			show all rows from Data_Collection_Parameters    
+			(
+				Parameter
+				Unit
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Parameter
+							Unit
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Parameter
+							Unit
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Build_Order_Report
+		{
+			displayName = "Build Order Report"
+			show all rows from Build_Order    
+			(
+				Serial_Number as "Serial Number"
+				Actual_Build_Date as "Actual Build Date"
+				Part_Number as "Part Number"
+				Description
+				Notes
+				Nominal_Voltage as "Nominal Voltage [V]"
+				Nominal_Energy as "Nominal Energy [kWh]"
+				Nameplate_Printer as "Nameplate Printer"
+				Label
+				custom action "Print Nameplate Label"
+				(
+	  			workflow = printNameplate
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Nameplate Label"
+				condition = (Serial_Number is not null && Actual_Build_Date is not null)
+				)
+				custom action "Print Kanban QR Sticker"
+				(
+	  			workflow = printProductionQRSticker
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Kanban QR Sticker"
+				condition = (Serial_Number is not null && Actual_Build_Date is not null)
+				)
+				nameplatePrints
+				trackingPrints
+				Tracking_Printer as "Tracking Printer"
+				Danecca_Part_Number as "Danecca Part Number"
+				Station
+				custom action "Assign Serial Number"
+				(
+	  			workflow = AssignSerialNumber
+				show action in view header = true
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Assign Serial Number"
+				condition = (Order_Number is not null && Serial_Number is null)
+				)
+				Order_Number as "Order Number"
+				Shipment
+				Planned_Build_Date as "Planned Build Date"
+				custom action "Start Build"
+				(
+	  			workflow = AssignStartDate
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Start Build"
+				condition = (Actual_Build_Date is null && Serial_Number is not null)
+				)
+				Notes2 as "Notes"
+				Audited
+				Image_Of_Rework as "Image Of Rework"
+				Description_of_Rework as "Description of Rework"
+				custom action "Print Crate Label"
+				(
+	  			workflow = printCrateLabel
+				show action in edit record menu = true
+				column header = "Print Crate Label"
+				condition = (Serial_Number is not null && Actual_Build_Date is not null)
+				)
+				custom action "Print All Labels"
+				(
+	  			workflow = printLabels
+				show action in edit record menu = true
+				column header = "Print All Labels"
+				condition = (Serial_Number is not null && Actual_Build_Date is not null)
+				)
+				Kanban_Series as "Kanban Series"
+			)
+			filters
+			(
+				"Dan's Muckup"  :  Order_Number.contains("1170295") && Danecca_Part_Number.contains("X00159B") || Danecca_Part_Number.contains("X00160B") && Station.Station.contains("shipped")
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Order_Number as "Order Number"
+				"Assign Serial Number"
+				"Start Build"
+				"Print Nameplate Label"
+				"Print Kanban QR Sticker"
+				"Print Crate Label"
+				"Print All Labels"
+							Station
+							Serial_Number as "Serial Number"
+							Planned_Build_Date as "Planned Build Date"
+							Actual_Build_Date as "Actual Build Date"
+							Danecca_Part_Number as "Danecca Part Number"
+							Description
+							Part_Number as "Part Number"
+							Shipment
+							Nominal_Voltage as "Nominal Voltage [V]"
+							Nominal_Energy as "Nominal Energy [kWh]"
+							Notes
+							Label
+							Nameplate_Printer as "Nameplate Printer"
+							Tracking_Printer as "Tracking Printer"
+							nameplatePrints
+							trackingPrints
+							Image_Of_Rework as "Image Of Rework"
+							Description_of_Rework as "Description of Rework"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Actual_Build_Date as "Actual Build Date"
+							Part_Number as "Part Number"
+							Description
+							Notes
+							Nominal_Voltage as "Nominal Voltage [V]"
+							Nominal_Energy as "Nominal Energy [kWh]"
+							Nameplate_Printer as "Nameplate Printer"
+							Label
+							nameplatePrints
+							trackingPrints
+							Tracking_Printer as "Tracking Printer"
+							Danecca_Part_Number as "Danecca Part Number"
+				"Print Nameplate Label"
+				"Print Kanban QR Sticker"
+							Station
+							Order_Number as "Order Number"
+							Shipment
+							Planned_Build_Date as "Planned Build Date"
+							Notes2 as "Notes"
+							Audited
+							Image_Of_Rework as "Image Of Rework"
+							Description_of_Rework as "Description of Rework"
+				"Print Crate Label"
+				"Start Build"
+				"Assign Serial Number"
+							Kanban_Series as "Kanban Series"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		kanban Build_Order_Kanban
+		{
+			displayName = "Build Order Kanban"
+			show all rows from Build_Order    
+			(
+				Serial_Number as "Serial Number"
+				Actual_Build_Date as "Actual Build Date"
+				Part_Number as "Part Number"
+				Description
+				Notes
+				Nominal_Voltage as "Nominal Voltage [V]"
+				Nominal_Energy as "Nominal Energy [kWh]"
+				Nameplate_Printer as "Nameplate Printer"
+				Label
+				nameplatePrints
+				trackingPrints
+				Tracking_Printer as "Tracking Printer"
+				custom action "Print Nameplate Label"
+				(
+	  			workflow = printNameplate
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Nameplate Label"
+				)
+				Danecca_Part_Number as "Danecca Part Number"
+				custom action "Print Kanban QR Sticker"
+				(
+	  			workflow = printProductionQRSticker
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Kanban QR Sticker"
+				)
+				Station
+			)
+			options
+			(
+	 			display field = Station
+	 			emptycolumn = "- Empty -"
+				record count  = enable
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Description
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Actual_Build_Date as "Actual Build Date"
+							Part_Number as "Part Number"
+							Description
+							Notes
+							Nominal_Voltage as "Nominal Voltage [V]"
+							Nominal_Energy as "Nominal Energy [kWh]"
+							Nameplate_Printer as "Nameplate Printer"
+							Label
+							nameplatePrints
+							trackingPrints
+							Tracking_Printer as "Tracking Printer"
+							Danecca_Part_Number as "Danecca Part Number"
+				"Print Nameplate Label"
+				"Print Kanban QR Sticker"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		calendar Build_Order_Calendar
+		{
+			displayName = "Build Order Calendar"
+			show all rows from Build_Order    
+			(
+				Serial_Number as "Serial Number"
+				Actual_Build_Date as "Actual Build Date"
+				Part_Number as "Part Number"
+				Description
+				Notes
+				Nominal_Voltage as "Nominal Voltage [V]"
+				Nominal_Energy as "Nominal Energy [kWh]"
+				Nameplate_Printer as "Nameplate Printer"
+				Label
+				nameplatePrints
+				trackingPrints
+				Tracking_Printer as "Tracking Printer"
+				Danecca_Part_Number as "Danecca Part Number"
+				custom action "Print Nameplate Label"
+				(
+	  			workflow = printNameplate
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Nameplate Label"
+				)
+				custom action "Print Kanban QR Sticker"
+				(
+	  			workflow = printProductionQRSticker
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Kanban QR Sticker"
+				)
+			)
+			options
+			(
+				display type = month
+				week start day = sunday
+				display field = Serial_Number
+				start date = Actual_Build_Date
+				default date 
+				(
+	    			day   = Today
+	    			month = Currentmonth
+	    			year  = Currentyear
+				)
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Description
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Actual_Build_Date as "Actual Build Date"
+							Part_Number as "Part Number"
+							Description
+							Notes
+							Nominal_Voltage as "Nominal Voltage [V]"
+							Nominal_Energy as "Nominal Energy [kWh]"
+							Nameplate_Printer as "Nameplate Printer"
+							Label
+							nameplatePrints
+							trackingPrints
+							Tracking_Printer as "Tracking Printer"
+							Danecca_Part_Number as "Danecca Part Number"
+				"Print Nameplate Label"
+				"Print Kanban QR Sticker"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Add_Kanban_Report
+		{
+			displayName = "Kanban Report"
+			print template = Kanban
+			show all rows from Add_Kanban    
+			(
+				Kanban_Number as "Kanban Number"
+				Kanban_Series as "Kanban Series"
+				(
+					view = Kanban_Series_Report
+				)
+				Kanban_Series.Type
+				Kanban_Series.Part_Number as "Part Number"
+				Kanban_Series.Container_Capacity as "Series Container Capacity"
+				Kanban_Series.Part_Search as "Part Search"
+				custom action "Print Kanban Card"
+				(
+	  			workflow = Print_Kanban_Card
+				show action in edit record menu = true
+				column header = "Print Kanban Card"
+				)
+				Capacity_Override as "Capacity Override"
+				custom action "Print Kanban Sticker"
+				(
+	  			workflow = Print_Kanban_Sticker
+				show action in edit record menu = true
+				column header = "Print Kanban Sticker"
+				)
+				Status
+			)
+			filters
+			(
+				Kanban_Series
+			)
+			group by
+			(
+				Kanban_Series ascending
+			)
+			sort by
+			(
+				Kanban_Number ascending
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Kanban_Number as "Kanban Number"
+							Kanban_Series as "Kanban Series"
+							Kanban_Series.Type as "Type"
+							Kanban_Series.Part_Search as "Part Search"
+							Kanban_Series.Part_Number as "Part Number"
+							Capacity_Override as "Capacity Override"
+							Kanban_Series.Container_Capacity as "Series Container Capacity"
+				"Print Kanban Card"
+				"Print Kanban Sticker"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Kanban_Number as "Kanban Number"
+							Kanban_Series as "Kanban Series"
+							Kanban_Series.Type as "Type"
+							Kanban_Series.Part_Search as "Part Search"
+							Kanban_Series.Part_Number as "Part Number"
+							Kanban_Series.Container_Capacity as "Series Container Capacity"
+							Capacity_Override as "Capacity Override"
+							Status
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Kanban_Series_Report
+		{
+			displayName = "Kanban Series Report"
+			show all rows from Add_Kanban_Series    
+			(
+				Kanban_Series_Number as "Kanban Series Number"
+				Container_Capacity as "Container Capacity"
+				Part_Search as "Part Search"
+				Type
+				Part_Number as "Part Number"
+				Part_Name as "Part Name"
+				Process
+				Container_Type as "Container Type"
+				Point_of_Supply as "Point of Supply"
+				Point_of_Use as "Point of Use"
+				custom action "Generate Kanbans"
+				(
+	  			workflow = Generate_Kanbans
+				show action in edit record menu = true
+				column header = "Generate Kanbans"
+				)
+				Work_Instruction_Slides as "Work Instruction Slides"
+				Printer
+				custom action "Print All Kanbans"
+				(
+	  			workflow = printAllKanbans
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print All Kanbans"
+				)
+				Kanban_Card_Label as "Kanban Card Label"
+				Kanban_Printer as "Kanban Printer"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Kanban_Series_Number as "Kanban Series Number"
+							Container_Capacity as "Container Capacity"
+							Part_Search as "Part Search"
+							Type
+							Part_Name as "Part Name"
+							Process
+							Container_Type as "Container Type"
+				"Generate Kanbans"
+							Point_of_Use as "Point of Use"
+							Point_of_Supply as "Point of Supply"
+							Part_Number as "Part Number"
+							Printer
+							Work_Instruction_Slides as "Work Instruction Slides"
+				"Print All Kanbans"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Kanban_Series_Number as "Kanban Series Number"
+							Container_Capacity as "Container Capacity"
+							Part_Search as "Part Search"
+							Type
+							Part_Number as "Part Number"
+							Part_Name as "Part Name"
+							Process
+							Container_Type as "Container Type"
+							Point_of_Supply as "Point of Supply"
+							Point_of_Use as "Point of Use"
+							Work_Instruction_Slides as "Work Instruction Slides"
+							Printer
+							Kanban_Card_Label as "Kanban Card Label"
+							Kanban_Printer as "Kanban Printer"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Build_Order
+		{
+			displayname = "Build Order"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Order_Number
+			(
+    			type = text
+				displayname = "Order Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Planned_Build_Date
+			(
+    			type = date
+				displayname = "Planned Build Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Actual_Build_Date
+			(
+    			type = date
+				displayname = "Actual Build Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Danecca_Part_Number
+			(
+				type = picklist
+				displayname = "Danecca Part Number"
+				maxchar = 100
+				values = {"X00085A","200892B","200602B","X00080A","X00077A","X00078A","X00079A","X00081A","X00082A","X00083A","X00084A","X00151A","X00152A","200713-1","X00159A","X00160A","X00159B","X00160B","X00171A","X00172A","200602-1","X00079B","VAA014A","VAA015A","VAA0014A","VAA0015A","SAB050A","X00078B","X00182-1","X00122-1","X00228-1","X00229-1","X00230-1","X00231-1","X00232-1","X00233A","X00234-1","VAA010","VAA011","VAA013","VAA014","VAA015","200713-2","SAB047A","SAB048A","SAB038A","SAB037A"}
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Number
+			(
+    			type = text
+				displayname = "Part Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Nominal_Voltage
+			(
+				type = decimal
+				displayname = "Nominal Voltage [V]"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Nominal_Energy
+			(
+				type = decimal
+				displayname = "Nominal Energy [kWh]"
+				decimalplace = 3
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Kanban_Series
+			(
+				type = picklist	
+				displayname = "Kanban Series"
+				values  = Add_Kanban_Series.ID
+    			displayformat = [Kanban_Series_Number]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			unique Serial_Number
+			(
+    			type = text
+				displayname = "Serial Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Station
+			(
+				type = picklist	
+				values  = Stations.ID
+    			displayformat = [station_ID + " - " + Station]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Audited
+			(
+    			type = checkbox
+				initial value = false
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Notes
+			(
+    			type = textarea
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description_of_Rework
+			(
+    			type = textarea
+				displayname = "Description of Rework"
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Image_Of_Rework
+			(
+    			type = upload file
+				displayname = "Image Of Rework"
+				browse = local_drive
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Shipment
+			(
+				type = picklist	
+				values  = Add_Shipment.ID
+    			bidirectional = Serial_Numbers
+    			displayformat = [Shipment_Reference + " - " + Date_of_Shipment + " - " + Shipping_Method]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Label
+			(
+				type = picklist
+				maxchar = 100
+				values = {"ScaniaModule","VAPack"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Nameplate_Printer
+			(
+				type = picklist
+				displayname = "Nameplate Printer"
+				maxchar = 100
+				values = {"Zebra1"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Tracking_Printer
+			(
+				type = picklist
+				displayname = "Tracking Printer"
+				maxchar = 100
+				values = {"Zebra2","Zebra4","Zebra5"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			nameplatePrints
+			(
+				type = number
+				initial value = 6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			trackingPrints
+			(
+				type = number
+				initial value = 2
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Notes2
+			(
+    			type = textarea
+				displayname = "Notes"
+				height = 100px
+				private = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		pivottable Shipment_Status
+		{ 
+			displayname = "Shipment Status"
+						report properties
+			(
+				records displayed = all_records
+				allow export = false
+				allow drilldown and view underlying data = false
+		
+			)
+
+			based on Autoview_1632942656412_Build_Order
+				show all rows from Build_Order
+				(
+			Order_Number  as "Order Number"
+			Planned_Build_Date  as "Planned Build Date"
+			Actual_Build_Date  as "Actual Build Date"
+			Danecca_Part_Number  as "Danecca Part Number"
+			Part_Number  as "Part Number"
+			Description 
+			Nominal_Voltage  as "Nominal Voltage [V]"
+			Nominal_Energy  as "Nominal Energy [kWh]"
+			Serial_Number  as "Serial Number"
+			Station 
+			Notes 
+			Shipment 
+			Label 
+			Nameplate_Printer  as "Nameplate Printer"
+			Tracking_Printer  as "Tracking Printer"
+			nameplatePrints 
+			trackingPrints 
+			Audited 
+			Image_Of_Rework  as "Image Of Rework"
+			Kanban_Series  as "Kanban Series"
+				)
+		}
+		pivotchart Build_Volumes
+		{ 
+			displayname = "Build Volumes"
+			legend = RIGHT
+			report properties
+			(
+				records displayed = all_records
+				allow export = false
+				allow drilldown and view underlying data = false
+		
+			)
+
+			based on Autoview_1632942656412_Build_Order
+				show all rows from Build_Order
+				(
+			Order_Number  as "Order Number"
+			Planned_Build_Date  as "Planned Build Date"
+			Actual_Build_Date  as "Actual Build Date"
+			Danecca_Part_Number  as "Danecca Part Number"
+			Part_Number  as "Part Number"
+			Description 
+			Nominal_Voltage  as "Nominal Voltage [V]"
+			Nominal_Energy  as "Nominal Energy [kWh]"
+			Serial_Number  as "Serial Number"
+			Station 
+			Notes 
+			Shipment 
+			Label 
+			Nameplate_Printer  as "Nameplate Printer"
+			Tracking_Printer  as "Tracking Printer"
+			nameplatePrints 
+			trackingPrints 
+			Audited 
+			Image_Of_Rework  as "Image Of Rework"
+			Kanban_Series  as "Kanban Series"
+				)
+		}
+	}
+	section Add_Operation
+	{
+		displayname= "Add Operation"
+		form Add_Operation
+		{
+			displayname = "Add Operation"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Procedure
+			(
+				type = picklist	
+				values  = erp.Add_Procedure.ID
+    			displayformat = [Procedure_ID + " - " + Title]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Data_Collection
+			(
+				type = grid
+				displayname = "Data Collection"
+				values  = Add_Data_Collection.ID
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_Operation_Report
+		{
+			displayName = "Add Operation Report"
+			show all rows from Add_Operation    
+			(
+				Procedure
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Procedure
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Procedure
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Posts_and_Locations
+	{
+		displayname= "Posts and Locations"
+		form Add_Location
+		{
+			displayname = "Add Location"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Post
+			(
+				type = picklist	
+				values  = Add_Post1.ID
+    			displayformat = [Post_ID]
+				allow new entries = true
+				[
+					displayname = "Add New Post"
+				]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Row_field
+			(
+				type = picklist
+				displayname = "Row"
+				values = {"1","2","3","4","5","6","7","8","9"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have unique Location_ID
+			(
+    			type = text
+				displayname = "Location ID"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Location_Report
+		{
+			displayName = "Location Report"
+			show all rows from Add_Location    
+			(
+				Post
+				Location_ID as "Location ID"
+				Row_field as "Row"
+			)
+			group by
+			(
+				Post ascending
+			)
+			sort by
+			(
+				Post ascending
+				Row_field ascending
+				Location_ID ascending
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Post
+							Location_ID as "Location ID"
+							Row_field as "Row"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Post
+							Location_ID as "Location ID"
+							Row_field as "Row"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Add_Post1
+		{
+			displayname = "Add Post"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Area
+			(
+				type = picklist	
+				values  = Add_Area.ID
+    			displayformat = [Area_ID + " - " + Area_Name]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have unique Post_ID
+			(
+    			type = text
+				displayname = "Post ID"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Post_Report
+		{
+			displayName = "Post Report"
+			show all rows from Add_Post1    
+			(
+				Post_ID as "Post ID"
+				Area
+			)
+			sort by
+			(
+				Post_ID ascending
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Post_ID as "Post ID"
+							Area
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Post_ID as "Post ID"
+							Area
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Add_Area_Report
+		{
+			displayName = "Add Area Report"
+			show all rows from Add_Area    
+			(
+				Area_Name as "Area Name"
+				Area_ID as "Area ID"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Area_Name as "Area Name"
+							Area_ID as "Area ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Area_Name as "Area Name"
+							Area_ID as "Area ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		form Add_Area
+		{
+			displayname = "Add Area"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Area_Name
+			(
+    			type = text
+				displayname = "Area Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Area_ID
+			(
+    			type = text
+				displayname = "Area ID"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	section Add_Kanban_Part_Assignment
+	{
+		displayname= "Add Kanban Part Assignment"
+		form Add_Kanban_Part_Assignment
+		{
+			displayname = "Add Kanban Part Assignment"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			QR_Code
+			(
+    			type = text
+				displayname = "QR Code"
+				qrcode = true
+				show onload = true
+				camera = primary
+				preview duration = 0
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Kanban
+			(
+				type = picklist	
+				values  = Add_Kanban.ID
+    			displayformat = [Kanban_Number]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Date_Time
+			(
+    			type = datetime
+				displayname = "Date-Time"
+				initial value = "${zoho.currenttime}"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Tracking_Number
+			(
+				type = picklist	
+				displayname = "Tracking Number"
+				values  = Add_Tracking_Number.ID
+    			displayformat = [Tracking_Number + " - " + Inventory_Part]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			SubForm
+			(
+				type = grid
+				Single_Line
+				(
+    				type = text
+					displayname = "Single Line"
+					qrcode = true
+					show onload = true
+					camera = primary
+					preview duration = 0
+    				description
+    				[
+    					type = tooltip
+    				 	message = "Scan in Sub-component"
+    				]
+					width = medium
+				)
+				Quantity
+				(
+					type = number
+					width = medium
+				)
+	 			row = 2
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_Kanban_Part_Assignment_Report
+		{
+			displayName = "Add Kanban Part Assignment Report"
+   			hide = true
+			show all rows from Add_Kanban_Part_Assignment    
+			(
+				Kanban
+				QR_Code as "QR Code"
+				Date_Time as "Date-Time"
+				Tracking_Number as "Tracking Number"
+				SubForm.Single_Line as "SubForm"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Kanban
+							QR_Code as "QR Code"
+							Date_Time as "Date-Time"
+							Tracking_Number as "Tracking Number"
+							SubForm.Single_Line as "SubForm"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Kanban
+							QR_Code as "QR Code"
+							Date_Time as "Date-Time"
+							Tracking_Number as "Tracking Number"
+							SubForm.Single_Line as "SubForm"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Scania_Build_View
+	{
+		displayname= "Scania Build View"
+		pivotchart Scania_Shipment_Status
+		{ 
+			displayname = "Scania Shipment Status"
+			legend = RIGHT
+			report properties
+			(
+				records displayed = all_records
+				allow export = false
+				allow drilldown and view underlying data = false
+		
+			)
+
+			based on Autoview_1632942656412_Build_Order
+				show all rows from Build_Order
+				(
+			Order_Number  as "Order Number"
+			Planned_Build_Date  as "Planned Build Date"
+			Actual_Build_Date  as "Actual Build Date"
+			Danecca_Part_Number  as "Danecca Part Number"
+			Part_Number  as "Part Number"
+			Description 
+			Nominal_Voltage  as "Nominal Voltage [V]"
+			Nominal_Energy  as "Nominal Energy [kWh]"
+			Serial_Number  as "Serial Number"
+			Station 
+			Notes 
+			Shipment 
+			Label 
+			Nameplate_Printer  as "Nameplate Printer"
+			Tracking_Printer  as "Tracking Printer"
+			nameplatePrints 
+			trackingPrints 
+			Audited 
+			Image_Of_Rework  as "Image Of Rework"
+			Kanban_Series  as "Kanban Series"
+				)
+		}
+				 page Scania_Build_Summary 
+	 	 { 
+ 	 	 displayname = "Scania Build Summary"
+
+ 	 	 icon = "" 
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<chart \n\telementName=\"Chart\"\n\n\ttype = 'Column'\n\txtitle = 'Station'\n\tbgColor = 'rgb(255, 255, 255)'\n\ttheme = 'theme1'\n\tlegendPos = 'center.top'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'Build_Order'\n\txfield = 'Station.Station'\n\tyfields = 'count:Serial_Number'\n\/>\n\n<\/column>\n<\/row><row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<report \n\telementName=\"Report\"\n\n\t\tappLinkName = 'thisapp'\n\t\tlinkName = 'Scania_Build_Order_Calendar'\n\t\n\t\tiszreport = 'false'\n\theightType = 'auto'\n\theightValue = '700'\n\n\/>\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+		kanban Scania_Build_Order_Kanban
+		{
+			displayName = "Scania Build Order Kanban"
+			show all rows from Build_Order  [Danecca_Part_Number == "X00077A" || Danecca_Part_Number == "X00078A" || Danecca_Part_Number == "X00079A" || Danecca_Part_Number == "X00080A" || Danecca_Part_Number == "X00081A" || Danecca_Part_Number == "X00082A" || Danecca_Part_Number == "X00083A" || Danecca_Part_Number == "X00084A" || Danecca_Part_Number == "X00085A"]  
+			(
+				Serial_Number as "Serial Number"
+				Actual_Build_Date as "Actual Build Date"
+				Part_Number as "Part Number"
+				Description
+				Notes
+				Nominal_Voltage as "Nominal Voltage [V]"
+				Nominal_Energy as "Nominal Energy [kWh]"
+				Nameplate_Printer as "Nameplate Printer"
+				Label
+				nameplatePrints
+				trackingPrints
+				Tracking_Printer as "Tracking Printer"
+				custom action "Print Nameplate Label"
+				(
+	  			workflow = printNameplate
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Nameplate Label"
+				)
+				Danecca_Part_Number as "Danecca Part Number"
+				custom action "Print Kanban QR Sticker"
+				(
+	  			workflow = printProductionQRSticker
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Kanban QR Sticker"
+				)
+			)
+			options
+			(
+	 			display field = Danecca_Part_Number
+	 			othercolumn = "Deleted & Others"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Description
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Actual_Build_Date as "Actual Build Date"
+							Part_Number as "Part Number"
+							Description
+							Notes
+							Nominal_Voltage as "Nominal Voltage [V]"
+							Nominal_Energy as "Nominal Energy [kWh]"
+							Nameplate_Printer as "Nameplate Printer"
+							Label
+							nameplatePrints
+							trackingPrints
+							Tracking_Printer as "Tracking Printer"
+							Danecca_Part_Number as "Danecca Part Number"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		calendar Scania_Build_Order_Calendar
+		{
+			displayName = "Scania Build Order Calendar"
+			show all rows from Build_Order  [Danecca_Part_Number == "X00085A" || Danecca_Part_Number == "X00084A" || Danecca_Part_Number == "X00083A" || Danecca_Part_Number == "X00082A" || Danecca_Part_Number == "X00081A" || Danecca_Part_Number == "X00080A" || Danecca_Part_Number == "X00079A" || Danecca_Part_Number == "X00078A" || Danecca_Part_Number == "X00077A"]  
+			(
+				Serial_Number as "Serial Number"
+				Actual_Build_Date as "Actual Build Date"
+				Part_Number as "Part Number"
+				Description
+				Notes
+				Nominal_Voltage as "Nominal Voltage [V]"
+				Nominal_Energy as "Nominal Energy [kWh]"
+				Nameplate_Printer as "Nameplate Printer"
+				Label
+				nameplatePrints
+				trackingPrints
+				Tracking_Printer as "Tracking Printer"
+				Danecca_Part_Number as "Danecca Part Number"
+				custom action "Print Nameplate Label"
+				(
+	  			workflow = printNameplate
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Nameplate Label"
+				)
+				custom action "Print Kanban QR Sticker"
+				(
+	  			workflow = printProductionQRSticker
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Print Kanban QR Sticker"
+				)
+			)
+			options
+			(
+				display type = month
+				week start day = sunday
+				display field = Serial_Number
+				start date = Actual_Build_Date
+				default date 
+				(
+	    			day   = Today
+	    			month = Currentmonth
+	    			year  = Currentyear
+				)
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Description
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Serial_Number as "Serial Number"
+							Actual_Build_Date as "Actual Build Date"
+							Part_Number as "Part Number"
+							Description
+							Notes
+							Nominal_Voltage as "Nominal Voltage [V]"
+							Nominal_Energy as "Nominal Energy [kWh]"
+							Nameplate_Printer as "Nameplate Printer"
+							Label
+							nameplatePrints
+							trackingPrints
+							Tracking_Printer as "Tracking Printer"
+							Danecca_Part_Number as "Danecca Part Number"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+				 page Build_Order_Statistics 
+	 	 { 
+ 	 	 displayname = "Build Order Statistics"
+
+ 	 	 icon = "" 
+	 	 Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t\n<\/layout>\n<\/zml>" 
+ 	 	}
+	}
+	section Stations
+	{
+		form Stations
+		{
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			station_ID
+			(
+				type = number
+				displayname = "Station ID"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Station
+			(
+    			type = text
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Stations_Report
+		{
+			displayName = "Stations Report"
+			show all rows from Stations    
+			(
+				Station
+				station_ID as "Station ID"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Station
+							station_ID as "Station ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Station
+							station_ID as "Station ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Operators
+	{
+		form Add_Operator
+		{
+			displayname = "Add Operator"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			must have Name
+			(
+    			type = name
+     			prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			first_name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+     			) 
+     			suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Add_Operator_Report
+		{
+			displayName = "Add Operator Report"
+			show all rows from Add_Operator    
+			(
+				Name 
+	 			(
+	      			displayformat = [first_name+""+prefix+""+last_name+""+suffix]
+	 			)
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Name
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Name
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Shipping
+	{
+		form Add_Shipment
+		{
+			displayname = "Add Shipment"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Shipment_Reference
+			(
+    			type = autonumber
+				displayname = "Shipment Reference"
+				start index = 10071
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Date_of_Shipment
+			(
+    			type = date
+				displayname = "Date of Shipment"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Organiser
+			(
+    			type = picklist
+				module = users
+				displayformat = [username]
+	 			row = 1
+	 			column = 1   
+				width = medium
+				personal data = true
+			)
+			Serial_Numbers
+			(
+				type = list	
+				displayname = "Serial Numbers"
+				values  = Build_Order.ID
+    			bidirectional = Shipment
+    			displayformat = [Serial_Number]
+				sortorder = ascending
+				height = 60px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Package_Link
+			(
+    			type = url
+				displayname = "Package Link"
+				enable  linkname
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Number_of_Packages
+			(
+    			type = formula
+				displayname = "Number of Packages"
+				value =  input.Serial_Numbers.size()
+				visibility = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Shipping_Method
+			(
+				type = picklist
+				displayname = "Shipping Method"
+				maxchar = 100
+				values = {"TNT","FedEx","DPD","Ex Works"}
+				sortorder = ascending
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Commercial_Invoice
+			(
+    			type = upload file
+				displayname = "Commercial Invoice"
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Packing_List
+			(
+    			type = upload file
+				displayname = "Packing List"
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Courier_Forms
+			(
+    			type = upload file
+				displayname = "Courier Forms"
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			DGN
+			(
+    			type = upload file
+				displayname = "Dangerous Goods Note (DGN)"
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Packaging_Label
+			(
+    			type = upload file
+				displayname = "Packaging Label"
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			MSDS
+			(
+    			type = upload file
+				browse = local_drive, zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Shipped
+			(
+    			type = checkbox
+				displayname = "Shipped?"
+				initial value = false
+				private = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Invoice_Number
+			(
+    			type = text
+				displayname = "Invoice Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Invoiced
+			(
+    			type = checkbox
+				displayname = "Invoiced?"
+				initial value = false
+				private = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Shipment_Report
+		{
+			displayName = "Shipment Report"
+			show all rows from Add_Shipment    
+			(
+				Date_of_Shipment as "Date of Shipment"
+				Serial_Numbers as "Serial Numbers"
+				(
+					view = Build_Order_Report
+					delimiter = newline
+				)
+				Commercial_Invoice as "Commercial Invoice"
+				Courier_Forms as "Courier Forms"
+				Packaging_Label as "Packaging Label"
+				Organiser
+				Shipping_Method as "Shipping Method"
+				DGN as "Dangerous Goods Note (DGN)"
+				Shipment_Reference as "Shipment Reference"
+				Packing_List as "Packing List"
+				MSDS
+				custom action "Mark as Shipped"
+				(
+	  			workflow = MarkAsShipped
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Mark as Shipped"
+				)
+				Shipped as "Shipped?"
+				Invoiced as "Invoiced?"
+				Invoice_Number as "Invoice Number"
+				Number_of_Packages as "Number of Packages"
+				custom action "Mark as Invoiced"
+				(
+	  			workflow = MarkAsInvoiced
+				show action in edit record menu = true
+				execute action for collection of records
+				column header = "Mark as Invoiced"
+				condition = (Invoice_Number.startsWith("INV-"))
+				confirmation before execution
+				(
+					message for individual record = "Confirm that this shipment has been invoiced in  ${Invoice_Number} ?"
+					confirm button text = "Yes"		
+					cancel button text = "No"
+				)
+				)
+				Serial_Numbers.Part_Number as "Part Number"
+				Serial_Numbers.Danecca_Part_Number as "Danecca Part Number"
+				Package_Link as "Package Link"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Shipment_Reference as "Shipment Reference"
+							Organiser
+							Package_Link as "Package Link"
+							Date_of_Shipment as "Date of Shipment"
+							Serial_Numbers as "Serial Numbers"
+							Serial_Numbers.Part_Number as "Part Number"
+							Serial_Numbers.Danecca_Part_Number as "Danecca Part Number"
+							Number_of_Packages as "Number of Packages"
+							Shipped as "Shipped?"
+				"Mark as Shipped"
+							Invoice_Number as "Invoice Number"
+							Invoiced as "Invoiced?"
+				"Mark as Invoiced"
+							Commercial_Invoice as "Commercial Invoice"
+							Courier_Forms as "Courier Forms"
+							Packaging_Label as "Packaging Label"
+							Shipping_Method as "Shipping Method"
+							DGN as "Dangerous Goods Note (DGN)"
+							Packing_List as "Packing List"
+							MSDS
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Date_of_Shipment as "Date of Shipment"
+							Serial_Numbers as "Serial Numbers"
+							Commercial_Invoice as "Commercial Invoice"
+							Courier_Forms as "Courier Forms"
+							Packaging_Label as "Packaging Label"
+							Organiser
+							Shipping_Method as "Shipping Method"
+							DGN as "Dangerous Goods Note (DGN)"
+							Shipment_Reference as "Shipment Reference"
+							Packing_List as "Packing List"
+							MSDS
+							Shipped as "Shipped?"
+							Invoiced as "Invoiced?"
+							Invoice_Number as "Invoice Number"
+							Number_of_Packages as "Number of Packages"
+							Package_Link as "Package Link"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		pivotchart Invoicing_Helper
+		{ 
+			displayname = "Invoicing Helper"
+			legend = RIGHT
+			report properties
+			(
+				records displayed = all_records
+				allow export = false
+				allow drilldown and view underlying data = false
+		
+			)
+
+			based on Autoview_1632942656412_Build_Order
+				show all rows from Build_Order
+				(
+			Order_Number  as "Order Number"
+			Planned_Build_Date  as "Planned Build Date"
+			Actual_Build_Date  as "Actual Build Date"
+			Danecca_Part_Number  as "Danecca Part Number"
+			Part_Number  as "Part Number"
+			Description 
+			Nominal_Voltage  as "Nominal Voltage [V]"
+			Nominal_Energy  as "Nominal Energy [kWh]"
+			Serial_Number  as "Serial Number"
+			Station 
+			Notes 
+			Shipment 
+			Label 
+			Nameplate_Printer  as "Nameplate Printer"
+			Tracking_Printer  as "Tracking Printer"
+			nameplatePrints 
+			trackingPrints 
+			Audited 
+			Image_Of_Rework  as "Image Of Rework"
+			Kanban_Series  as "Kanban Series"
+				)
+		}
+	}
+	section Quality_Control
+	{
+		displayname= "Quality Control"
+		form Quality_Control
+		{
+			displayname = "Quality Control"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Employee
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Dom Wilk","Tom Hester","Nick Miller","James Hampshire","Mark Elsam","Jack Paice","Gavin Harris"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Date_Time
+			(
+    			type = datetime
+				displayname = "Date-Time"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Part_Number
+			(
+    			type = text
+				displayname = "Part Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Type
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Quarantine Part","Red Tag Part"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Serial_Number
+			(
+    			type = text
+				displayname = "Serial Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Batch_Number
+			(
+    			type = text
+				displayname = "Batch Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Quarantine_Number
+			(
+    			type = text
+				displayname = "Quarantine Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Description
+			(
+    			type = textarea
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Stations
+			(
+				type = picklist	
+				values  = Stations.ID
+    			displayformat = [Station]
+				searchable = true
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			File_Upload
+			(
+    			type = upload file
+				displayname = "Upload File"
+				browse = local_drive
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Quality_Control_Report
+		{
+			displayName = "Quality Control Report"
+			show all rows from Quality_Control    
+			(
+				Employee
+				Date_Time as "Date-Time"
+				Part_Number as "Part Number"
+				Type
+				Batch_Number as "Batch Number"
+				Quarantine_Number as "Quarantine Number"
+				Description
+				Stations
+				Serial_Number as "Serial Number"
+				File_Upload as "Upload File"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Employee
+							Date_Time as "Date-Time"
+							Part_Number as "Part Number"
+							Type
+							Batch_Number as "Batch Number"
+							Quarantine_Number as "Quarantine Number"
+							Description
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Employee
+							Date_Time as "Date-Time"
+							Part_Number as "Part Number"
+							Type
+							Batch_Number as "Batch Number"
+							Quarantine_Number as "Quarantine Number"
+							Description
+							Stations
+							Serial_Number as "Serial Number"
+							File_Upload as "Upload File"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Build_History
+	{
+		displayname= "Build History"
+		form Build_History
+		{
+			displayname = "Build History"
+			success message = "Data Added Successfully!"
+			field alignment = left
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Tracking_Number
+			(
+    			type = text
+				displayname = "Tracking Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Station
+			(
+				type = picklist	
+				values  = Stations.ID
+    			displayformat = [station_ID + " - " + Station]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Token
+			(
+    			type = autonumber
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Scan_In_Date_Time
+			(
+    			type = datetime
+				displayname = "Scan-In Date-Time"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Scan_Out_Date_Time
+			(
+    			type = datetime
+				displayname = "Scan-Out Date-Time"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Next_Operation_Scan_In_Time
+			(
+    			type = datetime
+				displayname = "Next Operation Scan-In Time"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Notes
+			(
+    			type = textarea
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Process_Time
+			(
+    			type = formula
+				displayname = "Process Time"
+				value =  ((input.Scan_Out_Date_Time - input.Scan_In_Date_Time)) / 1000
+				visibility = false
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Post_Process_Dwell_Time
+			(
+    			type = formula
+				displayname = "Post-Process Dwell Time"
+				value =  ((input.Next_Operation_Scan_In_Time - input.Scan_Out_Date_Time)) / 1000
+				visibility = false
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Build_History_Report
+		{
+			displayName = "Build History Report"
+			show all rows from Build_History    
+			(
+				Scan_In_Date_Time as "Scan-In Date-Time"
+				Station
+				Token
+				Scan_Out_Date_Time as "Scan-Out Date-Time"
+				Notes
+				Process_Time as "Process Time"
+				Next_Operation_Scan_In_Time as "Next Operation Scan-In Time"
+				Post_Process_Dwell_Time as "Post-Process Dwell Time"
+				Tracking_Number as "Tracking Number"
+				Added_User as "Added User"
+				ID
+				Added_Time as "Added Time"
+				Modified_User as "Modified User"
+				Modified_Time as "Modified Time"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Scan_In_Date_Time as "Scan-In Date-Time"
+							Station
+							Token
+							Scan_Out_Date_Time as "Scan-Out Date-Time"
+							Notes
+							Process_Time as "Process Time"
+							Next_Operation_Scan_In_Time as "Next Operation Scan-In Time"
+							Tracking_Number as "Tracking Number"
+							Post_Process_Dwell_Time as "Post-Process Dwell Time"
+							Added_User as "Added User"
+							ID
+							Added_Time as "Added Time"
+							Modified_User as "Modified User"
+							Modified_Time as "Modified Time"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Scan_In_Date_Time as "Scan-In Date-Time"
+							Station
+							Token
+							Scan_Out_Date_Time as "Scan-Out Date-Time"
+							Notes
+							Process_Time as "Process Time"
+							Next_Operation_Scan_In_Time as "Next Operation Scan-In Time"
+							Post_Process_Dwell_Time as "Post-Process Dwell Time"
+							Tracking_Number as "Tracking Number"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Green_Ticket
+	{
+		displayname= "Green Ticket"
+		form Green_Ticket
+		{
+			displayname = "Add Green Ticket"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Type_field
+			(
+				type = picklist
+				displayname = "Type"
+				maxchar = 100
+				values = {"Green Ticket"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Ticket_Number
+			(
+    			type = text
+				displayname = "Ticket Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Project
+			(
+				type = picklist
+				maxchar = 100
+				values = {"[JAB] JLR Project Gamma (IUK)","[JAA] JLR Mechanical PrototypeChoice 2","[VAA] VA1X","[PAA] Princeton Electric Speedboating"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Zone
+			(
+				type = picklist
+				maxchar = 100
+				values = {"Module Build","Pack Build","Test Room 1","Test Room 2"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Ticket_Owner
+			(
+    			type = text
+				displayname = "Ticket Owner"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Responsible_Person
+			(
+    			type = text
+				displayname = "Responsible Person"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Safety_Level
+			(
+				type = picklist
+				displayname = "Safety Level"
+				maxchar = 100
+				values = {"Low Voltage Work","High Voltage Work"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Work_Instruction
+			(
+    			type = upload file
+				displayname = "Work Instruction"
+				browse = zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Risk_Assessments
+			(
+    			type = upload file
+				displayname = "Risk Assessments"
+				browse = zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			SSoW
+			(
+    			type = upload file
+				browse = zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Method_Statement
+			(
+    			type = upload file
+				displayname = "Method Statement"
+				browse = zoho_docs
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Label
+			(
+    			type = text
+				private = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		default list Green_Ticket_Report
+		{
+			displayName = "Green Ticket Report"
+			show all rows from Green_Ticket    
+			(
+				Type_field as "Type"
+				Ticket_Number as "Ticket Number"
+				Zone
+				Safety_Level as "Safety Level"
+				custom action "Print Ticket"
+				(
+	  			workflow = PrintTicket
+				show action in edit record menu = true
+				column header = "Print Ticket"
+				condition = (Ticket_Number is not null)
+				)
+				Label
+				Work_Instruction as "Work Instruction"
+				Risk_Assessments as "Risk Assessments"
+				SSoW
+				Method_Statement as "Method Statement"
+				Project
+				Ticket_Owner as "Ticket Owner"
+				Responsible_Person as "Responsible Person"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+				"Print Ticket"
+							Type_field as "Type"
+							Ticket_Number as "Ticket Number"
+							Zone
+							Safety_Level as "Safety Level"
+							Responsible_Person as "Responsible Person"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Type_field as "Type"
+							Ticket_Number as "Ticket Number"
+							Zone
+							Safety_Level as "Safety Level"
+							Label
+							Work_Instruction as "Work Instruction"
+							Risk_Assessments as "Risk Assessments"
+							SSoW
+							Method_Statement as "Method Statement"
+							Project
+							Ticket_Owner as "Ticket Owner"
+							Responsible_Person as "Responsible Person"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		default list Add_Project_Report
+		{
+			displayName = "Add Project Report"
+			show all rows from Add_Project    
+			(
+				Project_Name as "Project Name"
+				Project_ID as "Project ID"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+						fields
+						(
+							Project_Name as "Project Name"
+							Project_ID as "Project ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+						fields
+						(
+							Project_Name as "Project Name"
+							Project_ID as "Project ID"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Add_Project
+	{
+		displayname= "Add Project"
+		form Add_Project
+		{
+			displayname = "Add Project"
+			success message = "Data Added Successfully!"
+			field alignment = left
+					hide = true
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Project_Name
+			(
+    			type = text
+				displayname = "Project Name"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Project_ID
+			(
+				type = number
+				displayname = "Project ID"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+		 functions
+		 {
+			 Deluge
+			 {
+				 string addTrackingNumber(date dateMade, string type, string sku, string inventory)
+         {
+         	trackingNumber = thisapp.generateTrackingNumber(type,dateMade);
+         	insert into Add_Tracking_Number
+         	[
+         		Added_User=zoho.loginuser
+         		Date_field=dateMade
+         		Inventory_Part=inventory
+         		SKU_Search=sku
+         		Tracking_Number=trackingNumber
+         		Type=type
+         	]
+         	return trackingNumber;
+         }
+				 void defaultFunction(string partNumber, string id)
+         {
+         	thisapp.printTrackingLabel(partNumber,id,2,"Zebra2");
+         }
+				 string generateKanbanNumber(string series)
+         {
+         	//info series;
+         	//for each r in Add_Kanban [ Kanban_Number.startsWith(series) ]
+         	//{
+         	//	info r;
+         	//} 
+         	test = Add_Kanban[Kanban_Number.startsWith(series)].Kanban_Number;
+         	//info test;
+         	fetchKBs = Add_Kanban[Kanban_Number.startsWith(series)].Kanban_Number sort by Kanban_Number desc;
+         	seq = 0;
+         	if(fetchKBs.isEmpty())
+         	{
+         		seq = 1;
+         	}
+         	else
+         	{
+         		length = fetchKBs.length();
+         		//info(length);
+         		//info(fetchKBs);
+         		seq = fetchKBs.right(length - 8).toNumber() + 1;
+         		//info (seq);
+         	}
+         	seqStr = seq.toString().leftPad(4).replaceAll(" ","0");
+         	return series + "-" + seqStr;
+         }
+				 string generateKanbanSeriesNumber(string type)
+         {
+         	temp = "KB-";
+         	if(type == "Production")
+         	{
+         		temp = "PK-";
+         	}
+         	else if(type == "Withdrawal")
+         	{
+         		temp = "WK-";
+         	}
+         	else if(type == "Supplier")
+         	{
+         		temp = "SK-";
+         	}
+         	else if(type == "Supplier One-Time")
+         	{
+         		temp = "OT-";
+         	}
+         	else if(type == "Quarantine PK")
+         	{
+         		temp = "QPK-";
+         	}
+         	else if(type == "Asset")
+         	{
+         		temp = "AK-";
+         	}
+         	fetchKBs = Add_Kanban_Series[Kanban_Series_Number.startsWith(temp)].Kanban_Series_Number sort by Kanban_Series_Number desc;
+         	seq = 0;
+         	if(fetchKBs.isEmpty())
+         	{
+         		seq = 1;
+         	}
+         	else
+         	{
+         		seq = fetchKBs.right(4).toNumber() + 1;
+         	}
+         	seqStr = seq.toString().leftPad(4).replaceAll(" ","0");
+         	return temp + seqStr;
+         }
+				 string generateQuarantineNumber(string Type, date dateMade)
+         {
+         	if(Type == "Quarantine Part")
+         	{
+         		temp = "Q" + year(dateMade).toString().right(2) + "-" + getDayOfYear(dateMade) + "-";
+         	}
+         	else if(Type == "Red Tag Part")
+         	{
+         		temp = "RT" + year(dateMade).toString().right(2) + "-" + getDayOfYear(dateMade) + "-";
+         	}
+         	fetchNums = Quality_Control[Quarantine_Number.startsWith(temp)].Quarantine_Number sort by Quarantine_Number desc;
+         	seq = 0;
+         	if(fetchNums.isEmpty())
+         	{
+         		seq = 1;
+         	}
+         	else
+         	{
+         		seq = fetchNums.right(4).toNumber() + 1;
+         	}
+         	seqStr = seq.toString().leftPad(4).replaceAll(" ","0");
+         	quarantineNumber = temp + seqStr;
+         	return quarantineNumber;
+         }
+				 string generateTicketNumber(string Type)
+         {
+         	temp = "KB-";
+         	if(Type == "Green Ticket")
+         	{
+         		temp = "GT-";
+         	}
+         	else if(Type == "Red Ticket")
+         	{
+         		temp = "RT-";
+         	}
+         	fetchTickets = Green_Ticket[Ticket_Number.startsWith(temp)].Ticket_Number sort by Ticket_Number desc;
+         	seq = 0;
+         	if(fetchTickets.isEmpty())
+         	{
+         		seq = 1;
+         	}
+         	else
+         	{
+         		seq = fetchTickets.right(4).toNumber() + 1;
+         	}
+         	seqStr = seq.toString().leftPad(4).replaceAll(" ","0");
+         	return temp + seqStr;
+         }
+				 string generateTrackingNumber(string type, date dateMade)
+         {
+         	if(type == "Batch Number")
+         	{
+         		temp = "B" + year(dateMade).toString().right(2) + "-" + getDayOfYear(dateMade).toString().leftPad(3).replaceAll(" ","0") + "-";
+         	}
+         	else if(type == "Serial Number")
+         	{
+         		temp = "S" + year(dateMade).toString().right(2) + "-" + getDayOfYear(dateMade).toString().leftPad(3).replaceAll(" ","0") + "-";
+         	}
+         	fetchNums = Add_Tracking_Number[Tracking_Number.startsWith(temp)].Tracking_Number sort by Tracking_Number desc;
+         	seq = 0;
+         	if(fetchNums.isEmpty())
+         	{
+         		seq = 1;
+         	}
+         	else
+         	{
+         		seq = fetchNums.right(4).toNumber() + 1;
+         	}
+         	seqStr = seq.toString().leftPad(4).replaceAll(" ","0");
+         	trackingNumber = temp + seqStr;
+         	return trackingNumber;
+         }
+				 map getKanban(string kanban)
+         {
+         	kb = Add_Kanban[Kanban_Number = kanban];
+         	kbs = Add_Kanban_Series[ID = kb.Kanban_Series];
+         	data = kb.toMap();
+         	data.put("series",kbs.toMap());
+         	return data;
+         }
+				 int getStationID(string name)
+         {
+         	station = Stations[Station == name];
+         	return station.ID;
+         }
+				 bool printKanbanCard(string type, string kbnum, string kbseries, int num, int count, string sku, string partName, string location, string supply, string container, int quantity, string printer, string image, int prints, string tray, string label)
+         {
+         	uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+         	HTMLheaders = Map();
+         	HTMLheaders.put("Content-Type","application/xml");
+         	if(printer = "Olivetti")
+         	{
+         		txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>Y:\Facilities\Labelling\Bartender\Labels" + '\' + printer + "\KanbanCard" + label + ".btw</Format><NamedSubString Name=\"KanbanType\"><Value>" + type + "</Value></NamedSubString><NamedSubString Name=\"KanbanNumber\"><Value>" + kbnum + "</Value></NamedSubString><NamedSubString Name=\"KanbanSeries\"><Value>" + kbseries + "</Value></NamedSubString><NamedSubString Name=\"Number\"><Value>" + num + "</Value></NamedSubString><NamedSubString Name=\"Count\"><Value>" + count + "</Value></NamedSubString><NamedSubString Name=\"SKU\"><Value>" + sku + "</Value></NamedSubString><NamedSubString Name=\"Location\"><Value>" + location + "</Value></NamedSubString><NamedSubString Name=\"Image\"><Value>" + image + "</Value></NamedSubString><NamedSubString Name=\"PartName\"><Value>" + partName + "</Value></NamedSubString><NamedSubString Name=\"PointOfSupply\"><Value>" + supply + "</Value></NamedSubString><NamedSubString Name=\"ContainerType\"><Value>" + container + "</Value></NamedSubString><NamedSubString Name=\"Quantity\"><Value>" + quantity + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer><PaperTray>" + tray + "</PaperTray></PrintSetup></Print></Command></XMLScript>";
+         	}
+         	else
+         	{
+         		txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>Y:\Facilities\Labelling\Bartender\Labels" + '\' + printer + "\KanbanCard" + label + ".btw</Format><NamedSubString Name=\"KanbanType\"><Value>" + type + "</Value></NamedSubString><NamedSubString Name=\"KanbanNumber\"><Value>" + kbnum + "</Value></NamedSubString><NamedSubString Name=\"KanbanSeries\"><Value>" + kbseries + "</Value></NamedSubString><NamedSubString Name=\"Number\"><Value>" + num + "</Value></NamedSubString><NamedSubString Name=\"Count\"><Value>" + count + "</Value></NamedSubString><NamedSubString Name=\"SKU\"><Value>" + sku + "</Value></NamedSubString><NamedSubString Name=\"Location\"><Value>" + location + "</Value></NamedSubString><NamedSubString Name=\"Image\"><Value>" + image + "</Value></NamedSubString><NamedSubString Name=\"PartName\"><Value>" + partName + "</Value></NamedSubString><NamedSubString Name=\"PointOfSupply\"><Value>" + supply + "</Value></NamedSubString><NamedSubString Name=\"ContainerType\"><Value>" + container + "</Value></NamedSubString><NamedSubString Name=\"Quantity\"><Value>" + quantity + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>";
+         	}
+         	txt = replaceAll(txtraw,"&","&#38;");
+         	//info txt;
+         	response = invokeurl
+         	[
+         		url :uri
+         		type :POST
+         		parameters:txt
+         		headers:HTMLheaders
+         	];
+         	return true;
+         }
+				 bool printKanbanLabel(string type, string kbnum, string kbseries, int num, int count, string sku, string partName, string location, string supply, string container, int quantity, string printer, string image, int prints)
+         {
+         	uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+         	HTMLheaders = Map();
+         	HTMLheaders.put("Content-Type","application/xml");
+         	label = "";
+         	if(type = "Production")
+         	{
+         		label = type;
+         	}
+         	else if(type = "Asset")
+         	{
+         		label = "Micro";
+         	}
+         	txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\KanbanLabel" + label + ".btw</Format><NamedSubString Name=\"KanbanType\"><Value>" + type + "</Value></NamedSubString><NamedSubString Name=\"KanbanNumber\"><Value>" + kbnum + "</Value></NamedSubString><NamedSubString Name=\"KanbanSeries\"><Value>" + kbseries + "</Value></NamedSubString><NamedSubString Name=\"Number\"><Value>" + num + "</Value></NamedSubString><NamedSubString Name=\"Count\"><Value>" + count + "</Value></NamedSubString><NamedSubString Name=\"SKU\"><Value>" + sku + "</Value></NamedSubString><NamedSubString Name=\"Location\"><Value>" + location + "</Value></NamedSubString><NamedSubString Name=\"Image\"><Value>" + image + "</Value></NamedSubString><NamedSubString Name=\"PartName\"><Value>" + partName + "</Value></NamedSubString><NamedSubString Name=\"PointOfSupply\"><Value>" + supply + "</Value></NamedSubString><NamedSubString Name=\"ContainerType\"><Value>" + container + "</Value></NamedSubString><NamedSubString Name=\"Quantity\"><Value>" + quantity + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>";
+         	txt = replaceAll(txtraw,"&","&#38;");
+         	info txt;
+         	response = invokeurl
+         	[
+         		url :uri
+         		type :POST
+         		parameters:txt
+         		headers:HTMLheaders
+         	];
+         	return true;
+         }
+				 bool printNameplateLabel(date buildDate, string partNumber, string serialNumber, string description, string labelFile, string printer, decimal voltage, decimal energy, int prints)
+         {
+         	if(voltage = null)
+         	{
+         		voltage = 0;
+         	}
+         	if(energy = null)
+         	{
+         		energy = 0;
+         	}
+         	uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+         	HTMLheaders = Map();
+         	HTMLheaders.put("Content-Type","application/xml");
+         	txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\Nameplate" + labelFile + ".btw</Format><NamedSubString Name=\"date\"><Value>" + buildDate.toDate("MM,d,yyyy") + "</Value></NamedSubString><NamedSubString Name=\"description\"><Value>" + description + "</Value></NamedSubString><NamedSubString Name=\"energy\"><Value>" + energy + " kWh</Value></NamedSubString><NamedSubString Name=\"voltage\"><Value>" + voltage + " V</Value></NamedSubString><NamedSubString Name=\"partNumber\"><Value>" + partNumber + "</Value></NamedSubString><NamedSubString Name=\"serialNumber\"><Value>" + serialNumber + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>";
+         	txt = replaceAll(txtraw,"&","&#38;");
+         	info txt;
+         	response = invokeurl
+         	[
+         		url :uri
+         		type :POST
+         		parameters:txt
+         		headers:HTMLheaders
+         	];
+         	return true;
+         }
+				 bool printTicket(string type, string ticketNumber, string project, string zone, string ticketOwner, string responsiblePerson, string workInstruction, string safetyLevel, string riskAssessment, string methodStatement, string ssow, int prints, string printer, string tray, string label)
+         {
+         	uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+         	HTMLheaders = Map();
+         	HTMLheaders.put("Content-Type","application/xml");
+         	printer = "Olivetti";
+         	txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels" + "\GreenTicket" + label + ".btw</Format><NamedSubString Name=\"TicketType\"><Value>" + type + "</Value></NamedSubString><NamedSubString Name=\"TicketNumber\"><Value>" + ticketNumber + "</Value></NamedSubString><NamedSubString Name=\"Project\"><Value>" + project + "</Value></NamedSubString><NamedSubString Name=\"Zone\"><Value>" + zone + "</Value></NamedSubString><NamedSubString Name=\"TicketOwner\"><Value>" + ticketOwner + "</Value></NamedSubString><NamedSubString Name=\"ResponsiblePerson\"><Value>" + responsiblePerson + "</Value></NamedSubString><NamedSubString Name=\"WorkInstruction\"><Value>" + workInstruction + "</Value></NamedSubString><NamedSubString Name=\"SafetyLevel\"><Value>" + safetyLevel + "</Value></NamedSubString><NamedSubString Name=\"RiskAssessment\"><Value>" + riskAssessment + "</Value></NamedSubString><NamedSubString Name=\"MethodStatement\"><Value>" + methodStatement + "</Value></NamedSubString><NamedSubString Name=\"ssow\"><Value>" + ssow + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer><PaperTray>" + tray + "</PaperTray></PrintSetup></Print></Command></XMLScript>";
+         	txt = replaceALL(txtraw,"&","&#38");
+         	//info txt;
+         	response = invokeurl
+         	[
+         		url :uri
+         		type :POST
+         		parameters:txt
+         		headers:HTMLheaders
+         	];
+         	return true;
+         }
+				 bool printTrackingLabel(string partNumber, string trackingNumber, int count, string printer)
+         {
+         	uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+         	HTMLheaders = Map();
+         	HTMLheaders.put("Content-Type","application/xml");
+         	txt = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"" + "Job-" + now.toString() + "\"><Format>C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\StoresTracking.btw</Format><NamedSubString Name=\"PartNumber\"><Value>" + partNumber + "</Value></NamedSubString><NamedSubString Name=\"TrackingNumber\"><Value>" + trackingNumber + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + count + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>";
+         	response = invokeurl
+         [
+         	url :uri
+         	type :POST
+         	parameters:txt
+         	headers:HTMLheaders
+         ];
+         	return true;
+         }
+				 map processQR()
+         {
+         	//(map data)
+         	data = {"sku":"dmj222","qty":{5},"batches":{"b123343"},"serial":"","loc":"A1"};
+         	ret = data;
+         	sku = data.get("sku");
+         	location = data.get("loc");
+         	serial = data.get("serial");
+         	quantity = data.get("qty");
+         	batches = data.get("batches");
+         	Date_Time = now;
+         	org_id = zoho.inventory.getOrganizations().get("organizations").get(0).toMap().get("organization_id");
+         	query_param = Map();
+         	query_param.put("sku",sku);
+         	inventory_items = zoho.inventory.getRecords("CompositeItems",org_id,query_param);
+         	inventory_item = inventory_items.get("composite_items").get(0).toMap();
+         	composite_item_id = inventory_item.get("composite_item_id");
+         	composite_item_name = inventory_item.get("composite_item_name");
+         	//info inventory_item;
+         	//info item_id;
+         	HTMLheaders = Map();
+         	HTMLheaders.put("organization_id",org_id);
+         	curl = "https://inventory.zoho.eu/api/v1/bundles/editpage?composite_item_id=" + composite_item_id;
+         	//info(curl);
+         	json_response = invokeurl
+         [
+         	url :curl
+         	type :GET
+         	headers:HTMLheaders
+         	connection:"inventoryconnection"
+         ];
+         	//openUrl("https://inventory.zoho.eu/api/v1/bundles/editpage?composite_item_id=" + item_id, "popup window");
+         	jsonMap = json_response.toMap();
+         	if(jsonMap.get("code") == 0)
+         	{
+         		bundle_settings = jsonMap.get("bundling_settings");
+         		bundle_ref = bundle_settings.get("prefix_string") + bundle_settings.get("next_number");
+         		info bundle_ref;
+         	}
+         	return ret;
+         }
+				 int scanIn(string trackingNumber, int Station, int previousToken, date scanInTime)
+         {
+         	// Previous Token is used to set the dwell time.  If the token is -1 then there was no previous Token.
+         	if(previousToken != -1)
+         	{
+         		previousScanIn = Build_History[Token == previousToken];
+         		previousScanIn.Next_Operation_Scan_In_Time=scanInTime;
+         	}
+         	nextRecord = insert into Build_History
+         	[
+         		Added_User=zoho.loginuser
+         		Tracking_Number=trackingNumber
+         		Scan_In_Date_Time=scanInTime
+         		Station=Station
+         	];
+         	token = Build_History[ID == nextRecord].Token;
+         	return token;
+         }
+				 int scanOut(int token, string notes, date scanOutTime)
+         {
+         	openRecord = Build_History[Token == token];
+         	if(openRecord.Token != null)
+         	{
+         		openRecord.Notes=notes;
+         		openRecord.Scan_Out_Date_Time=scanOutTime;
+         		return openRecord.Token;
+         	}
+         	else
+         	{
+         		return 0;
+         	}
+         }
+				 void updateBuildOrderStation(string sn, int station)
+         {
+         	for each  rec in Build_Order[Serial_Number = sn]
+         	{
+         		rec.Station=station;
+         	}
+         }
+				 void updateStations_bulkfunctiontemplate_donotuse()
+         {
+         	for each  rec in Build_Order[ID != null]
+         	{
+         		newstation = Stations[Station = "iS"].ID;
+         		info rec.Station + " - " + 1 + newstation;
+         		rec.Station=newstation;
+         	}
+         }
+			 }
+		 }
+
+
+
+
+		workflow
+		{
+		form
+		{
+			Disable_Number as "Disable Number"
+			{
+				type =  form
+				form = Add_Tracking_Number
+				record event = on add or edit
+					status = inactive
+
+				field rules
+				{
+					actions 
+					{
+						disable Tracking_Number;
+					}
+				}
+
+			}
+			Generate_Number as "Generate Number"
+			{
+				type =  form
+				form = Add_Tracking_Number
+				record event = on add
+
+				on user input of Type
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Tracking_Number = thisapp.generateTrackingNumber(input.Type,input.Date_field);
+						)
+					}
+				}
+
+			}
+			Initialise_Date as "Initialise Date"
+			{
+				type =  form
+				form = Add_Tracking_Number
+				record event = on add
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Date_field = today;
+						)
+					}
+				}
+
+			}
+			Execute_Bundling as "Execute Bundling"
+			{
+				type =  form
+				form = Add_Kanban_Series
+				record event = on add
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											//data = input.Kanban_Series_Number.toMap();
+										//input.Part_Number = data.get("pn");
+										//input.Location = data.get("loc");
+										//input.Quantity = data.get("qty");
+										//input.Date_Time = now;
+										//alert input.DELETE_field;
+						)
+					}
+				}
+
+			}
+			Generate_Kanban_Number1 as "Generate Kanban Number"
+			{
+				type =  form
+				form = Add_Kanban
+				record event = on add
+
+				on user input of Kanban_Series
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											kb_series = Add_Kanban_Series[ID = input.Kanban_Series].Kanban_Series_Number;
+										input.Kanban_Number = thisapp.generateKanbanNumber(kb_series);
+										disable Kanban_Number;
+										disable Kanban_Series;
+						)
+					}
+				}
+
+			}
+			Disable_Kanban_Number as "Disable Kanban Number"
+			{
+				type =  form
+				form = Add_Kanban_Series
+				record event = on add or edit
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											disable Kanban_Series_Number;
+						)
+					}
+				}
+
+			}
+			Load_Part_Numbers as "Load Part Numbers"
+			{
+				type =  form
+				form = Add_Kanban_Series
+				record event = on add or edit
+
+				on user input of Part_Search
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											items = erp.loadZohoInventoryItems(input.Part_Search);
+										options = Collection();
+										for each  item in items.get("items")
+										{
+											option = item.get("sku") + " - " + item.get("name");
+											options.insert(option);
+										}
+										clear Part_Number;
+										input.Part_Number:ui.append(options);
+										hide Part_Search;
+						)
+					}
+				}
+
+			}
+			Generate_Kanban_Number as "Generate Kanban Number"
+			{
+				type =  form
+				form = Add_Kanban_Series
+				record event = on add
+
+				on user input of Type
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Kanban_Series_Number = thisapp.generateKanbanSeriesNumber(input.Type);
+										hide Process;
+										disable Type;
+						)
+					}
+				}
+
+			}
+			Disable_Kanban_Type_and_L as "Disable Kanban Type and Locations"
+			{
+				type =  form
+				form = Add_Kanban_Series
+				record event = on edit
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											disable Type;
+										hide Part_Name;
+						)
+					}
+				}
+
+			}
+			Set_Part_Name as "Set Part Name"
+			{
+				type =  form
+				form = Add_Kanban_Series
+				record event = on add or edit
+
+				on user input of Part_Number
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Part_Name = input.Part_Number.right(input.Part_Number.len() - input.Part_Number.find(" - ") - 3);
+										show Part_Name;
+						)
+					}
+				}
+
+			}
+			Disable_Post_ID1 as "Disable Post ID"
+			{
+				type =  form
+				form = Add_Post1
+				record event = on add or edit
+					status = inactive
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											disable Post_ID;
+						)
+					}
+				}
+
+			}
+			Disable_Location_ID as "Disable Location ID"
+			{
+				type =  form
+				form = Add_Location
+				record event = on add or edit
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											disable Location_ID;
+						)
+					}
+				}
+
+			}
+			Generate_Location_ID as "Generate Location ID"
+			{
+				type =  form
+				form = Add_Location
+				record event = on add
+
+				on user input of Post
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											location = Add_Post1[ID = input.Post].Post_ID sort by Post_ID desc;
+										if(!input.Row_field.isEmpty())
+										{
+											seq = 0;
+											letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+											response = Add_Location[Location_ID.startsWith(location + "-" + input.Row_field)].Location_ID sort by Location_ID desc;
+											if(!response.isEmpty())
+											{
+												seq = letters.indexOf(response.right(1)) + 1;
+											}
+											input.Location_ID = location + "-" + input.Row_field + "-" + letters.get(seq);
+										}
+						)
+					}
+				}
+
+			}
+			Search_for_Part as "Search for Part"
+			{
+				type =  form
+				form = Add_Tracking_Number
+				record event = on add
+
+				on user input of SKU_Search
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											items = erp.loadZohoInventoryItems(input.SKU_Search);
+										options = Collection();
+										for each  item in items.get("items")
+										{
+											option = item.get("sku") + " - " + item.get("name");
+											options.insert(option);
+										}
+										clear Inventory_Part;
+										input.Inventory_Part:ui.append(options);
+										hide SKU_Search;
+						)
+					}
+				}
+
+			}
+			Find_Kanban as "Find Kanban"
+			{
+				type =  form
+				form = Add_Kanban_Part_Assignment
+				record event = on add or edit
+
+				on user input of QR_Code
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											code = input.QR_Code;
+										kb = Add_Kanban[Kanban_Number = code].ID;
+										info kb;
+										input.Kanban = kb;
+						)
+					}
+				}
+
+			}
+			Disable_Area_ID as "Disable Area ID"
+			{
+				type =  form
+				form = Add_Area
+				record event = on add or edit
+					status = inactive
+
+				on load
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											disable Area_Name;
+						)
+					}
+				}
+
+			}
+			Generate_Post_ID1 as "Generate Post ID"
+			{
+				type =  form
+				form = Add_Post1
+				record event = on add
+
+				on user input of Area
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+										area = Add_Area[ID = input.Area].Area_ID sort by Area_ID desc;
+										response = Add_Post1[Post_ID.startsWith(area)].Post_ID sort by Post_ID desc;
+										info response;
+										seq = 0;
+										if(!response.isEmpty())
+										{
+											seq = letters.indexOf(response.right(1)) + 1;
+										}
+										info seq;
+										input.Post_ID = area + "  " + letters.get(seq);
+						)
+					}
+				}
+
+			}
+			Generate_Location_ID1 as "Generate Location ID"
+			{
+				type =  form
+				form = Add_Location
+				record event = on add
+
+				on user input of Row_field
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											location = Add_Post1[ID = input.Post].Post_ID sort by Post_ID desc;
+										seq = 0;
+										letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+										response = Add_Location[Location_ID.startsWith(location + "-" + input.Row_field)].Location_ID sort by Location_ID desc;
+										if(!response.isEmpty())
+										{
+											seq = letters.indexOf(response.right(1)) + 1;
+										}
+										input.Location_ID = location + "-" + input.Row_field + "-" + letters.get(seq);
+						)
+					}
+				}
+
+			}
+			loadPartNumberData as "loadPartNumberData"
+			{
+				type =  form
+				form = Build_Order
+				record event = on add or edit
+
+				on user input of Danecca_Part_Number
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											response = erp.loadZohoInventoryItems(input.Danecca_Part_Number);
+										data = response.toMap();
+										input.Description = data.get("items").get(0).get("name");
+										input.Part_Number = data.get("items").get(0).get("cpn");
+										a = 1;
+						)
+					}
+				}
+
+			}
+			Set_Parts_to_Dispatched as "Set Parts to Dispatched"
+			{
+				type =  form
+				form = Add_Shipment
+				record event = on add or edit
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											dispatchStation = Stations[Station = "Dispatch"].ID;
+										for each  sn in input.Serial_Numbers
+										{
+											for each  rec in Build_Order[ID = sn]
+											{
+												rec.Station=dispatchStation;
+											}
+										}
+						)
+					}
+				}
+
+			}
+			generateQuarantineNumber as "generateQuarantineNumber"
+			{
+				type =  form
+				form = Quality_Control
+				record event = on add
+
+				on user input of Type
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Quarantine_Number = thisapp.generateQuarantineNumber(input.Type,input.Date_Time);
+						)
+					}
+				}
+
+			}
+			disableQuarantineNumber as "disableQuarantineNumber"
+			{
+				type =  form
+				form = Quality_Control
+				record event = on add or edit
+
+				field rules
+				{
+					actions 
+					{
+						disable Quarantine_Number;
+					}
+				}
+
+			}
+			Disable_Serial_Input_afte as "Disable Serial Input after Shipped"
+			{
+				type =  form
+				form = Add_Shipment
+				record event = on add or edit
+
+				field rules
+				{
+					actions  (Shipped == true)
+					{
+						disable Serial_Numbers;
+					}
+					actions  (Shipped == false)
+					{
+						enable Serial_Numbers;
+					}
+				}
+
+			}
+			Ticket_Number as "Ticket Number"
+			{
+				type =  form
+				form = Green_Ticket
+				record event = on add or edit
+
+				on user input of Type_field
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											input.Ticket_Number = thisapp.generateTicketNumber(input.Type_field);
+										disable Ticket_Number;
+						)
+					}
+				}
+
+			}
+		}
+
+
+
+
+
+		functions
+		{
+			Generate_Kanbans as "Generate Kanbans"
+			{
+				type =  functions
+				form = Add_Kanban_Series
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						kbnum = thisapp.generateKanbanNumber(input.Kanban_Series_Number);
+										insert into Add_Kanban
+										[
+											Added_User=zoho.loginuser
+											Kanban_Number=kbnum
+											Kanban_Series=input.ID
+										]
+										success message "Kanban " + kbnum + " has been created.";
+					)
+					}
+				}
+			}
+			Get_Inventory_PN as "Get Inventory PN"
+			{
+				type =  functions
+				form = Add_Tracking_Number
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						//pn = input.Part_Number.get(0);
+										//pns = part_number_allocation.getPartNumberFromID(pn);
+										//info pns;
+										//items = erp.loadZohoInventoryItems(pns.get("Part_Number2"));
+										//options = Collection();
+										//for each  item in items.get("items")
+										//{
+										//	if(item.get("sku").left(6) = pns.get("Part_Number2"))
+										//	{
+										//		input.Part = item.get("sku") + " - " + item.get("name");
+										//	}
+										//}
+					)
+					}
+				}
+			}
+			Print_Stores_Tracking_Lab as "Print Stores Tracking Label"
+			{
+				type =  functions
+				form = Add_Tracking_Number
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						printer = "Zebra2";
+										count = 1;
+										trackingNumber = input.Tracking_Number;
+										partNumber = input.Inventory_Part.left(input.Inventory_Part.find(" - "));
+										thisapp.printTrackingLabel(partNumber,trackingNumber,count,printer);
+					)
+					}
+				}
+			}
+			Print_Kanban_Card as "Print Kanban Card"
+			{
+				type =  functions
+				form = Add_Kanban
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						kanbanSeries = Add_Kanban_Series[ID = input.Kanban_Series];
+										seriesKanbans = (Add_Kanban[Kanban_Series = input.Kanban_Series].ID sort by Kanban_Number).getAll();
+										type = kanbanSeries.Type;
+										kbnum = input.Kanban_Number;
+										kbseries = kanbanSeries.Kanban_Series_Number;
+										num = input.Kanban_Number.right(2).toNumber();
+										count = seriesKanbans.size();
+										label = kanbanSeries.Kanban_Card_Label;
+										sku = kanbanSeries.Part_Number.left(kanbanSeries.Part_Number.find(" - "));
+										partName = kanbanSeries.Part_Name;
+										location = Add_Location[ID = kanbanSeries.Point_of_Use].Location_ID;
+										container = kanbanSeries.Container_Type;
+										if(input.Capacity_Override > 0)
+										{
+											quantity = input.Capacity_Override;
+										}
+										else
+										{
+											quantity = kanbanSeries.Container_Capacity;
+										}
+										//printer = "HPMFPM283fdw";  Changed because of better printing from Olivetti DMJ 11/11/2021
+										//printer = "Olivetti";
+										printer = kanbanSeries.Kanban_Printer;
+										tray = "Tray 1";
+										prints = 1;
+										part = erp.loadZohoInventoryItems(sku);
+										part_details = erp.loadInventoryItemByID(part.get("items").get(0).get("id"));
+										image = part_details.get("image");
+										if(kanbanSeries.Type.startsWith("Supplier"))
+										{
+											suppliers = part_details.get("item").get("preferred_vendors");
+											if(suppliers.size() > 0)
+											{
+												supply = suppliers.get(0).get("vendor_name");
+											}
+											else
+											{
+												supply = "";
+											}
+										}
+										else
+										{
+											supply = Add_Location[ID = kanbanSeries.Point_of_Supply].Location_ID;
+										}
+										thisapp.printKanbanCard(type,kbnum,kbseries,num,count,sku,partName,location,supply,container,quantity,printer,image,prints,tray,label);
+										success message "Print of " + kbnum + " sent to printer: " + printer;
+					)
+					}
+				}
+			}
+			Print_Kanban_Sticker as "Print Kanban Sticker"
+			{
+				type =  functions
+				form = Add_Kanban
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						kanbanSeries = Add_Kanban_Series[ID = input.Kanban_Series];
+										seriesKanbans = (Add_Kanban[Kanban_Series = input.Kanban_Series].ID sort by Kanban_Number).getAll();
+										type = kanbanSeries.Type;
+										kbnum = input.Kanban_Number;
+										kbseries = kanbanSeries.Kanban_Series_Number;
+										num = input.Kanban_Number.right(2).toNumber();
+										count = seriesKanbans.size();
+										sku = kanbanSeries.Part_Number.left(kanbanSeries.Part_Number.find(" - "));
+										partName = kanbanSeries.Part_Name;
+										location = Add_Location[ID = kanbanSeries.Point_of_Use].Location_ID;
+										container = kanbanSeries.Container_Type;
+										if(input.Capacity_Override > 0)
+										{
+											quantity = input.Capacity_Override;
+										}
+										else
+										{
+											quantity = kanbanSeries.Container_Capacity;
+										}
+										//info kanbanSeries.Type;
+										if(kanbanSeries.Kanban_Card_Label = "Micro")
+										{
+											printer = "Zebra2";
+										}
+										else
+										{
+											printer = "Zebra3";
+										}
+										//info printer;
+										prints = 1;
+										part = erp.loadZohoInventoryItems(sku);
+										part_details = erp.loadInventoryItemByID(part.get("items").get(0).get("id"));
+										image = "";
+										if(kanbanSeries.Type.startsWith("Supplier"))
+										{
+											suppliers = part_details.get("item").get("preferred_vendors");
+											if(suppliers.size() > 0)
+											{
+												supply = suppliers.get(0).get("vendor_name");
+											}
+											else
+											{
+												supply = "";
+											}
+										}
+										else
+										{
+											supply = Add_Location[ID = kanbanSeries.Point_of_Supply].Location_ID;
+										}
+										thisapp.printKanbanLabel(type,kbnum,kbseries,num,count,sku,partName,location,supply,container,quantity,printer,image,prints);
+										info "Print sent to printer: " + printer;
+					)
+					}
+				}
+			}
+			printProductionQRSticker as "printProductionQRSticker"
+			{
+				type =  functions
+				form = Build_Order
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+						thisapp.printTrackingLabel(Danecca_Part_Number,Serial_Number,trackingPrints,Tracking_Printer);
+					}
+				}
+			}
+			printNameplate as "printNameplate"
+			{
+				type =  functions
+				form = Build_Order
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+						thisapp.printNameplateLabel(Actual_Build_Date,Part_Number,Serial_Number,Description,Label,Nameplate_Printer,Nominal_Voltage,Nominal_Energy,nameplatePrints);
+					}
+				}
+			}
+			printAllKanbans as "printAllKanbans"
+			{
+				type =  functions
+				form = Add_Kanban_Series
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						for each  kb in Add_Kanban[Kanban_Series = input.ID] sort by Kanban_Number desc
+										{
+											info kb;
+											seriesKanbans = (Add_Kanban[Kanban_Series = input.ID].ID sort by Kanban_Number).getAll();
+											count = seriesKanbans.size();
+											partName = input.Part_Name;
+											location = Add_Location[ID = input.Point_of_Use].Location_ID;
+											container = input.Container_Type;
+											sku = input.Part_Number.left(input.Part_Number.find(" - "));
+											num = kb.Kanban_Number.right(2).toNumber();
+											if(kb.Capacity_Override > 0)
+											{
+												quantity = kb.Capacity_Override;
+											}
+											else
+											{
+												quantity = input.Container_Capacity;
+											}
+											label = input.Kanban_Card_Label;
+											printer = "Olivetti";
+											tray = "Bypass Tray";
+											prints = 1;
+											part = erp.loadZohoInventoryItems(sku);
+											part_details = erp.loadInventoryItemByID(part.get("items").get(0).get("id"));
+											image = part_details.get("image");
+											if(input.Type.startsWith("Supplier"))
+											{
+												suppliers = part_details.get("item").get("preferred_vendors");
+												if(suppliers.size() > 0)
+												{
+													supply = suppliers.get(0).get("vendor_name");
+												}
+												else
+												{
+													supply = "";
+												}
+											}
+											else
+											{
+												supply = Add_Location[ID = input.Point_of_Supply].Location_ID;
+											}
+											thisapp.printKanbanCard(input.Type,kb.Kanban_Number,input.Kanban_Series_Number,num,count,sku,partName,location,supply,container,quantity,printer,image,prints,tray,label);
+											info "Prints sent to printer: " + printer;
+										}
+					)
+					}
+				}
+			}
+			AssignSerialNumber as "AssignSerialNumber"
+			{
+				type =  functions
+				form = Build_Order
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						if(input.Order_Number.startsWith("SO"))
+										{
+											//This is an internal Order
+											response = erp.loadZohoInventoryItems(input.Danecca_Part_Number);
+											data = response.toMap();
+											//info data;
+											inventoryItem = data.get("items").get(0).get("name");
+											//info inventoryItem;
+											input.Serial_Number = thisapp.addTrackingNumber(now,"Serial Number",input.Danecca_Part_Number,inventoryItem);
+										}
+										else
+										{
+											//Get the Scania Part Number
+											if(input.Part_Number == "3084557")
+											{
+												prefix = "01-B2-NV157_#A";
+											}
+											else if(input.Part_Number == "3084559")
+											{
+												prefix = "01-B2-NV157_#B";
+											}
+											else if(input.Part_Number == "2985949 Low")
+											{
+												prefix = "01-B2-NV157_#C";
+											}
+											else if(input.Part_Number == "3087321")
+											{
+												prefix = "01-B2-NV157_#E";
+											}
+											serialNumbers = List();
+											for each  rec in Build_Order[Serial_Number.startswith(prefix)]
+											{
+												sn = rec.Serial_Number;
+												if(!sn.isEmpty())
+												{
+													seq = sn.right(sn.len() - 2 - sn.find("#")).toNumber();
+													serialNumbers.add(seq);
+												}
+											}
+											//info serialNumbers;
+											seq = 0;
+											if(serialNumbers.isEmpty())
+											{
+												seq = 151;
+												//Scania Requested That we start with 151
+											}
+											else
+											{
+												seq = serialNumbers.largest() + 1;
+											}
+											input.Serial_Number = prefix + seq.toString().leftpad(2).replaceAll(" ","0");
+											//info prefix + seq.leftpad(2).replaceAll(" ","0").toString();
+										}
+										// 	//This is a Scania Part
+										// 	prefix = "id" + input.Order_Number + "-";
+										// 	serialNumbers = List();
+										// 	for each  rec in Build_Order[Order_Number = input.Order_Number]
+										// 	{
+										// 		sn = rec.Serial_Number;
+										// 		if(!sn.isEmpty())
+										// 		{
+										// 			seq = sn.right(sn.len() - 1 - sn.find("-")).toNumber();
+										// 			serialNumbers.add(seq);
+										// 		}
+										// 	}
+										// 	//info serialNumbers;
+										// 	seq = 0;
+										// 	if(serialNumbers.isEmpty())
+										// 	{
+										// 		seq = 1;
+										// 	}
+										// 	else
+										// 	{
+										// 		seq = serialNumbers.largest() + 1;
+										// 	}
+										// 	input.Serial_Number = prefix + seq.toString().leftpad(2).replaceAll(" ","0");
+										// 	//info prefix + seq.leftpad(2).replaceAll(" ","0").toString();
+					)
+					}
+				}
+			}
+			MarkAsInvoiced as "MarkAsInvoiced"
+			{
+				type =  functions
+				form = Add_Shipment
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						if(!input.Invoice_Number.isEmpty())
+										{
+											input.Invoiced = true;
+										}
+										else
+										{
+											input.Invoiced = false;
+											info "Invoice Number not Recorded";
+										}
+					)
+					}
+				}
+			}
+			MarkAsShipped as "MarkAsShipped"
+			{
+				type =  functions
+				form = Add_Shipment
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						dispatchStation = Stations[Station = "Shipped"].ID;
+										for each  sn in input.Serial_Numbers
+										{
+											for each  rec in Build_Order[ID = sn]
+											{
+												rec.Station=dispatchStation;
+											}
+										}
+										input.Shipped = true;
+					)
+					}
+				}
+			}
+			AssignStartDate as "AssignStartDate"
+			{
+				type =  functions
+				form = Build_Order
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						input.Actual_Build_Date = today;
+					)
+					}
+				}
+			}
+			printCrateLabel as "printCrateLabel"
+			{
+				type =  functions
+				form = Build_Order
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						buildDate = input.Actual_Build_Date;
+										orderNumber = input.Order_Number;
+										serialNumber = input.Serial_Number;
+										information = input.Notes;
+										labelFile = "C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\CrateLabel" + input.Part_Number + ".btw";
+										uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+										HTMLheaders = Map();
+										prints = 1;
+										printer = "Olivetti";
+										HTMLheaders.put("Content-Type","application/xml");
+										txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>" + labelFile + "</Format><NamedSubString Name=\"Date\"><Value>" + buildDate.toDate("MM,d,yyyy") + "</Value></NamedSubString><NamedSubString Name=\"Order\"><Value>" + orderNumber + "</Value></NamedSubString><NamedSubString Name=\"SerialNumber\"><Value>" + serialNumber + "</Value></NamedSubString><NamedSubString Name=\"Information\"><Value>" + information + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>";
+										txt = replaceAll(txtraw,"&","&#38;");
+										response = invokeurl
+										[
+											url :uri
+											type :POST
+											parameters:txt
+											headers:HTMLheaders
+										];
+										//"<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\" + labelFile + ".btw</Format><NamedSubString Name=\"Date\"><Value>" + buildDate.toDate("MM,d,yyyy") + "</Value></NamedSubString><NamedSubString Name=\"Order\"><Value>" + orderNumber + "</Value></NamedSubString><NamedSubString Name=\"SerialNumber\"><Value>" + serialNumber + "</Value></NamedSubString><NamedSubString Name=\"Information\"><Value>" + information + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>"
+					)
+					}
+				}
+			}
+			printLabels as "printLabels"
+			{
+				type =  functions
+				form = Build_Order
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						//Printing Crate Label.
+										buildDate = input.Actual_Build_Date;
+										orderNumber = input.Order_Number;
+										serialNumber = input.Serial_Number;
+										information = input.Notes;
+										labelFile = "C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\CrateLabel" + input.Part_Number + ".btw";
+										uri = "http://workshop.danecca.com:56423/Integration/Tracking/Execute";
+										HTMLheaders = Map();
+										prints = 1;
+										printer = "Olivetti";
+										HTMLheaders.put("Content-Type","application/xml");
+										txtraw = "<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>" + labelFile + "</Format><NamedSubString Name=\"Date\"><Value>" + buildDate.toDate("MM,d,yyyy") + "</Value></NamedSubString><NamedSubString Name=\"Order\"><Value>" + orderNumber + "</Value></NamedSubString><NamedSubString Name=\"SerialNumber\"><Value>" + serialNumber + "</Value></NamedSubString><NamedSubString Name=\"Information\"><Value>" + information + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>";
+										txt = replaceAll(txtraw,"&","&#38;");
+										response = invokeurl
+										[
+											url :uri
+											type :POST
+											parameters:txt
+											headers:HTMLheaders
+										];
+										//"<?xml version=\"1.0\" encoding=\"utf-8\"?><XMLScript Version=\"2.0\"><Command><Print JobName=\"Job-" + now.toString() + "\"><Format>C:\Users\Danecca\Zoho WorkDrive (Danecca)\Facilities\Labelling\Bartender\Labels\" + labelFile + ".btw</Format><NamedSubString Name=\"Date\"><Value>" + buildDate.toDate("MM,d,yyyy") + "</Value></NamedSubString><NamedSubString Name=\"Order\"><Value>" + orderNumber + "</Value></NamedSubString><NamedSubString Name=\"SerialNumber\"><Value>" + serialNumber + "</Value></NamedSubString><NamedSubString Name=\"Information\"><Value>" + information + "</Value></NamedSubString><PrintSetup><IdenticalCopiesOfLabel>" + prints + "</IdenticalCopiesOfLabel><Printer>" + printer + "</Printer></PrintSetup></Print></Command></XMLScript>"
+										//Printing Kanban Card.
+										//Printing Nameplate Label.
+										//Printing Serial Number Sticker.
+					)
+					}
+				}
+			}
+			PrintTicket as "PrintTicket"
+			{
+				type =  functions
+				form = Green_Ticket
+				execution type = for each record	
+				on start
+				{
+					actions 
+					{
+					on click
+					(
+						printer = "Olivetti";
+										prints = 1;
+										Tray = "Tray 1";
+										thisapp.printTicket(input.Type_field,input.Ticket_Number,input.Project,input.Zone,input.Ticket_Owner,input.Responsible_Person,input.Work_Instruction,input.Safety_Level,input.Risk_Assessments,input.Method_Statement,input.SSoW,prints,printer,Tray,input.Label);
+					)
+					}
+				}
+			}
+		}
+	}
+	share_settings
+	{
+			"Read"
+			{
+				name = "Read"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have read permission for all components\n"
+			}
+			"Write"
+			{
+				name = "Write"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have write permission for all components\n"
+			}
+			"Developer"
+			{
+				name = "Developer"
+				type = Developer
+				permissions = {Chat:false, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Developer\n"
+			}
+			"Administrator"
+			{
+				name = "Administrator"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have all the permissions.\n"
+			}
+			"Customer"
+			{
+				name = "Customer"
+				type = Customer_Portal
+				permissions = {Chat:false, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This is the default profile having only add and view permission.\n"
+			}
+			"Scania Build Overview"
+			{
+				name = "Scania Build Overview"
+				type = Customer_Portal
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Scania Build Overview Profile\n"
+				ModulePermissions
+				{
+					Add_Process
+					{
+						allFieldsVisible= true 
+					}
+					Add_Location
+					{
+						allFieldsVisible= true 
+					}
+					Add_Operation
+					{
+						allFieldsVisible= true 
+					}
+					Add_Kanban_Part_Assignment
+					{
+						allFieldsVisible= true 
+					}
+					Add_Tracking_Number
+					{
+						allFieldsVisible= true 
+					}
+					Build_Order
+					{
+						enabled= Create,Viewall,Tab 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							Scania_Build_Order_Calendar={"View"}
+							Scania_Build_Order_Kanban={"View"}
+						}
+					}
+					Add_Post1
+					{
+						allFieldsVisible= true 
+					}
+					Data_Collection_Parameters
+					{
+						allFieldsVisible= true 
+					}
+					Add_Area
+					{
+						allFieldsVisible= true 
+					}
+					Add_Production_Record
+					{
+						allFieldsVisible= true 
+					}
+					Add_Data_Collection
+					{
+						allFieldsVisible= true 
+					}
+					Add_Kanban
+					{
+						allFieldsVisible= true 
+					}
+					Add_Kanban_Series
+					{
+						allFieldsVisible= true 
+					}
+					Scania_Build_Summary
+					{
+						enabled = tab
+					}
+				}
+			}
+			roles
+			{
+				"CEO"
+				{
+					description = "User belonging to this role can access data of all other users."
+				}
+			}
+	}
+
+	customize
+	{
+		
+		layout = "tab"
+		color = "black"
+		base theme = "professional"
+		new theme = 1
+		icons = false
+		icons style = outline
+		font = "lato"
+		color options
+    	{
+        color = "1"
+    	}
+    	logo
+    	{
+        	preference = "none"
+        	placement = "left"
+    	}
+	}
+
+	connections
+	{
+		inventoryconnection
+		(
+			displayname = "inventoryconnection"
+			connector = zoho_oauth
+			permissions = {"ZohoInventory.bills.CREATE","ZohoInventory.bills.DELETE","ZohoInventory.bills.READ","ZohoInventory.bills.UPDATE","ZohoInventory.compositeitems.CREATE","ZohoInventory.compositeitems.DELETE","ZohoInventory.compositeitems.READ","ZohoInventory.compositeitems.UPDATE","ZohoInventory.contacts.CREATE","ZohoInventory.contacts.DELETE","ZohoInventory.contacts.READ","ZohoInventory.contacts.UPDATE","ZohoInventory.creditnotes.CREATE","ZohoInventory.creditnotes.DELETE","ZohoInventory.creditnotes.READ","ZohoInventory.creditnotes.UPDATE","ZohoInventory.customerpayments.CREATE","ZohoInventory.customerpayments.DELETE","ZohoInventory.customerpayments.READ","ZohoInventory.customerpayments.UPDATE","ZohoInventory.inventoryadjustments.CREATE","ZohoInventory.inventoryadjustments.DELETE","ZohoInventory.inventoryadjustments.READ","ZohoInventory.inventoryadjustments.UPDATE","ZohoInventory.invoices.CREATE","ZohoInventory.invoices.DELETE","ZohoInventory.invoices.READ","ZohoInventory.invoices.UPDATE","ZohoInventory.items.CREATE","ZohoInventory.items.DELETE","ZohoInventory.items.READ","ZohoInventory.items.UPDATE","ZohoInventory.packages.CREATE","ZohoInventory.packages.DELETE","ZohoInventory.packages.READ","ZohoInventory.packages.UPDATE","ZohoInventory.purchaseorders.CREATE","ZohoInventory.purchaseorders.DELETE","ZohoInventory.purchaseorders.READ","ZohoInventory.purchaseorders.UPDATE","ZohoInventory.purchasereceives.CREATE","ZohoInventory.purchasereceives.DELETE","ZohoInventory.purchasereceives.READ","ZohoInventory.salesorders.CREATE","ZohoInventory.salesorders.DELETE","ZohoInventory.salesorders.READ","ZohoInventory.salesorders.UPDATE","ZohoInventory.salesreturns.CREATE","ZohoInventory.salesreturns.DELETE","ZohoInventory.salesreturns.READ","ZohoInventory.salesreturns.UPDATE","ZohoInventory.settings.CREATE","ZohoInventory.settings.DELETE","ZohoInventory.settings.READ","ZohoInventory.settings.UPDATE","ZohoInventory.shipmentorders.CREATE","ZohoInventory.shipmentorders.DELETE","ZohoInventory.shipmentorders.READ","ZohoInventory.shipmentorders.UPDATE","ZohoInventory.transferorders.CREATE","ZohoInventory.transferorders.DELETE","ZohoInventory.warehouses.CREATE","ZohoInventory.warehouses.DELETE","ZohoInventory.warehouses.READ","ZohoInventory.warehouses.UPDATE"}
+		)
+	}
+
+	phone
+	{
+		customize
+		{
+        	layout = slidingpane
+		 	icons style = outline
+        	font = "default"
+            style = "3"
+        	color options
+        	{
+             	color = blue
+         	}
+         	logo
+         	{
+             	preference = "none"
+         	}
+		}
+	}
+	tablet
+	{
+		customize
+		{
+        	layout = slidingpane
+		 	icons style = outline
+        	font = "default"
+            style = "3"
+        	color options
+        	{
+             	color = yellow
+         	}
+         	logo
+         	{
+             	preference = "none"
+         	}
+		}
+	}
+	
+	reports configuration
+	{
+	
+		Version = 2000026626507
+		Key     = "saevOFx33aZ8z0ydZSYRfeHju0w8EmugNa8p5KdSQBxesdRuQTmffjwkUktguOrwsWjpP03bU2byYu2dYbJpdHvpxhn4aDEb0b2m"
+	}
+}
